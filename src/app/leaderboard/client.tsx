@@ -46,7 +46,7 @@ export function LeaderboardClient() {
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="bg-white rounded-xl p-4 border border-[var(--sand)] animate-pulse h-16"
+              className="bg-[var(--card-bg)] rounded-xl p-4 border border-[var(--sand)] animate-pulse h-16"
             />
           ))}
         </div>
@@ -59,7 +59,7 @@ export function LeaderboardClient() {
           {entries.map((entry) => (
             <div
               key={entry.rank}
-              className={`bg-white rounded-xl p-4 border shadow-sm flex items-center gap-4 transition-all ${
+              className={`bg-[var(--card-bg)] rounded-xl p-4 border shadow-sm flex items-center gap-4 transition-all ${
                 entry.isCurrentUser
                   ? "border-[var(--gold)] ring-2 ring-[var(--gold)]/20"
                   : "border-[var(--sand)]"

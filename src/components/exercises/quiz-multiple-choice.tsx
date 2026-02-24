@@ -49,7 +49,7 @@ export function QuizMultipleChoice({
     const finalScore = score;
     const pct = Math.round((finalScore / questions.length) * 100);
     return (
-      <div className="bg-white rounded-lg p-6 sm:p-8 text-center border border-[var(--sand)] shadow-sm">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 sm:p-8 text-center border border-[var(--sand)] shadow-sm">
         <h3 className="font-[var(--font-playfair)] text-2xl font-bold text-[var(--phase-color)] mb-2">
           Quiz Complete!
         </h3>
@@ -74,7 +74,7 @@ export function QuizMultipleChoice({
   }
 
   return (
-    <div className="bg-white rounded-lg p-4 sm:p-6 border border-[var(--sand)] shadow-sm">
+    <div className="bg-[var(--card-bg)] rounded-lg p-4 sm:p-6 border border-[var(--sand)] shadow-sm">
       <div className="flex justify-between items-center mb-4">
         <span className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">
           Question {currentIndex + 1} of {questions.length}

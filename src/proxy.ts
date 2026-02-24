@@ -28,6 +28,6 @@ export function proxy(request: NextRequest) {
 export const config = {
   // Apply to all routes except static files and api internals
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|audio/).*)",
+    "/((?!_next/static|_next/image|favicon.ico|audio/|sw\\.js|manifest\\.json|icons/).*)",
   ],
 };

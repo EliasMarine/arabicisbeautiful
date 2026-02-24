@@ -53,7 +53,7 @@ export default function LoginPage() {
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl p-8 shadow-sm border border-[var(--sand)]"
+          className="bg-[var(--card-bg)] rounded-xl p-8 shadow-sm border border-[var(--sand)]"
         >
           {error && (
             <div className="bg-red-50 text-red-600 text-sm rounded-lg p-3 mb-4">

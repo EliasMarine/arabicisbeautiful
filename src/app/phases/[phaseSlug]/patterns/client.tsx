@@ -1,9 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { phase2PhrasePatterns } from "@/content/grammar";
+import { useProgress } from "@/hooks/use-progress";
 
 export function PatternsPageClient() {
+  const { markAllCompleted } = useProgress(2, "patterns", phase2PhrasePatterns.length);
+
+  useEffect(() => {
+    if (phase2PhrasePatterns.length > 0) {
+      markAllCompleted(phase2PhrasePatterns.map((p) => p.id));
+    }
+  }, [markAllCompleted]);
+
   if (phase2PhrasePatterns.length === 0) {
     return (
       <div className="text-center py-12 text-[var(--muted)]">
@@ -20,7 +30,7 @@ export function PatternsPageClient() {
       </p>
 
       {phase2PhrasePatterns.map((group) => (
-        <div key={group.id} className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+        <div key={group.id} className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-2">
             {group.title}
           </h3>

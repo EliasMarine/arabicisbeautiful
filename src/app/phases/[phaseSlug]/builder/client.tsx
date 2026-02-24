@@ -1,6 +1,7 @@
 "use client";
 
 import { SentenceBuilder } from "@/components/exercises/sentence-builder";
+import { useProgress } from "@/hooks/use-progress";
 
 const SENTENCES = [
   { words: ["بدي", "روح", "عالبيت"], correctOrder: [0, 1, 2], english: "I want to go home" },
@@ -12,6 +13,8 @@ const SENTENCES = [
 ];
 
 export function BuilderPageClient() {
+  const { markCompleted, completedCount } = useProgress(2, "builder", SENTENCES.length);
+
   return (
     <div className="space-y-6">
       <p className="text-[var(--muted)] text-sm leading-relaxed border-l-[3px] border-[var(--gold)] pl-4">
@@ -26,8 +29,13 @@ export function BuilderPageClient() {
             words={s.words}
             correctOrder={s.correctOrder}
             english={s.english}
+            onComplete={() => markCompleted(`sentence-${i}`)}
           />
         ))}
+      </div>
+
+      <div className="text-center text-sm text-[var(--muted)]">
+        {completedCount}/{SENTENCES.length} sentences built
       </div>
     </div>
   );

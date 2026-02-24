@@ -4,10 +4,13 @@ import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
 import { phase5Proverbs } from "@/content/proverbs";
 import { getVocabByPhase } from "@/content/vocab";
+import { useProgress } from "@/hooks/use-progress";
 
 export function IdiomsPageClient() {
   const idioms = getVocabByPhase(5);
   const proverbs = phase5Proverbs;
+  const totalItems = idioms.length + proverbs.length;
+  const { markCompleted, completedCount } = useProgress(5, "idioms", totalItems);
 
   return (
     <div className="space-y-6">
@@ -18,7 +21,7 @@ export function IdiomsPageClient() {
 
       {/* Idioms */}
       {idioms.length > 0 && (
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+        <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
             Everyday Lebanese Idioms
           </h3>
@@ -31,7 +34,7 @@ export function IdiomsPageClient() {
                       {item.arabic}
                     </ArabicText>
                   </div>
-                  <AudioButton size="sm" onDemandText={item.arabic} className="flex-shrink-0" />
+                  <AudioButton size="sm" onDemandText={item.arabic} className="flex-shrink-0" onPlay={() => markCompleted(item.id)} />
                 </div>
                 <div className="text-[var(--green)] italic text-sm mt-1">
                   {item.transliteration}
@@ -51,7 +54,7 @@ export function IdiomsPageClient() {
       )}
 
       {/* Proverbs */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
           Lebanese Proverbs
         </h3>
@@ -64,7 +67,7 @@ export function IdiomsPageClient() {
                     {p.arabic}
                   </ArabicText>
                 </div>
-                <AudioButton size="sm" onDemandText={p.arabic} className="flex-shrink-0" />
+                <AudioButton size="sm" onDemandText={p.arabic} className="flex-shrink-0" onPlay={() => markCompleted(p.id)} />
               </div>
               <div className="text-[var(--green)] italic text-sm mt-1">
                 {p.transliteration}
@@ -78,6 +81,10 @@ export function IdiomsPageClient() {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="text-center text-sm text-[var(--muted)]">
+        {completedCount}/{totalItems} items studied
       </div>
     </div>
   );

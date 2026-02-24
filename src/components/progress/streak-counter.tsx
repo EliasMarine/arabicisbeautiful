@@ -12,12 +12,14 @@ export function StreakCounter({ days, className }: StreakCounterProps) {
   return (
     <div
       className={cn(
-        "flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full",
+        "inline-flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-orange-500 to-red-500 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-full max-w-full",
         className
       )}
     >
-      <Flame size={16} className={cn("flex-shrink-0", days > 0 && "animate-pulse")} />
-      <span className="font-bold text-xs sm:text-sm whitespace-nowrap">{days} day streak</span>
+      <Flame size={14} className={cn("flex-shrink-0 sm:[width:16px] sm:[height:16px]", days > 0 && "animate-pulse")} />
+      <span className="font-bold text-[0.65rem] sm:text-sm whitespace-nowrap truncate">
+        {days} day{days !== 1 ? "s" : ""}
+      </span>
     </div>
   );
 }

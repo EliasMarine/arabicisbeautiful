@@ -68,7 +68,7 @@ export function ReviewDashboardClient() {
   }
 
   return (
-    <div className="space-y-8 pt-6">
+    <div className="space-y-8 pt-6 pb-24 sm:pb-8">
       <div className="text-center">
         <h1 className="font-[var(--font-playfair)] text-3xl font-bold text-[var(--dark)]">
           <GraduationCap className="inline mr-2" size={28} />
@@ -88,7 +88,7 @@ export function ReviewDashboardClient() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white rounded-xl p-5 border border-[var(--sand)] text-center">
+        <div className="bg-[var(--card-bg)] rounded-xl p-5 border border-[var(--sand)] text-center">
           <ProgressRing
             percentage={
               stats.totalCards > 0
@@ -102,7 +102,7 @@ export function ReviewDashboardClient() {
             Mastered
           </p>
         </div>
-        <div className="bg-white rounded-xl p-5 border border-[var(--sand)] text-center">
+        <div className="bg-[var(--card-bg)] rounded-xl p-5 border border-[var(--sand)] text-center">
           <p className="text-4xl font-bold text-[var(--phase-color)]">
             {loading ? "..." : stats.dueNow}
           </p>
@@ -111,7 +111,7 @@ export function ReviewDashboardClient() {
             Cards Due
           </p>
         </div>
-        <div className="bg-white rounded-xl p-5 border border-[var(--sand)] text-center">
+        <div className="bg-[var(--card-bg)] rounded-xl p-5 border border-[var(--sand)] text-center">
           <p className="text-4xl font-bold text-[var(--green)]">
             {loading ? "..." : stats.reviewedToday}
           </p>
@@ -149,7 +149,7 @@ export function ReviewDashboardClient() {
 
       {/* Add cards from phases */}
       {!loading && (
-        <div className="bg-white rounded-xl p-6 border border-[var(--sand)]">
+        <div className="bg-[var(--card-bg)] rounded-xl p-6 border border-[var(--sand)]">
           <h2 className="font-semibold text-[var(--dark)] mb-3">
             Add Flashcards by Phase
           </h2>

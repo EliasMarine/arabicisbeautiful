@@ -12,6 +12,7 @@ interface FlipCardProps {
   audioFile?: string;
   onDemandText?: string;
   onRate?: (rating: 0 | 1 | 2 | 3) => void;
+  onFlip?: () => void;
   className?: string;
 }
 
@@ -22,6 +23,7 @@ export function FlipCard({
   audioFile,
   onDemandText,
   onRate,
+  onFlip,
   className,
 }: FlipCardProps) {
   const [flipped, setFlipped] = useState(false);
@@ -37,7 +39,7 @@ export function FlipCard({
         "cursor-pointer perspective-[1000px] min-h-[140px]",
         className
       )}
-      onClick={() => setFlipped(!flipped)}
+      onClick={() => { setFlipped(!flipped); if (!flipped) onFlip?.(); }}
     >
       <div
         className={cn("flip-card-inner relative w-full h-full min-h-[140px]", {
@@ -58,7 +60,7 @@ export function FlipCard({
         </div>
 
         {/* Back */}
-        <div className="flip-card-face flip-card-back absolute inset-0 bg-white rounded-lg p-5 flex flex-col items-center justify-center text-center border-2 border-[var(--phase-color)]">
+        <div className="flip-card-face flip-card-back absolute inset-0 bg-[var(--card-bg)] rounded-lg p-5 flex flex-col items-center justify-center text-center border-2 border-[var(--phase-color)]">
           <span className="text-[var(--green)] italic text-sm mb-1">
             {transliteration}
           </span>

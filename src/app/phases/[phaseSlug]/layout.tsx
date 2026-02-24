@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { PhaseTabNav } from "@/components/layout/phase-tab-nav";
+import { PhaseContentWrapper } from "@/components/layout/phase-content-wrapper";
 import { PHASE_SLUGS, PHASE_TABS, PHASE_TITLES, PHASE_COLORS } from "@/lib/constants";
 import type { PhaseSlug } from "@/lib/constants";
 
@@ -67,8 +68,8 @@ export default async function PhaseLayout({
       <PhaseTabNav slug={slug} tabs={tabs} color={color} />
 
       {/* Content */}
-      <main className="max-w-[900px] mx-auto px-3 sm:px-6 pb-16 pt-4">
-        {children}
+      <main className="max-w-[900px] mx-auto px-3 sm:px-6 pb-24 sm:pb-16 pt-4">
+        <PhaseContentWrapper slug={slug}>{children}</PhaseContentWrapper>
       </main>
     </div>
   );

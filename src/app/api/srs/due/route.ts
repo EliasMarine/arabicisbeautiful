@@ -13,23 +13,29 @@ const vocabMap = new Map(
   ])
 );
 
-export async function GET() {
+export async function GET(request: Request) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
+    const { searchParams } = new URL(request.url);
+    const phaseId = searchParams.get("phaseId");
+
     const now = new Date();
+    const conditions = [
+      eq(srsCards.userId, session.user.id),
+      lte(srsCards.nextReviewAt, now),
+    ];
+    if (phaseId) {
+      conditions.push(eq(srsCards.phaseId, parseInt(phaseId, 10)));
+    }
+
     const dueCards = db
       .select()
       .from(srsCards)
-      .where(
-        and(
-          eq(srsCards.userId, session.user.id),
-          lte(srsCards.nextReviewAt, now)
-        )
-      )
+      .where(and(...conditions))
       .limit(20)
       .all();
 

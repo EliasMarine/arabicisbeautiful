@@ -1,6 +1,14 @@
 "use client";
 
+import { useEffect } from "react";
+import { useProgress } from "@/hooks/use-progress";
+
 export function ContentGuideClient() {
+  const { markAllCompleted } = useProgress(4, "content", 1);
+
+  useEffect(() => {
+    markAllCompleted(["content-guide"]);
+  }, [markAllCompleted]);
   const resources = [
     {
       category: "TV Shows & Series",
@@ -43,7 +51,7 @@ export function ContentGuideClient() {
       </p>
 
       {resources.map((section) => (
-        <div key={section.category} className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+        <div key={section.category} className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
             {section.category}
           </h3>

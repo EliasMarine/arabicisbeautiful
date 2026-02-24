@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { getCultureByPhase } from "@/content/culture";
+import { useProgress } from "@/hooks/use-progress";
 
 export function CulturePageClient() {
   const params = useParams();
@@ -11,6 +12,13 @@ export function CulturePageClient() {
   const phaseId = PHASE_SLUGS.indexOf(phaseSlug as (typeof PHASE_SLUGS)[number]) + 1;
 
   const notes = useMemo(() => getCultureByPhase(phaseId), [phaseId]);
+  const { markAllCompleted } = useProgress(phaseId, "culture", notes.length);
+
+  useEffect(() => {
+    if (notes.length > 0) {
+      markAllCompleted(notes.map((n) => n.id));
+    }
+  }, [notes, markAllCompleted]);
 
   if (notes.length === 0) {
     return (
@@ -25,7 +33,7 @@ export function CulturePageClient() {
       {notes.map((note) => (
         <div
           key={note.id}
-          className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]"
+          className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]"
         >
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
             {note.title}

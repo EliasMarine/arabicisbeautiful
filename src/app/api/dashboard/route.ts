@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import {
+  users,
   userXP,
   srsCards,
   dailyActivity,
@@ -103,11 +104,28 @@ export async function GET() {
       }
     }
 
+    // Today's study minutes
+    const todayStr = new Date().toISOString().split("T")[0];
+    const todayActivity = db
+      .select({ minutes: sql<number>`coalesce(${dailyActivity.minutesStudied}, 0)` })
+      .from(dailyActivity)
+      .where(and(eq(dailyActivity.userId, userId), eq(dailyActivity.date, todayStr)))
+      .get();
+
+    // User's study goal
+    const user = db
+      .select({ studyGoalMinutes: users.studyGoalMinutes })
+      .from(users)
+      .where(eq(users.id, userId))
+      .get();
+
     return NextResponse.json({
       totalXP: xpResult?.total ?? 0,
       cardsDue: dueResult?.count ?? 0,
       streak,
       phaseProgress: phaseProgressMap,
+      minutesStudied: todayActivity?.minutes ?? 0,
+      studyGoalMinutes: user?.studyGoalMinutes ?? 10,
     });
   } catch (error) {
     console.error("Dashboard stats error:", error);

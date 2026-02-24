@@ -33,7 +33,7 @@ export function ArabicKeyboard({ onInsert, onBackspace }: ArabicKeyboardProps) {
   }
 
   return (
-    <div className="bg-white border border-[var(--sand)] rounded-xl shadow-lg p-3 mt-2">
+    <div className="bg-[var(--card-bg)] border border-[var(--sand)] rounded-xl shadow-lg p-3 mt-2">
       <div className="flex justify-between items-center mb-2">
         <span className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">
           Arabic Keyboard

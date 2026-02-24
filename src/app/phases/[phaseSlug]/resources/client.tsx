@@ -1,6 +1,14 @@
 "use client";
 
+import { useEffect } from "react";
+import { useProgress } from "@/hooks/use-progress";
+
 export function ResourcesPageClient() {
+  const { markAllCompleted } = useProgress(6, "resources", 1);
+
+  useEffect(() => {
+    markAllCompleted(["resources-guide"]);
+  }, [markAllCompleted]);
   const sections = [
     {
       title: "Continue Learning",
@@ -43,7 +51,7 @@ export function ResourcesPageClient() {
       </p>
 
       {sections.map((section) => (
-        <div key={section.title} className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+        <div key={section.title} className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
             {section.title}
           </h3>

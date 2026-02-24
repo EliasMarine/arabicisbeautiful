@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { PenLine, Save, Trash2 } from "lucide-react";
+import { useProgress } from "@/hooks/use-progress";
 
 interface JournalEntry {
   id: number;
@@ -31,6 +32,8 @@ export function JournalPageClient() {
   const [content, setContent] = useState("");
   const [mood, setMood] = useState<string>("good");
   const [saving, setSaving] = useState(false);
+  // Track journal progress: 5 entries = 100% for this tab
+  const { markCompleted } = useProgress(phaseId, "journal", 5);
 
   useEffect(() => {
     fetch(`/api/journal?phaseId=${phaseId}`)
@@ -59,6 +62,7 @@ export function JournalPageClient() {
       setEntries([data.entry, ...entries]);
       setTitle("");
       setContent("");
+      markCompleted(`entry-${data.entry.id}`);
     }
     setSaving(false);
   }
@@ -82,7 +86,7 @@ export function JournalPageClient() {
       </div>
 
       {/* Write Entry */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4 flex items-center gap-2">
           <PenLine size={18} />
           Write in Arabic
@@ -141,7 +145,7 @@ export function JournalPageClient() {
           {entries.map((entry) => (
             <div
               key={entry.id}
-              className="bg-white rounded-lg p-4 border border-[var(--sand)] shadow-sm"
+              className="bg-[var(--card-bg)] rounded-lg p-4 border border-[var(--sand)] shadow-sm"
             >
               <div className="flex justify-between items-start mb-2">
                 <div>

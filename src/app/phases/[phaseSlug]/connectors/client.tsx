@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { getVocabByPhase } from "@/content/vocab";
+import { useProgress } from "@/hooks/use-progress";
 
 export function ConnectorsPageClient() {
   const vocab = useMemo(() => getVocabByPhase(3), []);
@@ -10,6 +11,14 @@ export function ConnectorsPageClient() {
     () => vocab.filter((v) => v.category === "Connectors"),
     [vocab]
   );
+  const { markAllCompleted } = useProgress(3, "connectors", connectors.length);
+
+  // Mark all as viewed when tab is opened
+  useEffect(() => {
+    if (connectors.length > 0) {
+      markAllCompleted(connectors.map((c) => c.id));
+    }
+  }, [connectors, markAllCompleted]);
 
   return (
     <div className="space-y-6">
@@ -18,7 +27,7 @@ export function ConnectorsPageClient() {
         that make you sound natural.
       </p>
 
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
           Essential Connectors
         </h3>

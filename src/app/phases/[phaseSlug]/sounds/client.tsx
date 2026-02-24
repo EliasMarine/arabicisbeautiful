@@ -5,11 +5,14 @@ import { useParams } from "next/navigation";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
 import { phase1Sounds, msaVsLebaneseComparison, arabicAlphabet, letterForms } from "@/content/sounds/phase1";
+import { useProgress } from "@/hooks/use-progress";
 
 export function SoundsPageClient() {
   const params = useParams();
   const phaseSlug = params.phaseSlug as string;
   const [showForms, setShowForms] = useState(false);
+  const totalSoundItems = arabicAlphabet.length + phase1Sounds.length + msaVsLebaneseComparison.length;
+  const { markCompleted, completedCount } = useProgress(1, "sounds", totalSoundItems);
 
   if (phaseSlug !== "reactivation") {
     return (
@@ -27,7 +30,7 @@ export function SoundsPageClient() {
       </p>
 
       {/* Arabic Alphabet */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
           The Arabic Alphabet — 28 Letters
         </h3>
@@ -35,7 +38,7 @@ export function SoundsPageClient() {
           {arabicAlphabet.map((item) => (
             <div key={item.name} className="bg-[var(--sand)] rounded-lg p-4 text-center">
               <div className="flex items-start justify-end mb-1" onClick={(e) => e.stopPropagation()}>
-                <AudioButton size="sm" onDemandText={item.letter} />
+                <AudioButton size="sm" onDemandText={item.letter} onPlay={() => markCompleted(`alpha-${item.name}`)} />
               </div>
               <ArabicText size="xl" className="text-[var(--phase-color)] block mb-1">
                 {item.letter}
@@ -68,7 +71,7 @@ export function SoundsPageClient() {
       </div>
 
       {/* Letter Forms Table */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold">
             Letter Forms — Position Matters
@@ -125,7 +128,7 @@ export function SoundsPageClient() {
       </div>
 
       {/* Unique Lebanese Sounds */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
           The Sounds That Define the Dialect
         </h3>
@@ -137,7 +140,7 @@ export function SoundsPageClient() {
             <div key={sound.name} className="bg-[var(--sand)] rounded-lg p-4">
               <div className="flex items-start justify-between mb-1">
                 <ArabicText size="xl">{sound.letter}</ArabicText>
-                <AudioButton size="sm" onDemandText={sound.letter} />
+                <AudioButton size="sm" onDemandText={sound.letter} onPlay={() => markCompleted(`sound-${sound.name}`)} />
               </div>
               <div className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">{sound.name}</div>
               <div className="text-sm text-[var(--dark)] italic mt-1 leading-relaxed">
@@ -154,7 +157,7 @@ export function SoundsPageClient() {
       </div>
 
       {/* MSA vs Lebanese */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
           Lebanese vs. Modern Standard Arabic — Key Differences
         </h3>
@@ -177,13 +180,17 @@ export function SoundsPageClient() {
                   <td className="py-2 px-3 text-[var(--green)] italic">{row.lebanese}</td>
                   <td className="py-2 px-3">{row.meaning}</td>
                   <td className="py-2 px-3 text-right">
-                    <AudioButton size="sm" onDemandText={row.msa} />
+                    <AudioButton size="sm" onDemandText={row.msa} onPlay={() => markCompleted(`msa-${row.feature}`)} />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="text-center text-sm text-[var(--muted)]">
+        {completedCount}/{totalSoundItems} sounds practiced
       </div>
 
       <div className="bg-[#fdf8ee] border-l-4 border-[var(--gold)] rounded-r-lg p-5">

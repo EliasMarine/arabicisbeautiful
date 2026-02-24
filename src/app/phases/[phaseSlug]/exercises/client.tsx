@@ -9,6 +9,7 @@ import { SentenceBuilder } from "@/components/exercises/sentence-builder";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { getExercisesByPhase } from "@/content/exercises";
 import { getVocabByPhase } from "@/content/vocab";
+import { useProgress } from "@/hooks/use-progress";
 
 type ExerciseType = "quiz" | "fill-blank" | "matching" | "sentence-builder";
 
@@ -20,6 +21,8 @@ export function ExercisesPageClient() {
 
   const exerciseSets = useMemo(() => getExercisesByPhase(phaseId), [phaseId]);
   const vocab = useMemo(() => getVocabByPhase(phaseId), [phaseId]);
+  // Track 4 exercise types as completable items
+  const { markCompleted, completedCount } = useProgress(phaseId, "exercises", 4);
 
   // Extract quiz questions from exercise sets
   const quizQuestions = useMemo(() => {
@@ -79,7 +82,7 @@ export function ExercisesPageClient() {
                 ? "bg-[var(--phase-color)] text-white"
                 : ex.disabled
                 ? "bg-gray-100 text-gray-300 cursor-not-allowed"
-                : "bg-white border border-[var(--sand)] text-[var(--muted)] hover:text-[var(--dark)]"
+                : "bg-[var(--card-bg)] border border-[var(--sand)] text-[var(--muted)] hover:text-[var(--dark)]"
             }`}
           >
             <span className="mr-1">{ex.icon}</span> {ex.label}
@@ -92,7 +95,7 @@ export function ExercisesPageClient() {
         <QuizMultipleChoice
           questions={quizQuestions}
           onComplete={(score, total) => {
-            console.log(`Quiz: ${score}/${total}`);
+            markCompleted("quiz");
           }}
         />
       )}
@@ -101,7 +104,7 @@ export function ExercisesPageClient() {
         <FillInBlank
           questions={fillBlanks}
           onComplete={(score, total) => {
-            console.log(`Fill-blank: ${score}/${total}`);
+            markCompleted("fill-blank");
           }}
         />
       )}
@@ -110,7 +113,7 @@ export function ExercisesPageClient() {
         <MatchingExercise
           pairs={matchingPairs}
           onComplete={(score, total) => {
-            console.log(`Matching: ${score}/${total}`);
+            markCompleted("matching");
           }}
         />
       )}
@@ -129,6 +132,9 @@ export function ExercisesPageClient() {
           />
         </div>
       )}
+      <div className="text-center text-sm text-[var(--muted)]">
+        {completedCount}/4 exercise types completed
+      </div>
     </div>
   );
 }

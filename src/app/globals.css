@@ -17,6 +17,26 @@
   --p6: #0d5050;
 
   --phase-color: var(--p1);
+
+  --card-bg: #ffffff;
+  --card-border: var(--sand);
+  --input-bg: #ffffff;
+  --nav-text: #FAF6EE;
+}
+
+.dark {
+  --cream: #1C1208;
+  --sand: #2a2015;
+  --dark: #FAF6EE;
+  --muted: #a09585;
+  --gold: #C9973A;
+  --green: #4ade80;
+  --sidebar-bg: #0d0905;
+
+  --card-bg: #241c10;
+  --card-border: #3a2f20;
+  --input-bg: #2a2015;
+  --nav-text: #FAF6EE;
 }
 
 @theme inline {
@@ -27,6 +47,7 @@
   --color-gold: var(--gold);
   --color-green: var(--green);
   --color-sidebar: var(--sidebar-bg);
+  --color-card: var(--card-bg);
 
   --color-phase-1: var(--p1);
   --color-phase-2: var(--p2);
@@ -81,4 +102,30 @@ button, a {
 /* Phase color utility */
 [data-phase-color] {
   --phase-color: attr(data-phase-color);
+}
+
+/* Toast animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .flip-card-inner {
+    transition: none;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

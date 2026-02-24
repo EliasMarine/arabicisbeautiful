@@ -5,7 +5,9 @@ import Link from "next/link";
 import { PHASE_SLUGS, PHASE_TITLES, PHASE_COLORS } from "@/lib/constants";
 import { ProgressRing } from "@/components/progress/progress-ring";
 import { StreakCounter } from "@/components/progress/streak-counter";
-import { BookOpen, GraduationCap, Trophy, Target, Loader2 } from "lucide-react";
+import { BookOpen, GraduationCap, Trophy, Target } from "lucide-react";
+import { StatCardSkeleton, PhaseCardSkeleton } from "@/components/ui/skeleton";
+import { DailyGoal } from "@/components/dashboard/daily-goal";
 
 interface DashboardProps {
   userId: string;
@@ -17,6 +19,8 @@ interface DashboardStats {
   cardsDue: number;
   streak: number;
   phaseProgress: Record<string, number>;
+  minutesStudied: number;
+  studyGoalMinutes: number;
 }
 
 export function Dashboard({ userName }: DashboardProps) {
@@ -54,59 +58,61 @@ export function Dashboard({ userName }: DashboardProps) {
         </p>
       </div>
 
+      {/* Daily Goal */}
+      {!loading && stats && (
+        <DailyGoal
+          minutesStudied={stats.minutesStudied}
+          goalMinutes={stats.studyGoalMinutes}
+        />
+      )}
+
       {/* Quick Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm">
-          <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
-            <Target size={14} />
-            Streak
-          </div>
-          {loading ? (
-            <Loader2 size={20} className="animate-spin text-[var(--muted)]" />
-          ) : (
+      {loading ? (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <StatCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          <div className="bg-[var(--card-bg)] rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
+              <Target size={14} />
+              Streak
+            </div>
             <StreakCounter days={streak} />
-          )}
-        </div>
-        <div className="bg-white rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm">
-          <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
-            <Trophy size={14} />
-            Total XP
           </div>
-          {loading ? (
-            <Loader2 size={20} className="animate-spin text-[var(--muted)]" />
-          ) : (
+          <div className="bg-[var(--card-bg)] rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
+              <Trophy size={14} />
+              Total XP
+            </div>
             <p className="text-xl sm:text-2xl font-bold text-[var(--gold)]">{totalXP}</p>
-          )}
-        </div>
-        <div className="bg-white rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm">
-          <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
-            <GraduationCap size={14} />
-            Review
           </div>
-          {loading ? (
-            <Loader2 size={20} className="animate-spin text-[var(--muted)]" />
-          ) : (
-            <>
-              <p className="text-xl sm:text-2xl font-bold text-[var(--phase-color)]">
-                {cardsToReview}
-              </p>
-              <p className="text-xs text-[var(--muted)]">cards due</p>
-            </>
-          )}
-        </div>
-        <Link
-          href="/leaderboard"
-          className="bg-white rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm hover:shadow-md transition-shadow"
-        >
-          <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
-            <Trophy size={14} />
-            Leaderboard
+          <div className="bg-[var(--card-bg)] rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm">
+            <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
+              <GraduationCap size={14} />
+              Review
+            </div>
+            <p className="text-xl sm:text-2xl font-bold text-[var(--phase-color)]">
+              {cardsToReview}
+            </p>
+            <p className="text-xs text-[var(--muted)]">cards due</p>
           </div>
-          <p className="text-sm font-semibold text-[var(--phase-color)]">
-            View Rankings
-          </p>
-        </Link>
-      </div>
+          <Link
+            href="/leaderboard"
+            className="bg-[var(--card-bg)] rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
+              <Trophy size={14} />
+              Leaderboard
+            </div>
+            <p className="text-sm font-semibold text-[var(--phase-color)]">
+              View Rankings
+            </p>
+          </Link>
+        </div>
+      )}
 
       {/* Phase Grid */}
       <div>
@@ -115,7 +121,12 @@ export function Dashboard({ userName }: DashboardProps) {
           Your Phases
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {PHASE_SLUGS.map((slug, i) => {
+          {loading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <PhaseCardSkeleton key={i} />
+              ))
+            : null}
+          {!loading && PHASE_SLUGS.map((slug, i) => {
             const phase = PHASE_TITLES[slug];
             const color = PHASE_COLORS[slug];
             const progress = stats?.phaseProgress?.[slug] ?? 0;
@@ -124,7 +135,7 @@ export function Dashboard({ userName }: DashboardProps) {
               <Link
                 key={slug}
                 href={`/phases/${slug}`}
-                className="group bg-white rounded-xl overflow-hidden border border-[var(--sand)] shadow-sm hover:shadow-lg transition-all hover:-translate-y-1"
+                className="group bg-[var(--card-bg)] rounded-xl overflow-hidden border border-[var(--sand)] shadow-sm hover:shadow-lg transition-all hover:-translate-y-1"
               >
                 <div
                   className="h-2"

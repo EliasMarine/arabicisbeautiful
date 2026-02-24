@@ -6,6 +6,7 @@ import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { getDialoguesByPhase } from "@/content/dialogues";
+import { useProgress } from "@/hooks/use-progress";
 
 export function DialoguesPageClient() {
   const params = useParams();
@@ -13,6 +14,7 @@ export function DialoguesPageClient() {
   const phaseId = PHASE_SLUGS.indexOf(phaseSlug as (typeof PHASE_SLUGS)[number]) + 1;
 
   const dialogues = useMemo(() => getDialoguesByPhase(phaseId), [phaseId]);
+  const { markCompleted, completedCount } = useProgress(phaseId, "dialogues", dialogues.length);
 
   if (dialogues.length === 0) {
     return (
@@ -32,7 +34,7 @@ export function DialoguesPageClient() {
       {dialogues.map((dialogue) => (
         <div
           key={dialogue.id}
-          className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]"
+          className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]"
         >
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-2">
             {dialogue.title}
@@ -66,13 +68,17 @@ export function DialoguesPageClient() {
                   </div>
                 </div>
                 <div className="flex-shrink-0 mt-0.5">
-                  <AudioButton size="sm" onDemandText={line.arabic} />
+                  <AudioButton size="sm" onDemandText={line.arabic} onPlay={() => markCompleted(dialogue.id)} />
                 </div>
               </div>
             ))}
           </div>
         </div>
       ))}
+
+      <div className="text-center text-sm text-[var(--muted)]">
+        {completedCount}/{dialogues.length} dialogues practiced
+      </div>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { AudioButton } from "@/components/arabic/audio-button";
 import { getReadingByPhase } from "@/content/reading";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { ChevronDown, ChevronUp, BookOpen, CheckCircle2 } from "lucide-react";
+import { useProgress } from "@/hooks/use-progress";
 
 export function ReadingPageClient() {
   const params = useParams();
@@ -14,6 +15,7 @@ export function ReadingPageClient() {
   const phaseId = PHASE_SLUGS.indexOf(phaseSlug as typeof PHASE_SLUGS[number]) + 1 || 4;
 
   const passages = getReadingByPhase(phaseId);
+  const { markCompleted, completedCount } = useProgress(phaseId, "reading", Math.max(passages.length, 1));
   const [expandedPassage, setExpandedPassage] = useState<string | null>(null);
   const [showTransliteration, setShowTransliteration] = useState<Record<string, boolean>>({});
   const [showTranslation, setShowTranslation] = useState<Record<string, boolean>>({});
@@ -34,7 +36,7 @@ export function ReadingPageClient() {
           Start reading Lebanese Arabic content without subtitles. Build your reading muscle
           by immersing in real-world text.
         </p>
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+        <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
             Reading Practice Guide
           </h3>
@@ -77,7 +79,7 @@ export function ReadingPageClient() {
       {passages.map((passage) => (
         <div
           key={passage.id}
-          className="bg-white rounded-lg shadow-sm border border-[var(--sand)] overflow-hidden"
+          className="bg-[var(--card-bg)] rounded-lg shadow-sm border border-[var(--sand)] overflow-hidden"
         >
           {/* Header */}
           <button
@@ -115,7 +117,7 @@ export function ReadingPageClient() {
               {/* Arabic Text */}
               <div dir="rtl" className="bg-[#fdf8ee] border border-[var(--gold)] rounded-lg p-5 relative">
                 <div className="absolute top-3 left-3" dir="ltr">
-                  <AudioButton size="md" onDemandText={passage.arabic} />
+                  <AudioButton size="md" onDemandText={passage.arabic} onPlay={() => markCompleted(passage.id)} />
                 </div>
                 <ArabicText size="lg" className="text-[var(--dark)] leading-[2.2]">
                   {passage.arabic}

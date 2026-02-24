@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -12,16 +13,29 @@ interface PhaseTabNavProps {
 
 export function PhaseTabNav({ slug, tabs, color }: PhaseTabNavProps) {
   const pathname = usePathname();
+  const activeTabRef = useRef<HTMLAnchorElement>(null);
+
+  // Auto-scroll active tab into view
+  useEffect(() => {
+    if (activeTabRef.current) {
+      activeTabRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }, [pathname]);
 
   return (
     <nav className="max-w-[900px] mx-auto px-3 sm:px-6 mt-4">
-      <div className="flex overflow-x-auto scrollbar-none gap-1 bg-white rounded-lg p-1 border border-[var(--sand)]">
+      <div className="flex overflow-x-auto scrollbar-none gap-1 bg-[var(--card-bg)] rounded-lg p-1 border border-[var(--sand)]">
         {tabs.map((tab) => {
           const href = `/phases/${slug}/${tab.id}`;
           const isActive = pathname === href;
           return (
             <Link
               key={tab.id}
+              ref={isActive ? activeTabRef : undefined}
               href={href}
               className={cn(
                 "flex-shrink-0 px-3 sm:px-4 py-2 rounded-md text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide transition-all whitespace-nowrap",

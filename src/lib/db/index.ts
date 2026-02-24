@@ -22,5 +22,14 @@ if (process.env.NODE_ENV !== "production") {
   globalForDb.sqlite = sqlite;
 }
 
+// Run lightweight migrations for new columns (safe to re-run)
+// Note: These are static SQL strings with no user input — safe to use sqlite.exec()
+try {
+  sqlite.exec(`ALTER TABLE users ADD COLUMN study_goal_minutes INTEGER DEFAULT 10`);
+} catch { /* column already exists */ }
+try {
+  sqlite.exec(`ALTER TABLE users ADD COLUMN has_completed_onboarding INTEGER DEFAULT 0`);
+} catch { /* column already exists */ }
+
 export const db = drizzle(sqlite, { schema });
 export { sqlite };

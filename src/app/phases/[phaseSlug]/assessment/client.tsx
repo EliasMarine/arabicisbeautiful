@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useProgress } from "@/hooks/use-progress";
 
 const SKILLS = [
   { id: "listening", label: "Listening Comprehension", desc: "Can you follow a Lebanese conversation without subtitles?" },
@@ -15,9 +16,11 @@ const SKILLS = [
 
 export function AssessmentPageClient() {
   const [scores, setScores] = useState<Record<string, number>>({});
+  const { markCompleted, completedCount } = useProgress(6, "assessment", SKILLS.length);
 
   function setScore(skillId: string, value: number) {
     setScores((prev) => ({ ...prev, [skillId]: value }));
+    markCompleted(skillId);
   }
 
   const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
@@ -33,7 +36,7 @@ export function AssessmentPageClient() {
         This helps you identify areas to focus on.
       </p>
 
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
           Self-Assessment
         </h3>
@@ -57,7 +60,7 @@ export function AssessmentPageClient() {
                     className={`flex-1 h-8 rounded text-xs font-semibold transition-colors ${
                       (scores[skill.id] || 0) >= n
                         ? "bg-[var(--phase-color)] text-white"
-                        : "bg-white border border-[var(--sand)] text-[var(--muted)]"
+                        : "bg-[var(--card-bg)] border border-[var(--sand)] text-[var(--muted)]"
                     }`}
                   >
                     {n}

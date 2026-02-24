@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
 import { FlipCard } from "@/components/exercises/flip-card";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { getVocabByPhase } from "@/content/vocab";
+import { useProgress } from "@/hooks/use-progress";
 import type { VocabItem } from "@/content/types";
 
 type ViewMode = "table" | "cards";
@@ -18,6 +19,7 @@ export function VocabPageClient() {
   const phaseId = PHASE_SLUGS.indexOf(phaseSlug as (typeof PHASE_SLUGS)[number]) + 1;
 
   const vocabItems = useMemo(() => getVocabByPhase(phaseId), [phaseId]);
+  const { markCompleted, completedCount } = useProgress(phaseId, "vocab", vocabItems.length);
 
   // Group by category
   const groups = useMemo(() => {
@@ -57,7 +59,7 @@ export function VocabPageClient() {
             onClick={() => setViewMode("table")}
             className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${
               viewMode === "table"
-                ? "bg-white text-[var(--dark)] shadow-sm"
+                ? "bg-[var(--card-bg)] text-[var(--dark)] shadow-sm"
                 : "text-[var(--muted)]"
             }`}
           >
@@ -67,7 +69,7 @@ export function VocabPageClient() {
             onClick={() => setViewMode("cards")}
             className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${
               viewMode === "cards"
-                ? "bg-white text-[var(--dark)] shadow-sm"
+                ? "bg-[var(--card-bg)] text-[var(--dark)] shadow-sm"
                 : "text-[var(--muted)]"
             }`}
           >
@@ -79,7 +81,7 @@ export function VocabPageClient() {
       {groups.map((group) => (
         <div
           key={group.title}
-          className="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-[var(--sand)]"
+          className="bg-[var(--card-bg)] rounded-lg p-4 sm:p-6 shadow-sm border border-[var(--sand)]"
         >
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
             {group.title}
@@ -117,7 +119,7 @@ export function VocabPageClient() {
                           </td>
                         )}
                         <td className="py-2 px-3 text-right">
-                          <AudioButton size="sm" onDemandText={item.arabic} />
+                          <AudioButton size="sm" onDemandText={item.arabic} onPlay={() => markCompleted(item.id)} />
                         </td>
                       </tr>
                     ))}
@@ -146,7 +148,7 @@ export function VocabPageClient() {
                           </div>
                         )}
                       </div>
-                      <AudioButton size="sm" onDemandText={item.arabic} />
+                      <AudioButton size="sm" onDemandText={item.arabic} onPlay={() => markCompleted(item.id)} />
                     </div>
                   </div>
                 ))}
@@ -161,12 +163,17 @@ export function VocabPageClient() {
                   transliteration={item.transliteration}
                   english={item.english}
                   onDemandText={item.arabic}
+                  onFlip={() => markCompleted(item.id)}
                 />
               ))}
             </div>
           )}
         </div>
       ))}
+
+      <div className="text-center text-sm text-[var(--muted)]">
+        {completedCount}/{vocabItems.length} words studied
+      </div>
     </div>
   );
 }

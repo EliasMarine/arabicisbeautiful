@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="80" fill="#ffffff"/>
+  <!-- Lebanese Cedar Tree -->
+  <g transform="translate(256,270)">
+    <!-- Trunk -->
+    <rect x="-10" y="75" width="20" height="80" fill="#5D4037" rx="4"/>
+    <!-- Tree layers (bottom to top) -->
+    <polygon points="-130,75 130,75 0,-25" fill="#2E7D32"/>
+    <polygon points="-105,12 105,12 0,-80" fill="#388E3C"/>
+    <polygon points="-78,-40 78,-40 0,-128" fill="#43A047"/>
+    <polygon points="-52,-95 52,-95 0,-165" fill="#4CAF50"/>
+    <!-- Horizontal branches characteristic of cedar -->
+    <line x1="-120" y1="50" x2="120" y2="50" stroke="#2E7D32" stroke-width="7"/>
+    <line x1="-95" y1="-5" x2="95" y2="-5" stroke="#388E3C" stroke-width="6"/>
+    <line x1="-68" y1="-58" x2="68" y2="-58" stroke="#43A047" stroke-width="5"/>
+    <line x1="-42" y1="-108" x2="42" y2="-108" stroke="#4CAF50" stroke-width="4"/>
+  </g>
+</svg>

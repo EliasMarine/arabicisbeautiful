@@ -6,6 +6,7 @@ import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { getGrammarByPhase } from "@/content/grammar";
+import { useProgress } from "@/hooks/use-progress";
 
 export function GrammarPageClient() {
   const params = useParams();
@@ -13,6 +14,7 @@ export function GrammarPageClient() {
   const phaseId = PHASE_SLUGS.indexOf(phaseSlug as (typeof PHASE_SLUGS)[number]) + 1;
 
   const rules = useMemo(() => getGrammarByPhase(phaseId), [phaseId]);
+  const { markCompleted, completedCount } = useProgress(phaseId, "grammar", rules.length);
 
   if (rules.length === 0) {
     return (
@@ -33,7 +35,8 @@ export function GrammarPageClient() {
       {rules.map((rule) => (
         <div
           key={rule.id}
-          className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]"
+          className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]"
+          onClick={() => markCompleted(rule.id)}
         >
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-2 flex items-center gap-2">
             {rule.title}
@@ -111,6 +114,10 @@ export function GrammarPageClient() {
           )}
         </div>
       ))}
+
+      <div className="text-center text-sm text-[var(--muted)]">
+        {completedCount}/{rules.length} rules studied
+      </div>
     </div>
   );
 }

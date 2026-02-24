@@ -1,27 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { phase2Shadowing } from "@/content/shadowing/phase2";
 import { CheckCircle2 } from "lucide-react";
+import { useProgress } from "@/hooks/use-progress";
 
 export function ShadowingPageClient() {
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
+  const { markCompleted, isCompleted, completedIds, completedCount } = useProgress(2, "shadowing", phase2Shadowing.length);
 
   const sets = [
     { title: "Set 1 — Your Day", items: phase2Shadowing.filter((s) => s.id.includes("shadow-1")) },
     { title: "Set 2 — Talking About People", items: phase2Shadowing.filter((s) => s.id.includes("shadow-2")) },
     { title: "Set 3 — Feelings", items: phase2Shadowing.filter((s) => s.id.includes("shadow-3")) },
   ];
-
-  function toggleComplete(id: string) {
-    setCompleted((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
 
   return (
     <div className="space-y-6">
@@ -41,7 +32,7 @@ export function ShadowingPageClient() {
       </div>
 
       {sets.map((set) => (
-        <div key={set.title} className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+        <div key={set.title} className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
             {set.title}
           </h3>
@@ -50,7 +41,7 @@ export function ShadowingPageClient() {
               <div
                 key={item.id}
                 className={`rounded-lg p-4 border transition-colors ${
-                  completed.has(item.id)
+                  isCompleted(item.id)
                     ? "bg-green-50 border-green-200"
                     : "bg-[var(--sand)] border-transparent"
                 }`}
@@ -70,9 +61,9 @@ export function ShadowingPageClient() {
                     </div>
                   </div>
                   <button
-                    onClick={() => toggleComplete(item.id)}
+                    onClick={() => markCompleted(item.id)}
                     className={`ml-3 flex-shrink-0 p-1 rounded-full transition-colors ${
-                      completed.has(item.id)
+                      isCompleted(item.id)
                         ? "text-green-600"
                         : "text-[var(--sand)] hover:text-[var(--muted)]"
                     }`}
@@ -87,7 +78,7 @@ export function ShadowingPageClient() {
       ))}
 
       <div className="text-center text-sm text-[var(--muted)]">
-        {completed.size}/{phase2Shadowing.length} sentences completed
+        {completedCount}/{phase2Shadowing.length} sentences completed
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckCircle2 } from "lucide-react";
-import { useState } from "react";
+import { useProgress } from "@/hooks/use-progress";
 
 const DAILY_HABITS = [
   { id: "h1", title: "Morning Fairouz", desc: "Listen to one Fairouz song while getting ready. Let the lyrics wash over you." },
@@ -15,16 +15,7 @@ const DAILY_HABITS = [
 ];
 
 export function IntegratePageClient() {
-  const [completed, setCompleted] = useState<Set<string>>(new Set());
-
-  function toggle(id: string) {
-    setCompleted((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
+  const { markCompleted, isCompleted, completedCount } = useProgress(6, "integrate", DAILY_HABITS.length);
 
   return (
     <div className="space-y-6">
@@ -33,7 +24,7 @@ export function IntegratePageClient() {
         leaves again. Check off habits as you build them into your routine.
       </p>
 
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
           Daily Lebanese Integration Habits
         </h3>
@@ -41,9 +32,9 @@ export function IntegratePageClient() {
           {DAILY_HABITS.map((habit) => (
             <button
               key={habit.id}
-              onClick={() => toggle(habit.id)}
+              onClick={() => markCompleted(habit.id)}
               className={`w-full text-left rounded-lg p-4 border transition-colors flex gap-3 items-start ${
-                completed.has(habit.id)
+                isCompleted(habit.id)
                   ? "bg-green-50 border-green-200"
                   : "bg-[var(--sand)] border-transparent hover:border-[var(--phase-color)]/30"
               }`}
@@ -51,7 +42,7 @@ export function IntegratePageClient() {
               <CheckCircle2
                 size={20}
                 className={`flex-shrink-0 mt-0.5 ${
-                  completed.has(habit.id) ? "text-green-600" : "text-gray-300"
+                  isCompleted(habit.id) ? "text-green-600" : "text-gray-300"
                 }`}
               />
               <div>
@@ -62,7 +53,7 @@ export function IntegratePageClient() {
           ))}
         </div>
         <div className="mt-4 text-center text-sm text-[var(--muted)]">
-          {completed.size}/{DAILY_HABITS.length} habits checked today
+          {completedCount}/{DAILY_HABITS.length} habits checked today
         </div>
       </div>
     </div>

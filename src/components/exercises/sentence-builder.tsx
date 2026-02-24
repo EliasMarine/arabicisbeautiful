@@ -73,7 +73,7 @@ export function SentenceBuilder({
   const sentence = selected.map((i) => words[i]).join(" ");
 
   return (
-    <div className="bg-white rounded-lg p-4 sm:p-6 border border-[var(--sand)] shadow-sm">
+    <div className="bg-[var(--card-bg)] rounded-lg p-4 sm:p-6 border border-[var(--sand)] shadow-sm">
       <p className="text-sm text-[var(--muted)] mb-2">
         Build this sentence in Arabic:
       </p>

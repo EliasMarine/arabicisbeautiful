@@ -83,7 +83,7 @@ export function MatchingExercise({
   const allMatched = matched.size === pairs.length;
 
   return (
-    <div className="bg-white rounded-lg p-4 sm:p-6 border border-[var(--sand)] shadow-sm">
+    <div className="bg-[var(--card-bg)] rounded-lg p-4 sm:p-6 border border-[var(--sand)] shadow-sm">
       <div className="flex justify-between items-center mb-4">
         <span className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">
           Match the pairs

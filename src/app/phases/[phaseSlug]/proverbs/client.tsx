@@ -3,8 +3,10 @@
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
 import { phase6Proverbs } from "@/content/proverbs";
+import { useProgress } from "@/hooks/use-progress";
 
 export function ProverbsPageClient() {
+  const { markCompleted, completedCount } = useProgress(6, "proverbs", phase6Proverbs.length);
   return (
     <div className="space-y-6">
       <p className="text-[var(--muted)] text-sm leading-relaxed border-l-[3px] border-[var(--gold)] pl-4">
@@ -16,7 +18,7 @@ export function ProverbsPageClient() {
         {phase6Proverbs.map((p) => (
           <div
             key={p.id}
-            className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]"
+            className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]"
           >
             <div className="flex items-start justify-between gap-3 mb-3">
               <div dir="rtl" className="text-right flex-1">
@@ -24,7 +26,7 @@ export function ProverbsPageClient() {
                   {p.arabic}
                 </ArabicText>
               </div>
-              <AudioButton size="sm" onDemandText={p.arabic} className="flex-shrink-0 mt-1" />
+              <AudioButton size="sm" onDemandText={p.arabic} className="flex-shrink-0 mt-1" onPlay={() => markCompleted(p.id)} />
             </div>
             <div className="text-[var(--green)] italic text-sm">
               {p.transliteration}
@@ -39,6 +41,10 @@ export function ProverbsPageClient() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="text-center text-sm text-[var(--muted)]">
+        {completedCount}/{phase6Proverbs.length} proverbs studied
       </div>
     </div>
   );

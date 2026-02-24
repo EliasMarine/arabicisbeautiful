@@ -1,15 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { ArabicKeyboard } from "@/components/arabic/arabic-keyboard";
 import { phase5WritingPrompts } from "@/content/journal/phase3";
 import { PenLine } from "lucide-react";
+import { useProgress } from "@/hooks/use-progress";
 
 export function WritingPageClient() {
   const [activePrompt, setActivePrompt] = useState(0);
   const [text, setText] = useState("");
   const [showExample, setShowExample] = useState(false);
+  const { markCompleted } = useProgress(5, "writing", phase5WritingPrompts.length);
+
+  // Mark prompt as completed when user types 20+ characters
+  useEffect(() => {
+    if (text.length >= 20 && phase5WritingPrompts[activePrompt]) {
+      markCompleted(phase5WritingPrompts[activePrompt].id);
+    }
+  }, [text, activePrompt, markCompleted]);
 
   const prompt = phase5WritingPrompts[activePrompt];
 
@@ -29,7 +38,7 @@ export function WritingPageClient() {
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               activePrompt === i
                 ? "bg-[var(--phase-color)] text-white"
-                : "bg-white border border-[var(--sand)] text-[var(--muted)]"
+                : "bg-[var(--card-bg)] border border-[var(--sand)] text-[var(--muted)]"
             }`}
           >
             Prompt {i + 1}
@@ -38,7 +47,7 @@ export function WritingPageClient() {
       </div>
 
       {/* Current prompt */}
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <div className="bg-[var(--cream)] border border-[var(--sand)] rounded-lg p-4 mb-4">
           <div dir="rtl" className="text-right">
             <ArabicText size="lg" className="text-[var(--phase-color)]">

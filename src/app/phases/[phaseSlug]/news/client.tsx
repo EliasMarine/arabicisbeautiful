@@ -1,6 +1,14 @@
 "use client";
 
+import { useEffect } from "react";
+import { useProgress } from "@/hooks/use-progress";
+
 export function NewsPageClient() {
+  const { markAllCompleted } = useProgress(5, "news", 1);
+
+  useEffect(() => {
+    markAllCompleted(["news-guide"]);
+  }, [markAllCompleted]);
   return (
     <div className="space-y-6">
       <p className="text-[var(--muted)] text-sm leading-relaxed border-l-[3px] border-[var(--gold)] pl-4">
@@ -8,7 +16,7 @@ export function NewsPageClient() {
         Start with headlines and work your way to full articles.
       </p>
 
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]">
+      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
           Daily News Reading Practice
         </h3>
