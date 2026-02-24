@@ -110,10 +110,12 @@ export function AudioButton({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: onDemandText }),
         });
-        if (!res.ok) throw new Error("API error");
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
         const data = await res.json();
         audioSrc = data.url;
-      } catch {
+        console.log("[Audio] API returned URL:", audioSrc);
+      } catch (err) {
+        console.error("[Audio] API failed, using browser speech:", err);
         // Fallback to browser speech synthesis
         try {
           setIsPlaying(true);
@@ -142,7 +144,8 @@ export function AudioButton({
     audioRef.current = audio;
 
     audio.onended = () => setIsPlaying(false);
-    audio.onerror = () => {
+    audio.onerror = (e) => {
+      console.error("[Audio] File load error, falling back to browser speech:", audioSrc, e);
       setIsLoading(false);
       setIsPlaying(false);
       // Fallback to browser TTS if audio file fails
@@ -158,11 +161,13 @@ export function AudioButton({
     // play() returns a promise, handle loading state via that
     audio.play()
       .then(() => {
+        console.log("[Audio] ✓ Playing MP3 from:", audioSrc);
         setIsLoading(false);
         setIsPlaying(true);
         onPlay?.();
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("[Audio] play() failed, falling back to browser speech:", err);
         setIsLoading(false);
         // Fallback to browser TTS on play failure (e.g. iOS autoplay block)
         if (onDemandText) {
