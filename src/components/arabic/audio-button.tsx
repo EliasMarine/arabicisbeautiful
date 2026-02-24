@@ -12,24 +12,56 @@ interface AudioButtonProps {
   autoPlay?: boolean;
 }
 
+// Cache voices once loaded (iOS Safari loads them async)
+let cachedVoices: SpeechSynthesisVoice[] = [];
+
+function loadVoices(): SpeechSynthesisVoice[] {
+  if (cachedVoices.length > 0) return cachedVoices;
+  if (!window.speechSynthesis) return [];
+  cachedVoices = window.speechSynthesis.getVoices();
+  return cachedVoices;
+}
+
+// Pre-load voices when available (iOS fires this event async)
+if (typeof window !== "undefined" && window.speechSynthesis) {
+  window.speechSynthesis.onvoiceschanged = () => {
+    cachedVoices = window.speechSynthesis.getVoices();
+  };
+}
+
 function speakWithBrowser(text: string): Promise<void> {
   return new Promise((resolve, reject) => {
     if (!window.speechSynthesis) {
       reject(new Error("Speech synthesis not supported"));
       return;
     }
+
+    // iOS Safari fix: cancel any pending speech first
+    window.speechSynthesis.cancel();
+
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "ar";
     utterance.rate = 0.85;
 
     // Try to find an Arabic voice
-    const voices = window.speechSynthesis.getVoices();
+    const voices = loadVoices();
     const arabicVoice = voices.find((v) => v.lang.startsWith("ar"));
     if (arabicVoice) utterance.voice = arabicVoice;
 
     utterance.onend = () => resolve();
-    utterance.onerror = () => reject(new Error("Speech synthesis failed"));
-    window.speechSynthesis.speak(utterance);
+    utterance.onerror = (e) => {
+      // iOS sometimes fires "interrupted" error when cancelling — not a real error
+      if (e.error === "interrupted") {
+        resolve();
+      } else {
+        reject(new Error("Speech synthesis failed"));
+      }
+    };
+
+    // iOS Safari fix: needs a small delay after cancel
+    setTimeout(() => {
+      window.speechSynthesis.speak(utterance);
+    }, 50);
   });
 }
 
@@ -93,11 +125,6 @@ export function AudioButton({
     const audio = new Audio(audioSrc);
     audioRef.current = audio;
 
-    audio.oncanplay = () => {
-      setIsLoading(false);
-      audio.play();
-      setIsPlaying(true);
-    };
     audio.onended = () => setIsPlaying(false);
     audio.onerror = () => {
       setIsLoading(false);
@@ -110,6 +137,24 @@ export function AudioButton({
         setIsPlaying(true);
       }
     };
+
+    // Use play() directly — iOS requires it from user gesture context
+    // play() returns a promise, handle loading state via that
+    audio.play()
+      .then(() => {
+        setIsLoading(false);
+        setIsPlaying(true);
+      })
+      .catch(() => {
+        setIsLoading(false);
+        // Fallback to browser TTS on play failure (e.g. iOS autoplay block)
+        if (onDemandText) {
+          speakWithBrowser(onDemandText)
+            .then(() => setIsPlaying(false))
+            .catch(() => setIsPlaying(false));
+          setIsPlaying(true);
+        }
+      });
   }, [src, onDemandText]);
 
   // Auto-play when autoPlay prop is true

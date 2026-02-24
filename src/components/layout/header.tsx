@@ -17,24 +17,24 @@ export function Header({ userName }: { userName?: string | null }) {
   return (
     <>
       {/* Top Bar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--sidebar-bg)] text-[var(--cream)] h-14 flex items-center justify-between px-6 border-b border-[rgba(201,151,58,0.25)]">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--sidebar-bg)] text-[var(--cream)] h-14 flex items-center justify-between px-4 sm:px-6 border-b border-[rgba(201,151,58,0.25)]">
         <Link
           href="/"
-          className="font-[var(--font-playfair)] text-lg font-bold tracking-wide"
+          className="font-[var(--font-playfair)] text-base sm:text-lg font-bold tracking-wide truncate min-w-0"
         >
-          Lebanese Arabic <span className="text-[var(--gold)]">·</span> من
-          البداية للطلاقة
+          <span className="hidden sm:inline">Lebanese Arabic <span className="text-[var(--gold)]">·</span> من البداية للطلاقة</span>
+          <span className="sm:hidden">Lebanese Arabic</span>
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0 ml-2">
           <Link
             href="/review"
             className="flex items-center gap-1.5 text-sm text-[var(--cream)]/60 hover:text-[var(--cream)] transition-colors"
           >
             <GraduationCap size={16} />
-            Review
+            <span className="hidden sm:inline">Review</span>
           </Link>
           {userName && (
-            <span className="text-sm text-[var(--cream)]/50">{userName}</span>
+            <span className="text-sm text-[var(--cream)]/50 hidden sm:inline">{userName}</span>
           )}
           {userName && (
             <button
@@ -58,7 +58,7 @@ export function Header({ userName }: { userName?: string | null }) {
             <Link
               key={slug}
               href={`/phases/${slug}`}
-              className={`flex-shrink-0 flex items-center gap-2 px-6 h-[46px] text-xs font-semibold uppercase tracking-wide whitespace-nowrap border-b-[3px] transition-all ${
+              className={`flex-shrink-0 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-6 h-[46px] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide whitespace-nowrap border-b-[3px] transition-all ${
                 isActive
                   ? "text-[var(--cream)] border-current"
                   : "text-[var(--cream)]/40 border-transparent hover:text-[var(--cream)]/70"
@@ -73,7 +73,8 @@ export function Header({ userName }: { userName?: string | null }) {
               >
                 {i + 1}
               </span>
-              {phase.en}
+              <span className="hidden sm:inline">{phase.en}</span>
+              <span className="sm:hidden">{phase.en.split(" ")[0]}</span>
             </Link>
           );
         })}

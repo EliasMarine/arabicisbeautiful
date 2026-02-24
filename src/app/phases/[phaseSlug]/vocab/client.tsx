@@ -40,7 +40,7 @@ export function VocabPageClient() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-start sm:items-center justify-between gap-3">
         <p className="text-[var(--muted)] text-sm leading-relaxed border-l-[3px] border-[var(--gold)] pl-4">
           {phaseId === 1
             ? "Words your childhood brain already knows — they just need surfacing. Read each one out loud."
@@ -52,7 +52,7 @@ export function VocabPageClient() {
             ? "Domain vocabulary for real life: work, health, city, technology. Target 500 active words."
             : "Advanced vocabulary and expressions used by native speakers."}
         </p>
-        <div className="flex gap-1 bg-[var(--sand)] rounded-lg p-0.5 flex-shrink-0 ml-4">
+        <div className="flex gap-1 bg-[var(--sand)] rounded-lg p-0.5 flex-shrink-0">
           <button
             onClick={() => setViewMode("table")}
             className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${
@@ -71,7 +71,7 @@ export function VocabPageClient() {
                 : "text-[var(--muted)]"
             }`}
           >
-            Flash Cards
+            Cards
           </button>
         </div>
       </div>
@@ -79,49 +79,79 @@ export function VocabPageClient() {
       {groups.map((group) => (
         <div
           key={group.title}
-          className="bg-white rounded-lg p-6 shadow-sm border border-[var(--sand)]"
+          className="bg-white rounded-lg p-4 sm:p-6 shadow-sm border border-[var(--sand)]"
         >
           <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
             {group.title}
           </h3>
 
           {viewMode === "table" ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-[var(--sand)]">
-                    <th className="text-left py-2 px-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">Arabic</th>
-                    <th className="text-left py-2 px-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">Phonetic</th>
-                    <th className="text-left py-2 px-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">Meaning</th>
-                    {group.items.some((item) => item.notes) && (
-                      <th className="text-left py-2 px-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">Note</th>
-                    )}
-                    <th className="text-right py-2 px-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide w-16">Audio</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {group.items.map((item) => (
-                    <tr key={item.id} className="border-b border-[var(--sand)] last:border-0 hover:bg-[#fdf9f3]">
-                      <td className="py-2 px-3">
-                        <ArabicText size="md">{item.arabic}</ArabicText>
-                      </td>
-                      <td className="py-2 px-3 text-[var(--green)] italic text-sm">
-                        {item.transliteration}
-                      </td>
-                      <td className="py-2 px-3">{item.english}</td>
-                      {group.items.some((i) => i.notes) && (
-                        <td className="py-2 px-3 text-[var(--muted)] text-xs">
-                          {item.notes || ""}
-                        </td>
+            <>
+              {/* Desktop table */}
+              <div className="hidden sm:block overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-[var(--sand)]">
+                      <th className="text-left py-2 px-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">Arabic</th>
+                      <th className="text-left py-2 px-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">Phonetic</th>
+                      <th className="text-left py-2 px-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">Meaning</th>
+                      {group.items.some((item) => item.notes) && (
+                        <th className="text-left py-2 px-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">Note</th>
                       )}
-                      <td className="py-2 px-3 text-right">
-                        <AudioButton size="sm" onDemandText={item.arabic} />
-                      </td>
+                      <th className="text-right py-2 px-3 text-xs font-semibold text-[var(--muted)] uppercase tracking-wide w-16">Audio</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {group.items.map((item) => (
+                      <tr key={item.id} className="border-b border-[var(--sand)] last:border-0 hover:bg-[#fdf9f3]">
+                        <td className="py-2 px-3">
+                          <ArabicText size="md">{item.arabic}</ArabicText>
+                        </td>
+                        <td className="py-2 px-3 text-[var(--green)] italic text-sm">
+                          {item.transliteration}
+                        </td>
+                        <td className="py-2 px-3">{item.english}</td>
+                        {group.items.some((i) => i.notes) && (
+                          <td className="py-2 px-3 text-[var(--muted)] text-xs">
+                            {item.notes || ""}
+                          </td>
+                        )}
+                        <td className="py-2 px-3 text-right">
+                          <AudioButton size="sm" onDemandText={item.arabic} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile list */}
+              <div className="sm:hidden divide-y divide-[var(--sand)]">
+                {group.items.map((item) => (
+                  <div key={item.id} className="py-3 first:pt-0 last:pb-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <ArabicText size="md">{item.arabic}</ArabicText>
+                          <span className="text-[var(--green)] italic text-sm truncate">
+                            {item.transliteration}
+                          </span>
+                        </div>
+                        <div className="text-sm text-[var(--dark)] mt-0.5">
+                          {item.english}
+                        </div>
+                        {item.notes && (
+                          <div className="text-xs text-[var(--muted)] mt-0.5">
+                            {item.notes}
+                          </div>
+                        )}
+                      </div>
+                      <AudioButton size="sm" onDemandText={item.arabic} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {group.items.map((item) => (

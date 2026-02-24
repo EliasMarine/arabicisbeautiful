@@ -13,7 +13,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-[var(--cream)]">
       <Header userName={session.user.name} />
-      <main className="pt-[100px] max-w-5xl mx-auto px-6 pb-16">
+      <main className="pt-[100px] max-w-5xl mx-auto px-3 sm:px-6 pb-16">
         <Dashboard userId={session.user.id!} userName={session.user.name!} />
       </main>
     </div>

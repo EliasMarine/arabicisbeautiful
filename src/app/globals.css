@@ -40,6 +40,17 @@ body {
   background: var(--cream);
   color: var(--dark);
   font-family: "Source Sans 3", "Inter", system-ui, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Prevent iOS double-tap zoom on buttons */
+button, a {
+  touch-action: manipulation;
+}
+
+/* Smooth scrolling for tab navigations */
+.scrollbar-none {
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Arabic text defaults */

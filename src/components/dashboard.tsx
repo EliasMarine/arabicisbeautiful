@@ -40,24 +40,24 @@ export function Dashboard({ userName }: DashboardProps) {
   const cardsToReview = stats?.cardsDue ?? 0;
 
   return (
-    <div className="space-y-8 pt-6">
+    <div className="space-y-6 sm:space-y-8 pt-4 sm:pt-6">
       {/* Welcome */}
       <div>
-        <h1 className="font-[var(--font-playfair)] text-3xl font-bold text-[var(--dark)]">
+        <h1 className="font-[var(--font-playfair)] text-2xl sm:text-3xl font-bold text-[var(--dark)]">
           <span dir="rtl" className="font-[Noto_Naskh_Arabic,serif] text-[var(--gold)]">
             أهلا وسهلا
           </span>{" "}
           {userName}
         </h1>
-        <p className="text-[var(--muted)] mt-1">
+        <p className="text-[var(--muted)] mt-1 text-sm sm:text-base">
           Continue your Lebanese Arabic journey
         </p>
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl p-4 border border-[var(--sand)] shadow-sm">
-          <div className="flex items-center gap-2 text-[var(--muted)] text-xs font-semibold uppercase tracking-wide mb-2">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div className="bg-white rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
             <Target size={14} />
             Streak
           </div>
@@ -67,19 +67,19 @@ export function Dashboard({ userName }: DashboardProps) {
             <StreakCounter days={streak} />
           )}
         </div>
-        <div className="bg-white rounded-xl p-4 border border-[var(--sand)] shadow-sm">
-          <div className="flex items-center gap-2 text-[var(--muted)] text-xs font-semibold uppercase tracking-wide mb-2">
+        <div className="bg-white rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
             <Trophy size={14} />
             Total XP
           </div>
           {loading ? (
             <Loader2 size={20} className="animate-spin text-[var(--muted)]" />
           ) : (
-            <p className="text-2xl font-bold text-[var(--gold)]">{totalXP}</p>
+            <p className="text-xl sm:text-2xl font-bold text-[var(--gold)]">{totalXP}</p>
           )}
         </div>
-        <div className="bg-white rounded-xl p-4 border border-[var(--sand)] shadow-sm">
-          <div className="flex items-center gap-2 text-[var(--muted)] text-xs font-semibold uppercase tracking-wide mb-2">
+        <div className="bg-white rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
             <GraduationCap size={14} />
             Review
           </div>
@@ -87,7 +87,7 @@ export function Dashboard({ userName }: DashboardProps) {
             <Loader2 size={20} className="animate-spin text-[var(--muted)]" />
           ) : (
             <>
-              <p className="text-2xl font-bold text-[var(--phase-color)]">
+              <p className="text-xl sm:text-2xl font-bold text-[var(--phase-color)]">
                 {cardsToReview}
               </p>
               <p className="text-xs text-[var(--muted)]">cards due</p>
@@ -96,9 +96,9 @@ export function Dashboard({ userName }: DashboardProps) {
         </div>
         <Link
           href="/leaderboard"
-          className="bg-white rounded-xl p-4 border border-[var(--sand)] shadow-sm hover:shadow-md transition-shadow"
+          className="bg-white rounded-xl p-3 sm:p-4 border border-[var(--sand)] shadow-sm hover:shadow-md transition-shadow"
         >
-          <div className="flex items-center gap-2 text-[var(--muted)] text-xs font-semibold uppercase tracking-wide mb-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-[var(--muted)] text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wide mb-2">
             <Trophy size={14} />
             Leaderboard
           </div>

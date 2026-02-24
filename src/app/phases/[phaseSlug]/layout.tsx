@@ -35,27 +35,27 @@ export default async function PhaseLayout({
 
       {/* Phase Hero */}
       <div
-        className="mt-[100px] rounded-xl mx-auto max-w-[900px] px-6"
+        className="mt-[100px] rounded-xl mx-auto max-w-[900px] px-3 sm:px-6"
       >
         <div
-          className="rounded-xl p-8 text-white relative overflow-hidden"
+          className="rounded-xl p-5 sm:p-8 text-white relative overflow-hidden"
           style={{
             background: `linear-gradient(135deg, ${color}, ${color}88)`,
           }}
         >
-          <div className="absolute right-[-1rem] top-[-2rem] text-[10rem] opacity-[0.06] font-serif pointer-events-none leading-none">
+          <div className="absolute right-[-1rem] top-[-2rem] text-[6rem] sm:text-[10rem] opacity-[0.06] font-serif pointer-events-none leading-none">
             {titles.ar}
           </div>
           <div className="relative z-10">
-            <span className="inline-block bg-white/15 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-3 backdrop-blur-sm">
+            <span className="inline-block bg-white/15 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2 sm:mb-3 backdrop-blur-sm">
               Phase {phaseNum}
             </span>
-            <h2 className="font-[var(--font-playfair)] text-3xl font-black leading-tight">
+            <h2 className="font-[var(--font-playfair)] text-2xl sm:text-3xl font-black leading-tight">
               {titles.en}
             </h2>
             <p
               dir="rtl"
-              className="text-[var(--gold)] italic text-lg font-[Noto_Naskh_Arabic,serif] mt-1"
+              className="text-[var(--gold)] italic text-base sm:text-lg font-[Noto_Naskh_Arabic,serif] mt-1"
             >
               {titles.ar} — {titles.subtitle}
             </p>
@@ -67,7 +67,7 @@ export default async function PhaseLayout({
       <PhaseTabNav slug={slug} tabs={tabs} color={color} />
 
       {/* Content */}
-      <main className="max-w-[900px] mx-auto px-6 pb-16 pt-4">
+      <main className="max-w-[900px] mx-auto px-3 sm:px-6 pb-16 pt-4">
         {children}
       </main>
     </div>
