@@ -87,7 +87,7 @@ export function SentenceBuilder({
           showResult && !isCorrect && "bg-red-100 border-2 border-red-400"
         )}
       >
-        <div dir="rtl" className="flex-1 font-[Noto_Naskh_Arabic,serif] text-lg sm:text-xl text-[var(--p1)] leading-relaxed">
+        <div dir="rtl" className="flex-1 font-[Noto_Naskh_Arabic,serif] text-lg sm:text-xl text-arabic leading-relaxed">
           {sentence || (
             <span className="text-[var(--muted)] text-sm sm:text-base">
               Tap words below to build...

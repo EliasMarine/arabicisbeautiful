@@ -91,7 +91,7 @@ export function QuizMultipleChoice({
         <div className="flex items-center gap-2 mb-4">
           <p
             dir="rtl"
-            className="text-xl font-[Noto_Naskh_Arabic,serif] text-[var(--p1)]"
+            className="text-xl font-[Noto_Naskh_Arabic,serif] text-arabic"
           >
             {question.promptArabic}
           </p>

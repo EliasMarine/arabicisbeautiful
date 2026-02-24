@@ -75,7 +75,7 @@ export function ResourcesPageClient() {
           a new language — you reclaimed one that was always yours.
           Keep speaking, keep listening, keep living in Arabic.
         </p>
-        <p dir="rtl" className="text-2xl font-[Noto_Naskh_Arabic,serif] text-[var(--phase-color)] mt-3">
+        <p dir="rtl" className="text-2xl font-[Noto_Naskh_Arabic,serif] text-arabic mt-3">
           بتحكي زي اللبناني!
         </p>
       </div>

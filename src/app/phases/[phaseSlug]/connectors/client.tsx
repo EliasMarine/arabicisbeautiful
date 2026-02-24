@@ -35,7 +35,7 @@ export function ConnectorsPageClient() {
           {connectors.map((item) => (
             <div key={item.id} className="bg-[var(--sand)] rounded-lg p-4">
               <div className="flex items-center gap-3">
-                <ArabicText size="lg" className="text-[var(--phase-color)]">
+                <ArabicText size="lg" className="text-arabic">
                   {item.arabic}
                 </ArabicText>
                 <div>

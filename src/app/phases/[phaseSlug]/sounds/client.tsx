@@ -40,7 +40,7 @@ export function SoundsPageClient() {
               <div className="flex items-start justify-end mb-1" onClick={(e) => e.stopPropagation()}>
                 <AudioButton size="sm" onDemandText={item.letter} onPlay={() => markCompleted(`alpha-${item.name}`)} />
               </div>
-              <ArabicText size="xl" className="text-[var(--phase-color)] block mb-1">
+              <ArabicText size="xl" className="text-arabic block mb-1">
                 {item.letter}
               </ArabicText>
               <div className="text-xs font-bold text-[var(--dark)] uppercase tracking-wide">

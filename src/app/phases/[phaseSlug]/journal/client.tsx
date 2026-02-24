@@ -78,7 +78,7 @@ export function JournalPageClient() {
 
       {/* Prompt */}
       <div className="bg-[var(--cream)] border border-[var(--sand)] rounded-lg p-4">
-        <p dir="rtl" className="text-xl font-[Noto_Naskh_Arabic,serif] text-[var(--phase-color)] mb-1">
+        <p dir="rtl" className="text-xl font-[Noto_Naskh_Arabic,serif] text-arabic mb-1">
           {randomPrompt.arabic}
         </p>
         <p className="text-[var(--green)] italic text-sm">{randomPrompt.transliteration}</p>

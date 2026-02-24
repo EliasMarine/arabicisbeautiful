@@ -22,7 +22,7 @@ export function ProverbsPageClient() {
           >
             <div className="flex items-start justify-between gap-3 mb-3">
               <div dir="rtl" className="text-right flex-1">
-                <ArabicText size="xl" className="text-[var(--phase-color)] leading-relaxed">
+                <ArabicText size="xl" className="text-arabic leading-relaxed">
                   {p.arabic}
                 </ArabicText>
               </div>

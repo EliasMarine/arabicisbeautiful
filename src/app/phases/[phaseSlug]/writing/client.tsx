@@ -50,7 +50,7 @@ export function WritingPageClient() {
       <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
         <div className="bg-[var(--cream)] border border-[var(--sand)] rounded-lg p-4 mb-4">
           <div dir="rtl" className="text-right">
-            <ArabicText size="lg" className="text-[var(--phase-color)]">
+            <ArabicText size="lg" className="text-arabic">
               {prompt.arabic}
             </ArabicText>
           </div>

@@ -17,6 +17,7 @@
   --p6: #0d5050;
 
   --phase-color: var(--p1);
+  --arabic-text: #8B1A1A;
 
   --card-bg: #ffffff;
   --card-border: var(--sand);
@@ -37,6 +38,7 @@
   --card-border: #3a2f20;
   --input-bg: #2a2015;
   --nav-text: #FAF6EE;
+  --arabic-text: #F6C547;
 }
 
 @theme inline {
@@ -48,6 +50,7 @@
   --color-green: var(--green);
   --color-sidebar: var(--sidebar-bg);
   --color-card: var(--card-bg);
+  --color-arabic: var(--arabic-text);
 
   --color-phase-1: var(--p1);
   --color-phase-2: var(--p2);

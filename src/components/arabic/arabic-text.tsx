@@ -24,7 +24,7 @@ export function ArabicText({
     <Tag
       dir="rtl"
       className={cn(
-        "font-[Noto_Naskh_Arabic,Amiri,serif] leading-relaxed text-[var(--p1)]",
+        "font-[Noto_Naskh_Arabic,Amiri,serif] leading-relaxed text-arabic",
         sizeClasses[size],
         className
       )}

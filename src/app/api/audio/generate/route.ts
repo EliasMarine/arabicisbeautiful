@@ -27,7 +27,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Audio generation failed:", error);
     return NextResponse.json(
-      { error: "Failed to generate audio. Check your OPENAI_API_KEY." },
+      { error: "Failed to generate audio" },
       { status: 500 }
     );
   }

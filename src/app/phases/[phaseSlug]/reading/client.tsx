@@ -173,7 +173,7 @@ export function ReadingPageClient() {
                         <div className="absolute top-1 right-1">
                           <AudioButton size="sm" onDemandText={v.arabic} className="!w-5 !h-5" />
                         </div>
-                        <ArabicText size="sm" className="text-[var(--phase-color)] font-bold">
+                        <ArabicText size="sm" className="text-arabic font-bold">
                           {v.arabic}
                         </ArabicText>
                         <div className="text-xs text-[var(--green)] italic">
