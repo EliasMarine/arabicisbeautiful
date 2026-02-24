@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
@@ -25,6 +25,11 @@ export function FlipCard({
   className,
 }: FlipCardProps) {
   const [flipped, setFlipped] = useState(false);
+
+  // Reset to front side when card content changes (e.g. next SRS card)
+  useEffect(() => {
+    setFlipped(false);
+  }, [arabic]);
 
   return (
     <div
