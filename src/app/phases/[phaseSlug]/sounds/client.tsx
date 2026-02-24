@@ -33,8 +33,8 @@ export function SoundsPageClient() {
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {arabicAlphabet.map((item) => (
-            <div key={item.name} className="bg-[var(--sand)] rounded-lg p-4 text-center relative">
-              <div className="absolute top-3 right-3" onClick={(e) => e.stopPropagation()}>
+            <div key={item.name} className="bg-[var(--sand)] rounded-lg p-4 text-center">
+              <div className="flex items-start justify-end mb-1" onClick={(e) => e.stopPropagation()}>
                 <AudioButton size="sm" onDemandText={item.letter} />
               </div>
               <ArabicText size="xl" className="text-[var(--phase-color)] block mb-1">
@@ -134,11 +134,11 @@ export function SoundsPageClient() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {phase1Sounds.map((sound) => (
-            <div key={sound.name} className="bg-[var(--sand)] rounded-lg p-4 relative">
-              <div className="absolute top-3 right-3">
+            <div key={sound.name} className="bg-[var(--sand)] rounded-lg p-4">
+              <div className="flex items-start justify-between mb-1">
+                <ArabicText size="xl">{sound.letter}</ArabicText>
                 <AudioButton size="sm" onDemandText={sound.letter} />
               </div>
-              <ArabicText size="xl" className="block mb-1">{sound.letter}</ArabicText>
               <div className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">{sound.name}</div>
               <div className="text-sm text-[var(--dark)] italic mt-1 leading-relaxed">
                 {sound.description}{" "}
