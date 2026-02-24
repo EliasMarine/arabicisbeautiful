@@ -22,8 +22,10 @@ export async function POST(request: Request) {
   const outputPath = `cache/${hash}.mp3`;
 
   try {
-    const url = await generateAudio(text, outputPath);
-    return NextResponse.json({ url });
+    await generateAudio(text, outputPath);
+    // Serve through API route — Next.js production doesn't serve
+    // files added to /public after the build
+    return NextResponse.json({ url: `/api/audio/serve/${hash}` });
   } catch (error) {
     console.error("Audio generation failed:", error);
     return NextResponse.json(
