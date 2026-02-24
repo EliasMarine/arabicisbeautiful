@@ -103,6 +103,7 @@ export async function generateAudio(
 
   // Return cached audio if it exists
   if (fs.existsSync(fullPath)) {
+    console.log(`[TTS] Cache hit: ${outputPath}`);
     return `/audio/${outputPath}`;
   }
 
@@ -111,15 +112,18 @@ export async function generateAudio(
 
   // Try ElevenLabs first (primary)
   try {
+    console.log(`[TTS] Trying ElevenLabs for: "${text.slice(0, 30)}..."`);
     buffer = await generateWithElevenLabs(text, speakingRate);
+    console.log(`[TTS] ✓ ElevenLabs success`);
   } catch (elevenLabsError) {
     console.warn(
-      "ElevenLabs TTS failed, falling back to Google:",
+      "[TTS] ✗ ElevenLabs failed, falling back to Google:",
       elevenLabsError
     );
     // Fallback to Google Cloud TTS
     const voiceName = options?.voice || DEFAULT_GOOGLE_VOICE;
     buffer = await generateWithGoogle(text, speakingRate, voiceName);
+    console.log(`[TTS] ✓ Google fallback success`);
   }
 
   fs.mkdirSync(path.dirname(fullPath), { recursive: true });
