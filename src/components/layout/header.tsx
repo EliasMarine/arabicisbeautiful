@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { PHASE_SLUGS, PHASE_TITLES, PHASE_COLORS } from "@/lib/constants";
 import type { PhaseSlug } from "@/lib/constants";
 import { BookOpen, GraduationCap, LogOut } from "lucide-react";
@@ -36,15 +37,13 @@ export function Header({ userName }: { userName?: string | null }) {
             <span className="text-sm text-[var(--cream)]/50">{userName}</span>
           )}
           {userName && (
-            <form action="/api/auth/signout" method="POST">
-              <button
-                type="submit"
-                className="text-[var(--cream)]/40 hover:text-[var(--cream)] transition-colors"
-                title="Sign out"
-              >
-                <LogOut size={16} />
-              </button>
-            </form>
+            <button
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className="text-[var(--cream)]/40 hover:text-[var(--cream)] transition-colors"
+              title="Sign out"
+            >
+              <LogOut size={16} />
+            </button>
           )}
         </div>
       </header>
