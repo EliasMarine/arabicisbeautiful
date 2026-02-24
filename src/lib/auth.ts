@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 const BCRYPT_ROUNDS = 12;
 
@@ -18,7 +19,6 @@ function verifyPassword(password: string, hash: string): boolean {
     return bcrypt.compareSync(password, hash);
   }
   // Legacy SHA-256 fallback — auto-upgrade on next successful login
-  const crypto = require("crypto") as typeof import("crypto");
   const sha256 = crypto.createHash("sha256").update(password).digest("hex");
   return sha256 === hash;
 }
@@ -30,9 +30,17 @@ const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
 
 function checkRateLimit(key: string): boolean {
   const now = Date.now();
+
+  // Clean up stale entries inline
+  for (const [k, entry] of loginAttempts.entries()) {
+    if (now - entry.lastAttempt > WINDOW_MS) {
+      loginAttempts.delete(k);
+    }
+  }
+
   const entry = loginAttempts.get(key);
 
-  if (!entry || now - entry.lastAttempt > WINDOW_MS) {
+  if (!entry) {
     loginAttempts.set(key, { count: 1, lastAttempt: now });
     return true;
   }
@@ -45,16 +53,6 @@ function checkRateLimit(key: string): boolean {
   entry.lastAttempt = now;
   return true;
 }
-
-// Clean up stale entries periodically
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, entry] of loginAttempts.entries()) {
-    if (now - entry.lastAttempt > WINDOW_MS) {
-      loginAttempts.delete(key);
-    }
-  }
-}, 5 * 60 * 1000);
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: DrizzleAdapter(db),
