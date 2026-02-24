@@ -1,26 +1,73 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cream: #FAF6EE;
+  --sand: #E8DCC8;
+  --dark: #1C1208;
+  --muted: #7A6A52;
+  --gold: #C9973A;
+  --green: #2D6A4F;
+  --sidebar-bg: #16100a;
+
+  --p1: #8B1A1A;
+  --p2: #1a3a5c;
+  --p3: #4a1a6b;
+  --p4: #1b4332;
+  --p5: #7d3000;
+  --p6: #0d5050;
+
+  --phase-color: var(--p1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-cream: var(--cream);
+  --color-sand: var(--sand);
+  --color-dark: var(--dark);
+  --color-muted: var(--muted);
+  --color-gold: var(--gold);
+  --color-green: var(--green);
+  --color-sidebar: var(--sidebar-bg);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-phase-1: var(--p1);
+  --color-phase-2: var(--p2);
+  --color-phase-3: var(--p3);
+  --color-phase-4: var(--p4);
+  --color-phase-5: var(--p5);
+  --color-phase-6: var(--p6);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream);
+  color: var(--dark);
+  font-family: "Source Sans 3", "Inter", system-ui, sans-serif;
+}
+
+/* Arabic text defaults */
+.arabic {
+  direction: rtl;
+  font-family: "Noto Naskh Arabic", "Amiri", serif;
+  line-height: 1.8;
+}
+
+/* Flip card animation */
+.flip-card-inner {
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+
+.flip-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-card-face {
+  backface-visibility: hidden;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Phase color utility */
+[data-phase-color] {
+  --phase-color: attr(data-phase-color);
 }
