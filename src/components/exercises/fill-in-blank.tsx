@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
+import { AudioButton } from "@/components/arabic/audio-button";
 import { ArabicKeyboard } from "@/components/arabic/arabic-keyboard";
 import type { FillBlankQuestion } from "@/content/types";
 
@@ -110,7 +111,7 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
                 {showResult ? (
                   <span
                     className={
-                      isCorrect ? "text-green-600 font-bold" : "text-red-500"
+                      isCorrect ? "text-green-700 font-bold" : "text-red-700"
                     }
                   >
                     {isCorrect ? answer : question.answer}
@@ -159,9 +160,14 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
                   : "bg-red-50 text-red-700 border border-red-200"
               )}
             >
-              {isCorrect
-                ? "Correct!"
-                : `Wrong! The correct answer is: ${question.answer}`}
+              <div className="flex items-center gap-2">
+                <span>
+                  {isCorrect
+                    ? "Correct!"
+                    : `Wrong! The correct answer is: ${question.answer}`}
+                </span>
+                <AudioButton size="sm" onDemandText={question.sentence.replace("___", question.answer)} autoPlay={isCorrect} />
+              </div>
               {!isCorrect && question.hint && (
                 <p className="text-xs font-normal mt-1 opacity-80">
                   {question.hint}

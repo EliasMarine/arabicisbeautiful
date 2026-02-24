@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { AudioButton } from "@/components/arabic/audio-button";
 import type { QuizQuestion } from "@/content/types";
 
 interface QuizMultipleChoiceProps {
@@ -87,12 +88,15 @@ export function QuizMultipleChoice({
         {question.prompt}
       </p>
       {question.promptArabic && (
-        <p
-          dir="rtl"
-          className="text-xl font-[Noto_Naskh_Arabic,serif] text-[var(--p1)] mb-4"
-        >
-          {question.promptArabic}
-        </p>
+        <div className="flex items-center gap-2 mb-4">
+          <p
+            dir="rtl"
+            className="text-xl font-[Noto_Naskh_Arabic,serif] text-[var(--p1)]"
+          >
+            {question.promptArabic}
+          </p>
+          <AudioButton size="sm" onDemandText={question.promptArabic} autoPlay={showResult && selectedOption === question.correctIndex} />
+        </div>
       )}
 
       <div className="flex flex-col gap-2 mt-4">
@@ -142,7 +146,7 @@ export function QuizMultipleChoice({
               : `Wrong! The correct answer is: ${question.options[question.correctIndex]}`}
           </div>
           {question.explanation && (
-            <p className="text-sm text-[var(--muted)] italic">
+            <p className="text-base text-[var(--dark)]/80 leading-relaxed">
               {question.explanation}
             </p>
           )}

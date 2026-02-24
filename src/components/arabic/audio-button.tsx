@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Volume2, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -9,6 +9,7 @@ interface AudioButtonProps {
   size?: "sm" | "md";
   className?: string;
   onDemandText?: string;
+  autoPlay?: boolean;
 }
 
 function speakWithBrowser(text: string): Promise<void> {
@@ -37,6 +38,7 @@ export function AudioButton({
   size = "md",
   className,
   onDemandText,
+  autoPlay = false,
 }: AudioButtonProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -109,6 +111,15 @@ export function AudioButton({
       }
     };
   }, [src, onDemandText]);
+
+  // Auto-play when autoPlay prop is true
+  useEffect(() => {
+    if (autoPlay && (src || onDemandText)) {
+      // Small delay to ensure component is mounted
+      const timer = setTimeout(() => play(), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [autoPlay]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const sizeClasses = size === "sm" ? "w-7 h-7" : "w-9 h-9";
   const iconSize = size === "sm" ? 14 : 18;

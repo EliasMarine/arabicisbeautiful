@@ -38,11 +38,19 @@ export function ReviewSessionClient() {
       const card = cards[currentIndex];
       if (!card) return;
 
-      await fetch("/api/srs/review", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cardId: card.id, rating }),
-      });
+      try {
+        const res = await fetch("/api/srs/review", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cardId: card.id, rating }),
+        });
+
+        if (!res.ok) {
+          console.error("Review failed:", await res.text());
+        }
+      } catch (error) {
+        console.error("Review error:", error);
+      }
 
       setReviewed((r) => r + 1);
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { GraduationCap, Clock, Target } from "lucide-react";
+import { GraduationCap, Clock, Target, RefreshCw } from "lucide-react";
 import { ProgressRing } from "@/components/progress/progress-ring";
 
 interface ReviewStats {
@@ -18,16 +18,54 @@ export function ReviewDashboardClient() {
     reviewedToday: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [seeding, setSeeding] = useState(false);
+
+  async function loadStats() {
+    try {
+      const res = await fetch("/api/srs/stats");
+      const data = await res.json();
+      setStats(data);
+
+      // Auto-seed cards if the user has none yet
+      if (data.totalCards === 0) {
+        setSeeding(true);
+        await fetch("/api/srs/seed", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phaseId: 1 }),
+        });
+        // Re-fetch stats after seeding
+        const res2 = await fetch("/api/srs/stats");
+        const data2 = await res2.json();
+        setStats(data2);
+        setSeeding(false);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    fetch("/api/srs/stats")
-      .then((res) => res.json())
-      .then((data) => {
-        setStats(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+    loadStats();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  async function handleSeedPhase(phaseId: number) {
+    setSeeding(true);
+    try {
+      await fetch("/api/srs/seed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phaseId }),
+      });
+      await loadStats();
+    } catch {
+      // ignore
+    } finally {
+      setSeeding(false);
+    }
+  }
 
   return (
     <div className="space-y-8 pt-6">
@@ -40,6 +78,13 @@ export function ReviewDashboardClient() {
           Review your vocabulary with the SM-2 algorithm
         </p>
       </div>
+
+      {seeding && (
+        <div className="text-center py-4">
+          <RefreshCw className="inline animate-spin mr-2" size={16} />
+          <span className="text-[var(--muted)] text-sm">Setting up your flashcards...</span>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
@@ -86,17 +131,53 @@ export function ReviewDashboardClient() {
           >
             Start Review ({stats.dueNow} cards)
           </Link>
-        ) : (
+        ) : !loading ? (
           <div className="bg-green-50 rounded-xl p-6 border border-green-200">
             <p className="text-green-700 font-semibold">
-              All caught up! No cards to review right now.
+              {stats.totalCards === 0
+                ? "No flashcards yet. Add vocabulary from a phase below!"
+                : "All caught up! No cards to review right now."}
             </p>
-            <p className="text-green-600 text-sm mt-1">
-              New cards will become due as you progress through lessons.
+            <p className="text-green-700 text-sm mt-1">
+              {stats.totalCards === 0
+                ? "Select a phase to create flashcards from its vocabulary."
+                : "Cards will become due again based on your review schedule."}
             </p>
           </div>
-        )}
+        ) : null}
       </div>
+
+      {/* Add cards from phases */}
+      {!loading && (
+        <div className="bg-white rounded-xl p-6 border border-[var(--sand)]">
+          <h2 className="font-semibold text-[var(--dark)] mb-3">
+            Add Flashcards by Phase
+          </h2>
+          <p className="text-[var(--muted)] text-sm mb-4">
+            Create SRS flashcards from vocabulary in each learning phase.
+            Cards already added will be skipped.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {[
+              { id: 1, name: "Phase 1 — Reactivation" },
+              { id: 2, name: "Phase 2 — Foundation" },
+              { id: 3, name: "Phase 3 — Expansion" },
+              { id: 4, name: "Phase 4 — Real World" },
+              { id: 5, name: "Phase 5 — Fluency" },
+              { id: 6, name: "Phase 6 — Mastery" },
+            ].map((phase) => (
+              <button
+                key={phase.id}
+                onClick={() => handleSeedPhase(phase.id)}
+                disabled={seeding}
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-[var(--sand)] text-[var(--dark)] hover:bg-[#e0d5bf] disabled:opacity-50 transition-all"
+              >
+                {phase.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

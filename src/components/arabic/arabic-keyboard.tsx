@@ -65,7 +65,7 @@ export function ArabicKeyboard({ onInsert, onBackspace }: ArabicKeyboardProps) {
               <button
                 type="button"
                 onClick={onBackspace}
-                className="px-3 h-9 sm:h-10 bg-red-50 hover:bg-red-100 text-red-500 rounded-md text-xs font-semibold transition-colors"
+                className="px-3 h-9 sm:h-10 bg-red-50 hover:bg-red-100 text-red-700 rounded-md text-xs font-semibold transition-colors"
               >
                 ←
               </button>

@@ -1,7 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
+import { AudioButton } from "@/components/arabic/audio-button";
+
+function shuffleArray(arr: number[]): number[] {
+  const shuffled = [...arr];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
 interface SentenceBuilderProps {
   words: string[];
@@ -19,6 +29,22 @@ export function SentenceBuilder({
   const [selected, setSelected] = useState<number[]>([]);
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+
+  // Shuffle the display order of word chips so they're not in the correct order
+  const displayOrder = useMemo(() => {
+    const indices = words.map((_, i) => i);
+    // Keep shuffling until it's different from the correct order
+    let shuffled = shuffleArray(indices);
+    let attempts = 0;
+    while (
+      attempts < 10 &&
+      shuffled.every((val, idx) => val === correctOrder[idx])
+    ) {
+      shuffled = shuffleArray(indices);
+      attempts++;
+    }
+    return shuffled;
+  }, [words, correctOrder]);
 
   function handleWordClick(index: number) {
     if (showResult) return;
@@ -55,51 +81,62 @@ export function SentenceBuilder({
 
       {/* Output area */}
       <div
-        dir="rtl"
         className={cn(
-          "bg-[var(--sand)] rounded-lg p-4 min-h-[56px] mb-4 font-[Noto_Naskh_Arabic,serif] text-xl text-[var(--p1)] leading-relaxed",
+          "bg-[var(--sand)] rounded-lg p-4 min-h-[56px] mb-4 flex items-center gap-3",
           showResult && isCorrect && "bg-green-100 border-2 border-green-400",
           showResult && !isCorrect && "bg-red-100 border-2 border-red-400"
         )}
       >
-        {sentence || (
-          <span className="text-[var(--muted)] text-base">
-            Tap words below to build...
-          </span>
+        <div dir="rtl" className="flex-1 font-[Noto_Naskh_Arabic,serif] text-xl text-[var(--p1)] leading-relaxed">
+          {sentence || (
+            <span className="text-[var(--muted)] text-base">
+              Tap words below to build...
+            </span>
+          )}
+        </div>
+        {sentence && (
+          <div className="flex-shrink-0" dir="ltr">
+            <AudioButton size="sm" onDemandText={sentence} autoPlay={showResult && isCorrect} />
+          </div>
         )}
       </div>
 
-      {/* Word chips */}
+      {/* Word chips (shuffled) */}
       <div className="flex flex-wrap gap-2 mb-4" dir="rtl">
-        {words.map((word, i) => (
+        {displayOrder.map((originalIndex) => (
           <button
-            key={i}
-            onClick={() => handleWordClick(i)}
+            key={originalIndex}
+            onClick={() => handleWordClick(originalIndex)}
             disabled={showResult}
             className={cn(
               "px-4 py-1.5 rounded-full text-base font-[Noto_Naskh_Arabic,serif] transition-all",
-              selected.includes(i)
+              selected.includes(originalIndex)
                 ? "bg-[var(--phase-color)] text-white scale-95"
                 : "bg-[var(--sand)] text-[var(--dark)] hover:bg-[#e0d5bf] hover:-translate-y-0.5"
             )}
           >
-            {word}
+            {words[originalIndex]}
           </button>
         ))}
       </div>
 
       {showResult ? (
         <div className="flex justify-between items-center">
-          <span
-            className={cn(
-              "text-sm font-semibold",
-              isCorrect ? "text-green-600" : "text-red-500"
+          <div className="flex items-center gap-2">
+            <span
+              className={cn(
+                "text-sm font-semibold",
+                isCorrect ? "text-green-700" : "text-red-700"
+              )}
+            >
+              {isCorrect
+                ? "Correct!"
+                : `Answer: ${correctOrder.map((i) => words[i]).join(" ")}`}
+            </span>
+            {!isCorrect && (
+              <AudioButton size="sm" onDemandText={correctOrder.map((i) => words[i]).join(" ")} />
             )}
-          >
-            {isCorrect
-              ? "Correct!"
-              : `Answer: ${correctOrder.map((i) => words[i]).join(" ")}`}
-          </span>
+          </div>
           <button
             onClick={reset}
             className="bg-[var(--phase-color)] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:opacity-80"

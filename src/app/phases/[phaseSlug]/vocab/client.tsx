@@ -109,9 +109,9 @@ export function VocabPageClient() {
                         {item.transliteration}
                       </td>
                       <td className="py-2 px-3">{item.english}</td>
-                      {item.notes && (
+                      {group.items.some((i) => i.notes) && (
                         <td className="py-2 px-3 text-[var(--muted)] text-xs">
-                          {item.notes}
+                          {item.notes || ""}
                         </td>
                       )}
                       <td className="py-2 px-3 text-right">
