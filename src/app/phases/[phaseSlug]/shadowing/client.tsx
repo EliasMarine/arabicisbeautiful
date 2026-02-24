@@ -1,6 +1,7 @@
 "use client";
 
 import { ArabicText } from "@/components/arabic/arabic-text";
+import { AudioButton } from "@/components/arabic/audio-button";
 import { phase2Shadowing } from "@/content/shadowing/phase2";
 import { CheckCircle2 } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
@@ -48,10 +49,11 @@ export function ShadowingPageClient() {
               >
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <div dir="rtl" className="text-right">
-                      <ArabicText size="md" className="leading-relaxed">
+                    <div dir="rtl" className="text-right flex items-start gap-2">
+                      <ArabicText size="md" className="leading-relaxed flex-1">
                         {item.arabic}
                       </ArabicText>
+                      <AudioButton size="sm" onDemandText={item.arabic} onPlay={() => markCompleted(item.id)} />
                     </div>
                     <div className="text-[var(--green)] italic text-sm mt-1">
                       {item.transliteration}

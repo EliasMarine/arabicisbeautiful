@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import { ArabicText } from "@/components/arabic/arabic-text";
+import { AudioButton } from "@/components/arabic/audio-button";
 import { getVocabByPhase } from "@/content/vocab";
 import { useProgress } from "@/hooks/use-progress";
 
@@ -11,14 +12,7 @@ export function ConnectorsPageClient() {
     () => vocab.filter((v) => v.category === "Connectors"),
     [vocab]
   );
-  const { markAllCompleted } = useProgress(3, "connectors", connectors.length);
-
-  // Mark all as viewed when tab is opened
-  useEffect(() => {
-    if (connectors.length > 0) {
-      markAllCompleted(connectors.map((c) => c.id));
-    }
-  }, [connectors, markAllCompleted]);
+  const { markCompleted, completedCount } = useProgress(3, "connectors", connectors.length);
 
   return (
     <div className="space-y-6">
@@ -38,7 +32,8 @@ export function ConnectorsPageClient() {
                 <ArabicText size="lg" className="text-arabic">
                   {item.arabic}
                 </ArabicText>
-                <div>
+                <AudioButton size="sm" onDemandText={item.arabic} onPlay={() => markCompleted(item.id)} />
+                <div className="flex-1">
                   <div className="text-[var(--green)] italic text-sm">
                     {item.transliteration}
                   </div>
@@ -55,6 +50,10 @@ export function ConnectorsPageClient() {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="text-center text-sm text-[var(--muted)]">
+        {completedCount}/{connectors.length} connectors practiced
       </div>
 
       <div className="bg-[#fdf8ee] border-l-4 border-[var(--gold)] rounded-r-lg p-5">

@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import { ArabicText } from "@/components/arabic/arabic-text";
+import { AudioButton } from "@/components/arabic/audio-button";
 import { getVocabByPhase } from "@/content/vocab";
 import { useProgress } from "@/hooks/use-progress";
 
@@ -23,13 +24,7 @@ export function TopicsPageClient() {
   }, [vocab]);
 
   const topicVocab = useMemo(() => vocab.filter((v) => v.category?.startsWith("Topic Vocab:")), [vocab]);
-  const { markAllCompleted } = useProgress(3, "topics", topicVocab.length);
-
-  useEffect(() => {
-    if (topicVocab.length > 0) {
-      markAllCompleted(topicVocab.map((v) => v.id));
-    }
-  }, [topicVocab, markAllCompleted]);
+  const { markCompleted, completedCount } = useProgress(3, "topics", topicVocab.length);
 
   return (
     <div className="space-y-6">
@@ -46,8 +41,9 @@ export function TopicsPageClient() {
           <div className="space-y-3">
             {items.map((item) => (
               <div key={item.id} className="bg-[var(--sand)] rounded-lg p-3">
-                <div dir="rtl" className="text-right">
-                  <ArabicText size="md">{item.arabic}</ArabicText>
+                <div dir="rtl" className="text-right flex items-start gap-2">
+                  <ArabicText size="md" className="flex-1">{item.arabic}</ArabicText>
+                  <AudioButton size="sm" onDemandText={item.arabic} onPlay={() => markCompleted(item.id)} />
                 </div>
                 <div className="text-[var(--green)] italic text-sm mt-0.5">
                   {item.transliteration}
@@ -60,6 +56,10 @@ export function TopicsPageClient() {
           </div>
         </div>
       ))}
+
+      <div className="text-center text-sm text-[var(--muted)]">
+        {completedCount}/{topicVocab.length} topic words practiced
+      </div>
     </div>
   );
 }

@@ -57,6 +57,9 @@ export default function RootLayout({
         className={`${sourceSans.variable} ${playfair.variable} font-[var(--font-source-sans)] antialiased`}
       >
         <Providers>{children}</Providers>
+        <span className="fixed bottom-2 right-2 text-[0.6rem] text-[var(--muted)]/40 pointer-events-none select-none">
+          v1.3.0
+        </span>
       </body>
     </html>
   );

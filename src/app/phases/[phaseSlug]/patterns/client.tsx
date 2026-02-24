@@ -1,18 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
 import { ArabicText } from "@/components/arabic/arabic-text";
+import { AudioButton } from "@/components/arabic/audio-button";
 import { phase2PhrasePatterns } from "@/content/grammar";
 import { useProgress } from "@/hooks/use-progress";
 
 export function PatternsPageClient() {
-  const { markAllCompleted } = useProgress(2, "patterns", phase2PhrasePatterns.length);
-
-  useEffect(() => {
-    if (phase2PhrasePatterns.length > 0) {
-      markAllCompleted(phase2PhrasePatterns.map((p) => p.id));
-    }
-  }, [markAllCompleted]);
+  const totalExamples = phase2PhrasePatterns.reduce((sum, g) => sum + g.examples.length, 0);
+  const { markCompleted, completedCount } = useProgress(2, "patterns", totalExamples);
 
   if (phase2PhrasePatterns.length === 0) {
     return (
@@ -45,8 +40,9 @@ export function PatternsPageClient() {
           <div className="space-y-3">
             {group.examples.map((ex, i) => (
               <div key={i} className="bg-[var(--sand)] rounded-lg p-3">
-                <div dir="rtl" className="text-right">
-                  <ArabicText size="md">{ex.arabic}</ArabicText>
+                <div dir="rtl" className="text-right flex items-start gap-2">
+                  <ArabicText size="md" className="flex-1">{ex.arabic}</ArabicText>
+                  <AudioButton size="sm" onDemandText={ex.arabic} onPlay={() => markCompleted(`${group.id}-ex-${i}`)} />
                 </div>
                 <div className="text-[var(--green)] italic text-sm mt-0.5">
                   {ex.transliteration}
@@ -59,6 +55,10 @@ export function PatternsPageClient() {
           </div>
         </div>
       ))}
+
+      <div className="text-center text-sm text-[var(--muted)]">
+        {completedCount}/{totalExamples} examples practiced
+      </div>
     </div>
   );
 }
