@@ -1,21 +1,43 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { PHASE_SLUGS, PHASE_TITLES, PHASE_COLORS } from "@/lib/constants";
 import { ProgressRing } from "@/components/progress/progress-ring";
 import { StreakCounter } from "@/components/progress/streak-counter";
-import { BookOpen, GraduationCap, Trophy, Target } from "lucide-react";
+import { BookOpen, GraduationCap, Trophy, Target, Loader2 } from "lucide-react";
 
 interface DashboardProps {
   userId: string;
   userName: string;
 }
 
+interface DashboardStats {
+  totalXP: number;
+  cardsDue: number;
+  streak: number;
+  phaseProgress: Record<string, number>;
+}
+
 export function Dashboard({ userName }: DashboardProps) {
-  // TODO: fetch real data from API
-  const streak = 0;
-  const totalXP = 0;
-  const cardsToReview = 0;
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/dashboard")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.error) {
+          setStats(data);
+        }
+      })
+      .catch((err) => console.error("Dashboard fetch error:", err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const streak = stats?.streak ?? 0;
+  const totalXP = stats?.totalXP ?? 0;
+  const cardsToReview = stats?.cardsDue ?? 0;
 
   return (
     <div className="space-y-8 pt-6">
@@ -39,24 +61,38 @@ export function Dashboard({ userName }: DashboardProps) {
             <Target size={14} />
             Streak
           </div>
-          <StreakCounter days={streak} />
+          {loading ? (
+            <Loader2 size={20} className="animate-spin text-[var(--muted)]" />
+          ) : (
+            <StreakCounter days={streak} />
+          )}
         </div>
         <div className="bg-white rounded-xl p-4 border border-[var(--sand)] shadow-sm">
           <div className="flex items-center gap-2 text-[var(--muted)] text-xs font-semibold uppercase tracking-wide mb-2">
             <Trophy size={14} />
             Total XP
           </div>
-          <p className="text-2xl font-bold text-[var(--gold)]">{totalXP}</p>
+          {loading ? (
+            <Loader2 size={20} className="animate-spin text-[var(--muted)]" />
+          ) : (
+            <p className="text-2xl font-bold text-[var(--gold)]">{totalXP}</p>
+          )}
         </div>
         <div className="bg-white rounded-xl p-4 border border-[var(--sand)] shadow-sm">
           <div className="flex items-center gap-2 text-[var(--muted)] text-xs font-semibold uppercase tracking-wide mb-2">
             <GraduationCap size={14} />
             Review
           </div>
-          <p className="text-2xl font-bold text-[var(--phase-color)]">
-            {cardsToReview}
-          </p>
-          <p className="text-xs text-[var(--muted)]">cards due</p>
+          {loading ? (
+            <Loader2 size={20} className="animate-spin text-[var(--muted)]" />
+          ) : (
+            <>
+              <p className="text-2xl font-bold text-[var(--phase-color)]">
+                {cardsToReview}
+              </p>
+              <p className="text-xs text-[var(--muted)]">cards due</p>
+            </>
+          )}
         </div>
         <Link
           href="/leaderboard"
@@ -82,7 +118,7 @@ export function Dashboard({ userName }: DashboardProps) {
           {PHASE_SLUGS.map((slug, i) => {
             const phase = PHASE_TITLES[slug];
             const color = PHASE_COLORS[slug];
-            const progress = 0; // TODO: fetch real progress
+            const progress = stats?.phaseProgress?.[slug] ?? 0;
 
             return (
               <Link
