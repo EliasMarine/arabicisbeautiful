@@ -4,7 +4,9 @@ import { aiConversations } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+function getOpenAI() {
+  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+}
 
 /**
  * Phase-specific system prompts that control vocabulary complexity,
@@ -121,7 +123,7 @@ export async function POST(request: Request) {
     ];
 
     // Stream the response
-    const stream = await openai.chat.completions.create({
+    const stream = await getOpenAI().chat.completions.create({
       model: "gpt-4o-mini",
       messages: apiMessages,
       stream: true,
