@@ -16,7 +16,7 @@ import {
   Lightbulb,
   Award,
 } from "lucide-react";
-import type { ScenarioLesson, ScenarioBranch } from "@/content/types";
+import type { ScenarioLesson, ScenarioBranch, ScenarioChoice } from "@/content/types";
 
 function ScenarioPlayer({
   scenario,
@@ -27,6 +27,7 @@ function ScenarioPlayer({
 }) {
   const [currentBranchIndex, setCurrentBranchIndex] = useState(0);
   const [revealedBranches, setRevealedBranches] = useState<number[]>([0]);
+  const [userChoices, setUserChoices] = useState<Record<number, ScenarioChoice>>({});
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
   const [showVocab, setShowVocab] = useState(false);
@@ -48,7 +49,10 @@ function ScenarioPlayer({
   }, [currentBranchIndex, isLastBranch, hasChoices, scenario.branches.length]);
 
   const handleChoice = useCallback(
-    (nextBranchId: string) => {
+    (nextBranchId: string, choice: ScenarioChoice) => {
+      // Save the user's chosen response so we can display it in conversation
+      setUserChoices((prev) => ({ ...prev, [currentBranchIndex]: choice }));
+
       const idx = scenario.branches.findIndex((b) => b.id === nextBranchId);
       if (idx !== -1) {
         setCurrentBranchIndex(idx);
@@ -58,12 +62,13 @@ function ScenarioPlayer({
         handleNext();
       }
     },
-    [scenario.branches, handleNext]
+    [scenario.branches, handleNext, currentBranchIndex]
   );
 
   const handleRestart = useCallback(() => {
     setCurrentBranchIndex(0);
     setRevealedBranches([0]);
+    setUserChoices({});
     setShowQuiz(false);
     setQuizAnswers({});
     setShowVocab(false);
@@ -205,6 +210,8 @@ function ScenarioPlayer({
           if (!branch) return null;
           const isNarrator = branch.speakerRole === "narrator";
           const isA = branch.speakerRole === "a";
+          const hasContent = branch.arabic && branch.arabic.trim().length > 0;
+          const chosenResponse = userChoices[branchIdx];
 
           return (
             <div key={branch.id}>
@@ -212,7 +219,8 @@ function ScenarioPlayer({
                 <div className="text-center text-xs text-[var(--muted)] italic py-2 border-y border-[var(--sand)]">
                   {branch.english}
                 </div>
-              ) : (
+              ) : hasContent ? (
+                /* Normal dialogue bubble with Arabic content */
                 <div
                   className={`flex ${isA ? "justify-start" : "justify-end"}`}
                 >
@@ -250,6 +258,40 @@ function ScenarioPlayer({
                     )}
                   </div>
                 </div>
+              ) : chosenResponse ? (
+                /* Choice prompt branch — show the user's chosen response */
+                <div className="flex justify-start">
+                  <div className="max-w-[85%] rounded-xl p-3 bg-[var(--sand)] rounded-tl-sm">
+                    <div className="text-[10px] font-bold text-[var(--muted)] mb-1 uppercase tracking-wide">
+                      {branch.speaker}
+                    </div>
+                    <div dir="rtl" className="text-right flex items-start gap-2">
+                      <ArabicText size="sm" className="leading-relaxed flex-1">
+                        {chosenResponse.textArabic}
+                      </ArabicText>
+                      <AudioButton
+                        size="sm"
+                        onDemandText={chosenResponse.textArabic}
+                        className="flex-shrink-0"
+                      />
+                    </div>
+                    <div className="text-[var(--green)] italic text-xs mt-1">
+                      {chosenResponse.textTransliteration}
+                    </div>
+                    <div className="text-[var(--dark)] text-xs mt-0.5">
+                      {chosenResponse.text}
+                    </div>
+                    {chosenResponse.culturalNote && (
+                      <div className="mt-2 flex items-start gap-1.5 text-[10px] text-amber-700 bg-amber-50 rounded p-2">
+                        <Lightbulb size={12} className="flex-shrink-0 mt-0.5" />
+                        {chosenResponse.culturalNote}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                /* Choice prompt branch but no choice made yet — show nothing (choices shown below) */
+                null
               )}
             </div>
           );
@@ -267,7 +309,7 @@ function ScenarioPlayer({
               {currentBranch.choices!.map((choice, ci) => (
                 <button
                   key={ci}
-                  onClick={() => handleChoice(choice.nextBranchId)}
+                  onClick={() => handleChoice(choice.nextBranchId, choice)}
                   className="w-full text-left bg-[var(--card-bg)] border-2 border-[var(--gold)]/30 hover:border-[var(--gold)] rounded-lg p-3 transition-colors group"
                 >
                   <div className="flex items-center gap-2">

@@ -86,7 +86,7 @@ export function ReadingPageClient() {
             onClick={() =>
               setExpandedPassage(expandedPassage === passage.id ? null : passage.id)
             }
-            className="w-full flex items-center justify-between p-5 hover:bg-[#fdf9f3] transition-colors"
+            className="w-full flex items-center justify-between p-5 hover:bg-[var(--sand)]/40 transition-colors"
           >
             <div className="flex items-center gap-3">
               <BookOpen size={20} className="text-[var(--phase-color)]" />
@@ -115,7 +115,7 @@ export function ReadingPageClient() {
           {expandedPassage === passage.id && (
             <div className="px-5 pb-5 space-y-4">
               {/* Arabic Text */}
-              <div dir="rtl" className="bg-[#fdf8ee] border border-[var(--gold)] rounded-lg p-5 relative">
+              <div dir="rtl" className="bg-[var(--sand)] border border-[var(--gold)]/40 rounded-lg p-5 relative">
                 <div className="absolute top-3 left-3" dir="ltr">
                   <AudioButton size="md" onDemandText={passage.arabic} onPlay={() => markCompleted(passage.id)} />
                 </div>
@@ -134,7 +134,7 @@ export function ReadingPageClient() {
                   : "Show Transliteration"}
               </button>
               {showTransliteration[passage.id] && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="bg-[var(--sand)] border border-[var(--green)]/20 rounded-lg p-4">
                   <p className="text-sm text-[var(--dark)] leading-relaxed italic">
                     {passage.transliteration}
                   </p>
@@ -151,7 +151,7 @@ export function ReadingPageClient() {
                   : "Show English Translation"}
               </button>
               {showTranslation[passage.id] && (
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="bg-[var(--sand)] border border-[var(--phase-color)]/20 rounded-lg p-4">
                   <p className="text-sm text-[var(--dark)] leading-relaxed">
                     {passage.english}
                   </p>
@@ -168,18 +168,18 @@ export function ReadingPageClient() {
                     {passage.vocabHighlights.map((v, i) => (
                       <div
                         key={i}
-                        className="bg-[var(--sand)] rounded-lg px-3 py-2 text-center relative"
+                        className="bg-[var(--sand)] rounded-lg px-3 py-3 flex items-center gap-2"
                       >
-                        <div className="absolute top-1 right-1">
-                          <AudioButton size="sm" onDemandText={v.arabic} className="!w-5 !h-5" />
+                        <div className="flex-1 text-center min-w-0">
+                          <ArabicText size="sm" className="text-arabic font-bold">
+                            {v.arabic}
+                          </ArabicText>
+                          <div className="text-xs text-[var(--green)] italic truncate">
+                            {v.transliteration}
+                          </div>
+                          <div className="text-xs text-[var(--dark)] truncate">{v.english}</div>
                         </div>
-                        <ArabicText size="sm" className="text-arabic font-bold">
-                          {v.arabic}
-                        </ArabicText>
-                        <div className="text-xs text-[var(--green)] italic">
-                          {v.transliteration}
-                        </div>
-                        <div className="text-xs text-[var(--dark)]">{v.english}</div>
+                        <AudioButton size="sm" onDemandText={v.arabic} />
                       </div>
                     ))}
                   </div>
@@ -223,9 +223,9 @@ export function ReadingPageClient() {
                               <div className="mt-2 flex items-start gap-2">
                                 <CheckCircle2
                                   size={14}
-                                  className="text-green-600 mt-0.5 flex-shrink-0"
+                                  className="text-[var(--green)] mt-0.5 flex-shrink-0"
                                 />
-                                <p className="text-sm text-green-700">
+                                <p className="text-sm text-[var(--green)]">
                                   {q.answer}
                                 </p>
                               </div>
