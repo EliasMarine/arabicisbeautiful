@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, BookOpen, Brain, PenLine } from "lucide-react";
+import { Home, BookOpen, Brain, TreePine } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PHASE_SLUGS } from "@/lib/constants";
 
@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { href: "/", icon: Home, label: "Home" },
   { href: "/phases", icon: BookOpen, label: "Phase", isDynamic: true },
   { href: "/review", icon: Brain, label: "Review" },
-  { href: "/journal", icon: PenLine, label: "Journal", isDynamic: true },
+  { href: "/roots", icon: TreePine, label: "Roots" },
 ];
 
 export function BottomNav() {
@@ -40,9 +40,9 @@ export function BottomNav() {
           if (item.label === "Phase") {
             href = `/phases/${currentPhaseSlug}`;
             isActive = pathname.startsWith("/phases/");
-          } else if (item.label === "Journal") {
-            href = `/phases/${currentPhaseSlug}/journal`;
-            isActive = pathname.includes("/journal");
+          } else if (item.label === "Roots") {
+            href = "/roots";
+            isActive = pathname.startsWith("/roots");
           } else if (item.href === "/") {
             isActive = pathname === "/";
           } else {

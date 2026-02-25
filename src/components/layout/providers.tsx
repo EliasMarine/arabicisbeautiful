@@ -3,6 +3,7 @@
 import { useEffect, type ReactNode } from "react";
 import { ThemeProvider } from "@/contexts/theme-context";
 import { ToastProvider } from "@/contexts/toast-context";
+import { DiacriticsProvider } from "@/contexts/diacritics-context";
 import { ToastContainer } from "@/components/ui/toast";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { PageTransition } from "@/components/layout/page-transition";
@@ -19,11 +20,13 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <ThemeProvider>
-      <ToastProvider>
-        <PageTransition>{children}</PageTransition>
-        <BottomNav />
-        <ToastContainer />
-      </ToastProvider>
+      <DiacriticsProvider>
+        <ToastProvider>
+          <PageTransition>{children}</PageTransition>
+          <BottomNav />
+          <ToastContainer />
+        </ToastProvider>
+      </DiacriticsProvider>
     </ThemeProvider>
   );
 }

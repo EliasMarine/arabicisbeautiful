@@ -30,15 +30,17 @@ if (typeof window !== "undefined" && window.speechSynthesis) {
   };
 }
 
-const SPEED_OPTIONS = [1, 0.7, 1.3] as const;
-const SPEED_LABELS = ["1x", "0.7x", "1.3x"] as const;
-const BROWSER_RATES = [0.85, 0.6, 1.1] as const;
+// 5 speed options: slow → fast
+const SPEED_OPTIONS = [0.5, 0.75, 1, 1.25, 1.5] as const;
+const SPEED_LABELS = ["0.5x", "0.75x", "1x", "1.25x", "1.5x"] as const;
+const BROWSER_RATES = [0.45, 0.65, 0.85, 1.0, 1.15] as const;
+const DEFAULT_SPEED_INDEX = 2; // 1x
 
 function getStoredSpeedIndex(): number {
-  if (typeof window === "undefined") return 0;
+  if (typeof window === "undefined") return DEFAULT_SPEED_INDEX;
   const stored = localStorage.getItem("audioSpeed");
-  const idx = stored ? parseInt(stored, 10) : 0;
-  return idx >= 0 && idx < SPEED_OPTIONS.length ? idx : 0;
+  const idx = stored ? parseInt(stored, 10) : DEFAULT_SPEED_INDEX;
+  return idx >= 0 && idx < SPEED_OPTIONS.length ? idx : DEFAULT_SPEED_INDEX;
 }
 
 function speakWithBrowser(text: string, speedIndex = 0): Promise<void> {
@@ -88,7 +90,9 @@ export function AudioButton({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [speedIndex, setSpeedIndex] = useState(getStoredSpeedIndex);
+  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const speedMenuRef = useRef<HTMLDivElement | null>(null);
 
   const play = useCallback(async () => {
     if (audioRef.current) {
@@ -188,18 +192,39 @@ export function AudioButton({
     }
   }, [autoPlay]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const cycleSpeed = useCallback((e: React.MouseEvent) => {
+  const selectSpeed = useCallback((idx: number) => {
+    setSpeedIndex(idx);
+    localStorage.setItem("audioSpeed", String(idx));
+    setShowSpeedMenu(false);
+    // Update currently playing audio if any
+    if (audioRef.current && !audioRef.current.paused) {
+      audioRef.current.playbackRate = SPEED_OPTIONS[idx] ?? 1;
+    }
+  }, []);
+
+  const toggleSpeedMenu = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    const next = (speedIndex + 1) % SPEED_OPTIONS.length;
-    setSpeedIndex(next);
-    localStorage.setItem("audioSpeed", String(next));
-  }, [speedIndex]);
+    setShowSpeedMenu((v) => !v);
+  }, []);
+
+  // Close speed menu when clicking outside
+  useEffect(() => {
+    if (!showSpeedMenu) return;
+    const handleClick = (e: MouseEvent) => {
+      if (speedMenuRef.current && !speedMenuRef.current.contains(e.target as Node)) {
+        setShowSpeedMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [showSpeedMenu]);
 
   const sizeClasses = size === "sm" ? "w-7 h-7" : "w-9 h-9";
   const iconSize = size === "sm" ? 14 : 18;
+  const isDefaultSpeed = speedIndex === DEFAULT_SPEED_INDEX;
 
   return (
-    <span className={cn("inline-flex items-center gap-1", className)}>
+    <span className={cn("inline-flex items-center gap-1 relative", className)}>
       <button
         onClick={play}
         disabled={isLoading}
@@ -220,21 +245,38 @@ export function AudioButton({
           />
         )}
       </button>
-      {speedIndex !== 0 && (
-        <button
-          onClick={cycleSpeed}
-          className="text-[0.55rem] font-bold text-[var(--muted)] hover:text-[var(--dark)] transition-colors"
-          title="Change speed"
+      <button
+        onClick={toggleSpeedMenu}
+        className={cn(
+          "text-[0.6rem] font-bold px-1.5 py-0.5 rounded-full transition-colors leading-none",
+          isDefaultSpeed
+            ? "text-[var(--muted)]/60 hover:text-[var(--muted)] hover:bg-[var(--sand)]"
+            : "text-[var(--phase-color)] bg-[var(--sand)]"
+        )}
+        title="Change playback speed"
+      >
+        {SPEED_LABELS[speedIndex]}
+      </button>
+      {showSpeedMenu && (
+        <div
+          ref={speedMenuRef}
+          className="absolute top-full left-0 mt-1 bg-[var(--card-bg)] border border-[var(--sand)] rounded-lg shadow-lg p-1 z-50 flex flex-col min-w-[4.5rem]"
         >
-          {SPEED_LABELS[speedIndex]}
-        </button>
-      )}
-      {speedIndex === 0 && size !== "sm" && (
-        <button
-          onClick={cycleSpeed}
-          className="w-1.5 h-1.5 rounded-full bg-[var(--muted)]/40 hover:bg-[var(--muted)] transition-colors"
-          title="Change speed"
-        />
+          {SPEED_LABELS.map((label, i) => (
+            <button
+              key={label}
+              onClick={(e) => { e.stopPropagation(); selectSpeed(i); }}
+              className={cn(
+                "text-xs px-3 py-1.5 rounded-md text-left transition-colors whitespace-nowrap",
+                i === speedIndex
+                  ? "bg-[var(--phase-color)] text-white font-bold"
+                  : "text-[var(--dark)] hover:bg-[var(--sand)]"
+              )}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       )}
     </span>
   );

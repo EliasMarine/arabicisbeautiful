@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { AudioButton } from "@/components/arabic/audio-button";
 import { ArabicKeyboard } from "@/components/arabic/arabic-keyboard";
+import { fireConfetti } from "@/lib/confetti";
 import type { FillBlankQuestion } from "@/content/types";
 
 interface FillInBlankProps {
@@ -60,6 +61,15 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
     setAnswer((prev) => prev.slice(0, -1));
     inputRef.current?.focus();
   }, []);
+
+  // Fire confetti when finished
+  useEffect(() => {
+    if (finished && score === questions.length) {
+      fireConfetti("big");
+    } else if (finished) {
+      fireConfetti("small");
+    }
+  }, [finished, score, questions.length]);
 
   if (finished) {
     const pct = Math.round((score / questions.length) * 100);

@@ -54,6 +54,7 @@ export const PHASE_TITLES: Record<PhaseSlug, { en: string; ar: string; subtitle:
 export const PHASE_TABS: Record<PhaseSlug, { id: string; label: string }[]> = {
   reactivation: [
     { id: "sounds", label: "Sounds & Letters" },
+    { id: "minimal-pairs", label: "Minimal Pairs" },
     { id: "vocab", label: "Core Vocabulary" },
     { id: "grammar", label: "Grammar" },
     { id: "dialogues", label: "Dialogues" },

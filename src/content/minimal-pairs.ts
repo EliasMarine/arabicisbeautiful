@@ -1,0 +1,170 @@
+/**
+ * Minimal pairs for Arabic sound discrimination.
+ * Each pair contrasts two sounds that are difficult for English speakers.
+ */
+
+export interface MinimalPairSet {
+  id: string;
+  sound1: { letter: string; name: string; description: string };
+  sound2: { letter: string; name: string; description: string };
+  tip: string;
+  examples: {
+    word1: { arabic: string; transliteration: string; english: string };
+    word2: { arabic: string; transliteration: string; english: string };
+  }[];
+}
+
+export const minimalPairs: MinimalPairSet[] = [
+  {
+    id: "mp-ha-haa",
+    sound1: { letter: "ح", name: "ḥaa", description: "Pharyngeal h — deep in the throat" },
+    sound2: { letter: "ه", name: "haa", description: "Regular h — like English 'h'" },
+    tip: "Put your hand on your throat. ح (ḥaa) feels like you're fogging up a mirror from deep in the throat. ه (haa) is a gentle breath.",
+    examples: [
+      {
+        word1: { arabic: "حَبيبي", transliteration: "ḥabibi", english: "my love" },
+        word2: { arabic: "هَرَب", transliteration: "harab", english: "he ran away" },
+      },
+      {
+        word1: { arabic: "حَرام", transliteration: "ḥaraam", english: "forbidden" },
+        word2: { arabic: "هَلّق", transliteration: "halla2", english: "now" },
+      },
+      {
+        word1: { arabic: "حَكي", transliteration: "ḥaki", english: "talking" },
+        word2: { arabic: "هون", transliteration: "hawn", english: "here" },
+      },
+      {
+        word1: { arabic: "حَلو", transliteration: "ḥelu", english: "sweet/beautiful" },
+        word2: { arabic: "هَدية", transliteration: "hadiyye", english: "gift" },
+      },
+    ],
+  },
+  {
+    id: "mp-ain-hamza",
+    sound1: { letter: "ع", name: "3ayn", description: "Voiced pharyngeal — squeeze the throat" },
+    sound2: { letter: "أ", name: "hamza", description: "Glottal stop — like 'uh-oh'" },
+    tip: "ع (3ayn) is made by tightening the back of your throat — it has no English equivalent. أ (hamza) is a quick stop like the pause in 'uh-oh'.",
+    examples: [
+      {
+        word1: { arabic: "عَين", transliteration: "3ayn", english: "eye" },
+        word2: { arabic: "أنا", transliteration: "ana", english: "I/me" },
+      },
+      {
+        word1: { arabic: "عَرَبي", transliteration: "3arabi", english: "Arabic" },
+        word2: { arabic: "أكل", transliteration: "akel", english: "food" },
+      },
+      {
+        word1: { arabic: "عالم", transliteration: "3aalem", english: "world" },
+        word2: { arabic: "أهلا", transliteration: "ahla", english: "welcome" },
+      },
+      {
+        word1: { arabic: "عَم", transliteration: "3am", english: "(progressive marker)" },
+        word2: { arabic: "أم", transliteration: "em", english: "mother" },
+      },
+    ],
+  },
+  {
+    id: "mp-taa-ta",
+    sound1: { letter: "ط", name: "ṭaa", description: "Emphatic t — tongue pressed flat, darker sound" },
+    sound2: { letter: "ت", name: "taa", description: "Regular t — like English 't'" },
+    tip: "For ط (ṭaa), press your tongue flat against the roof of your mouth — the vowels around it sound 'darker'. ت (taa) is a light, regular 't'.",
+    examples: [
+      {
+        word1: { arabic: "طَبخ", transliteration: "ṭabkh", english: "cooking" },
+        word2: { arabic: "تَحت", transliteration: "taḥet", english: "under" },
+      },
+      {
+        word1: { arabic: "طَريق", transliteration: "ṭari2", english: "road" },
+        word2: { arabic: "تَعبان", transliteration: "ta3baan", english: "tired" },
+      },
+      {
+        word1: { arabic: "طَيب", transliteration: "ṭayyeb", english: "good/okay" },
+        word2: { arabic: "تين", transliteration: "teen", english: "figs" },
+      },
+      {
+        word1: { arabic: "طَلب", transliteration: "ṭalab", english: "request" },
+        word2: { arabic: "تَلج", transliteration: "talej", english: "snow" },
+      },
+    ],
+  },
+  {
+    id: "mp-saad-sin",
+    sound1: { letter: "ص", name: "ṣaad", description: "Emphatic s — tongue flat, heavier sound" },
+    sound2: { letter: "س", name: "siin", description: "Regular s — like English 's'" },
+    tip: "ص (ṣaad) sounds heavier and 'darker' — the surrounding vowels shift toward 'aw/oh'. س (siin) is a crisp, light 's'.",
+    examples: [
+      {
+        word1: { arabic: "صَباح", transliteration: "ṣabaaḥ", english: "morning" },
+        word2: { arabic: "سَلام", transliteration: "salaam", english: "peace" },
+      },
+      {
+        word1: { arabic: "صَحيح", transliteration: "ṣaḥiiḥ", english: "correct" },
+        word2: { arabic: "سَمك", transliteration: "samak", english: "fish" },
+      },
+      {
+        word1: { arabic: "صَغير", transliteration: "ṣghiir", english: "small" },
+        word2: { arabic: "سَهل", transliteration: "sahel", english: "easy" },
+      },
+    ],
+  },
+  {
+    id: "mp-daad-dal",
+    sound1: { letter: "ض", name: "ḍaad", description: "Emphatic d — tongue flat, darker sound" },
+    sound2: { letter: "د", name: "daal", description: "Regular d — like English 'd'" },
+    tip: "ض (ḍaad) is the letter that makes Arabic unique — it's called 'the language of ḍaad'. Press your tongue flat for the emphatic version.",
+    examples: [
+      {
+        word1: { arabic: "ضَروري", transliteration: "ḍaruuri", english: "necessary" },
+        word2: { arabic: "دَرس", transliteration: "dares", english: "lesson" },
+      },
+      {
+        word1: { arabic: "ضَيعة", transliteration: "ḍay3a", english: "village" },
+        word2: { arabic: "دَقيقة", transliteration: "da2ii2a", english: "minute" },
+      },
+      {
+        word1: { arabic: "ضَحك", transliteration: "ḍeḥek", english: "laughter" },
+        word2: { arabic: "دُكّان", transliteration: "dukkaan", english: "shop" },
+      },
+    ],
+  },
+  {
+    id: "mp-qaaf-kaaf",
+    sound1: { letter: "ق", name: "qaaf", description: "Uvular stop — pronounced as glottal stop '2' in Lebanese" },
+    sound2: { letter: "ك", name: "kaaf", description: "Regular k — like English 'k'" },
+    tip: "In Lebanese Arabic, ق is usually pronounced as a glottal stop (hamza/2). So قلب (heart) sounds like '2alb', while كلب (dog) sounds like 'kalb'.",
+    examples: [
+      {
+        word1: { arabic: "قَلب", transliteration: "2aleb", english: "heart" },
+        word2: { arabic: "كَلب", transliteration: "kaleb", english: "dog" },
+      },
+      {
+        word1: { arabic: "قَهوة", transliteration: "2ahwe", english: "coffee" },
+        word2: { arabic: "كَبير", transliteration: "kbiir", english: "big" },
+      },
+      {
+        word1: { arabic: "قَصّة", transliteration: "2eṣṣa", english: "story" },
+        word2: { arabic: "كَسلان", transliteration: "kaslaan", english: "lazy" },
+      },
+    ],
+  },
+  {
+    id: "mp-ghayn-khaa",
+    sound1: { letter: "غ", name: "ghayn", description: "Voiced uvular fricative — like gargling" },
+    sound2: { letter: "خ", name: "khaa", description: "Voiceless uvular fricative — like clearing throat" },
+    tip: "Both are made at the back of the throat. غ (ghayn) vibrates (voiced) — like a French 'r'. خ (khaa) doesn't vibrate — like clearing your throat.",
+    examples: [
+      {
+        word1: { arabic: "غَداء", transliteration: "ghada", english: "lunch" },
+        word2: { arabic: "خَبز", transliteration: "khubez", english: "bread" },
+      },
+      {
+        word1: { arabic: "غَالي", transliteration: "ghaali", english: "expensive" },
+        word2: { arabic: "خَالي", transliteration: "khaali", english: "my uncle" },
+      },
+      {
+        word1: { arabic: "غَريب", transliteration: "ghariib", english: "strange" },
+        word2: { arabic: "خَريف", transliteration: "khariif", english: "autumn" },
+      },
+    ],
+  },
+];

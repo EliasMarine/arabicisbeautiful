@@ -5,9 +5,12 @@ import Link from "next/link";
 import { PHASE_SLUGS, PHASE_TITLES, PHASE_COLORS } from "@/lib/constants";
 import { ProgressRing } from "@/components/progress/progress-ring";
 import { StreakCounter } from "@/components/progress/streak-counter";
-import { BookOpen, GraduationCap, Trophy, Target } from "lucide-react";
+import { BookOpen, GraduationCap, Trophy, Target, Compass } from "lucide-react";
 import { StatCardSkeleton, PhaseCardSkeleton } from "@/components/ui/skeleton";
 import { DailyGoal } from "@/components/dashboard/daily-goal";
+import { DailyReviewCard } from "@/components/dashboard/daily-review-card";
+import { CalendarHeatmap } from "@/components/dashboard/calendar-heatmap";
+import { NotificationPrompt } from "@/components/dashboard/notification-prompt";
 
 interface DashboardProps {
   userId: string;
@@ -58,12 +61,31 @@ export function Dashboard({ userName }: DashboardProps) {
         </p>
       </div>
 
-      {/* Daily Goal */}
+      {/* Placement Test CTA */}
+      {!loading && totalXP === 0 && (
+        <Link
+          href="/placement-test"
+          className="block bg-gradient-to-r from-[var(--gold)] to-[#d4a84b] rounded-xl p-4 sm:p-5 text-white shadow-sm hover:shadow-md transition-shadow"
+        >
+          <div className="flex items-center gap-3">
+            <Compass size={24} className="flex-shrink-0" />
+            <div>
+              <p className="font-semibold text-sm">Not sure where to start?</p>
+              <p className="text-xs opacity-90">Take a 2-minute placement test to find your level</p>
+            </div>
+          </div>
+        </Link>
+      )}
+
+      {/* Daily Goal + Daily Review */}
       {!loading && stats && (
-        <DailyGoal
-          minutesStudied={stats.minutesStudied}
-          goalMinutes={stats.studyGoalMinutes}
-        />
+        <div className="space-y-3">
+          <DailyGoal
+            minutesStudied={stats.minutesStudied}
+            goalMinutes={stats.studyGoalMinutes}
+          />
+          <DailyReviewCard />
+        </div>
       )}
 
       {/* Quick Stats */}
@@ -178,6 +200,11 @@ export function Dashboard({ userName }: DashboardProps) {
           })}
         </div>
       </div>
+      {/* Activity Heatmap */}
+      {!loading && <CalendarHeatmap />}
+
+      {/* Notification opt-in */}
+      {!loading && <NotificationPrompt />}
     </div>
   );
 }

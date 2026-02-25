@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { AudioButton } from "@/components/arabic/audio-button";
+import { fireConfetti } from "@/lib/confetti";
 import type { QuizQuestion } from "@/content/types";
 
 interface QuizMultipleChoiceProps {
@@ -44,6 +45,15 @@ export function QuizMultipleChoice({
       );
     }
   }
+
+  // Fire confetti on perfect score
+  useEffect(() => {
+    if (finished && score === questions.length) {
+      fireConfetti("big");
+    } else if (finished) {
+      fireConfetti("small");
+    }
+  }, [finished, score, questions.length]);
 
   if (finished) {
     const finalScore = score;

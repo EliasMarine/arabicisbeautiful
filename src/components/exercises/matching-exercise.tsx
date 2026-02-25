@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { AudioButton } from "@/components/arabic/audio-button";
+import { fireConfetti } from "@/lib/confetti";
 import type { MatchingPair } from "@/content/types";
 
 interface MatchingExerciseProps {
@@ -81,6 +82,13 @@ export function MatchingExercise({
   }
 
   const allMatched = matched.size === pairs.length;
+
+  // Fire confetti when all matched
+  useEffect(() => {
+    if (allMatched && pairs.length > 0) {
+      fireConfetti("big");
+    }
+  }, [allMatched, pairs.length]);
 
   return (
     <div className="bg-[var(--card-bg)] rounded-lg p-4 sm:p-6 border border-[var(--sand)] shadow-sm">

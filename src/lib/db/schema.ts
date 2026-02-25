@@ -172,6 +172,17 @@ export const badges = sqliteTable("badges", {
   requirement: text("requirement").notNull(), // JSON string describing the condition
 });
 
+export const pushSubscriptions = sqliteTable("push_subscriptions", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  endpoint: text("endpoint").notNull(),
+  p256dh: text("p256dh").notNull(),
+  auth: text("auth").notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+});
+
 export const userBadges = sqliteTable("user_badges", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   userId: text("user_id")
