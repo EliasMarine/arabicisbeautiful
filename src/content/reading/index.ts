@@ -1,6 +1,62 @@
 import type { ReadingPassage } from "../types";
 
 export const readingPassages: ReadingPassage[] = [
+  // ── Phase 2: Beginner Reading ──
+  {
+    id: "p2-reading-daily-routine",
+    phaseId: 2,
+    title: "My Daily Routine",
+    titleArabic: "يومياتي",
+    level: "beginner",
+    arabic:
+      "كِل يَوم بِفيق السَّاعة سَبعة الصُّبح. بِغسِل وِجّي وبِنزِل عَالمَطبَخ. بِعمِل فِنجان قَهوة وبَاكُل صَحن لَبنة مَع خُبز. بَعدين بِطلَع عَالشُّغل بِالسَّيّارة. بِالنهار بِتغَدّى بِالمَكتَب. بِرجَع عَالبيت السَّاعة سِتّة وبِقعُد مَع عيلتي. بِالليل بِتعَشّى وبِتفَرَّج عَالتِّلفزيون وبنام السَّاعة حدَعش.",
+    transliteration:
+      "Kill yōm bfīʔ is-sēʕa sabʕa iṣ-ṣubiḥ. Bghissil wijji w binzil ʕal-maṭbakh. Baʕmil finjēn ʔahwe w bēkul ṣaḥn labne maʕ khubz. Baʕdēn biṭlaʕ ʕash-shughul bis-sayyāra. Bin-nhār bitghadda bil-maktab. Birjaʕ ʕal-bēt is-sēʕa sitte w buʔʕud maʕ ʕēlti. Bil-lēl bitʕashsha w bitfarraj ʕat-tilfizyōn w bnēm is-sēʕa ḥdaʕsh.",
+    english:
+      "Every day I wake up at seven in the morning. I wash my face and go down to the kitchen. I make a cup of coffee and eat a plate of labneh with bread. Then I go to work by car. At noon I have lunch at the office. I come back home at six and sit with my family. At night I have dinner, watch TV, and sleep at eleven.",
+    vocabHighlights: [
+      { arabic: "بفيق", transliteration: "bfīʔ", english: "I wake up" },
+      { arabic: "المطبخ", transliteration: "il-maṭbakh", english: "the kitchen" },
+      { arabic: "لبنة", transliteration: "labne", english: "labneh (strained yogurt)" },
+      { arabic: "الشغل", transliteration: "ish-shughul", english: "work" },
+      { arabic: "بتغدى", transliteration: "bitghadda", english: "I have lunch" },
+      { arabic: "عيلتي", transliteration: "ʕēlti", english: "my family" },
+    ],
+    comprehensionQuestions: [
+      { question: "What time does the narrator wake up?", answer: "At seven in the morning (الساعة سبعة الصبح)" },
+      { question: "What does the narrator eat for breakfast?", answer: "Labneh with bread and coffee" },
+      { question: "How does the narrator get to work?", answer: "By car (بالسيارة)" },
+      { question: "What does the narrator do at night?", answer: "Has dinner, watches TV, and sleeps at eleven" },
+    ],
+  },
+  {
+    id: "p2-reading-cafe",
+    phaseId: 2,
+    title: "At the Cafe",
+    titleArabic: "بالكافيه",
+    level: "beginner",
+    arabic:
+      "أَنا وصاحبتي مِنروح عَالكافيه كِل يَوم جُمعة. مِنقعُد بَرّا إذا الجَوّ حِلو. بِطلُب قَهوة تُركِيّة وهِيّي بِتطلُب عَصير لَيمون. كَمان مِنّاكُل مَنقوشة زَعتَر أَو كنافة. مِنحكي كتير ومِنضحَك سَوا. الكافيه حِلو ومِرتاح والنَّاس كِلّا لطيفة هون.",
+    transliteration:
+      "Ana w ṣāḥibti mnirūḥ ʕal-kāfēh kill yōm jumʕa. Mnuʔʕud barra iza ij-jaww ḥilw. Buṭlub ʔahwe turkiyye w hiyye btitlub ʕaṣīr lēmūn. Kamēn mnēkul manʔūshe zaʕtar aw knēfe. Mniḥki ktīr w minḍaḥḥak sawa. Il-kāfēh ḥilw w mirtēḥ win-nās killa laṭīfe hōn.",
+    english:
+      "My friend and I go to the cafe every Friday. We sit outside if the weather is nice. I order Turkish coffee and she orders lemon juice. We also eat a zaatar manoushe or knafeh. We talk a lot and laugh together. The cafe is nice and comfortable and the people are all friendly here.",
+    vocabHighlights: [
+      { arabic: "صاحبتي", transliteration: "ṣāḥibti", english: "my friend (f.)" },
+      { arabic: "بطلب", transliteration: "buṭlub", english: "I order" },
+      { arabic: "قهوة تركية", transliteration: "ʔahwe turkiyye", english: "Turkish coffee" },
+      { arabic: "منقوشة", transliteration: "manʔūshe", english: "manoushe (flatbread)" },
+      { arabic: "كنافة", transliteration: "knēfe", english: "knafeh (dessert)" },
+      { arabic: "لطيفة", transliteration: "laṭīfe", english: "friendly / kind" },
+    ],
+    comprehensionQuestions: [
+      { question: "When do they go to the cafe?", answer: "Every Friday (كل يوم جمعة)" },
+      { question: "Where do they sit?", answer: "Outside, if the weather is nice" },
+      { question: "What does the narrator's friend order?", answer: "Lemon juice (عصير ليمون)" },
+      { question: "How does the narrator describe the cafe?", answer: "Nice and comfortable with friendly people" },
+    ],
+  },
+
   // ── Phase 4: Intermediate Reading ──
   {
     id: "p4-reading-market",
@@ -84,6 +140,62 @@ export const readingPassages: ReadingPassage[] = [
     ],
   },
 
+  // ── Phase 3: Intermediate Reading ──
+  {
+    id: "p3-reading-family-story",
+    phaseId: 3,
+    title: "A Family Story",
+    titleArabic: "قصّة عيلة",
+    level: "intermediate",
+    arabic:
+      "الأَحَد الماضي إجتَمَعِت كِل العيلة عِند بيت عَمّي. تيتا حَضَّرِت مَحشي وتَبّولة، وعَمّي شَوى لَحمة عَالمَنقَل. الأَولاد كانو يِلعبو بِالجَنينة، وخالتي كانِت عَم تحكي مَع أُمّي عَن أَيّام زَمان. جَدّو قِعِد عَالكِرسي وبَلَّش يِحكيلنا قِصّة عَن لَمّا كان صغير بِالضيعة. كِلّنا ضحِكنا كتير لَمّا حَكى كيف وِقِع بِالنِّهر. بِالآخِر، قَعَدنا كِلّنا سَوا ومناكُل بَقلاوة وشرِبنا قَهوة. هَيدي أَحلى لَيالي بِحَياتنا.",
+    transliteration:
+      "Il-aḥad il-māḍi jtamaʕit kill il-ʕēle ʕand bēt ʕammi. Tēta ḥaḍḍarit maḥshi w tabbūle, w ʕammi shawa laḥme ʕal-manʔal. Il-awlēd kānu yilʕabu bil-jnēne, w khālti kānit ʕam tiḥki maʕ immi ʕan ayyām zamān. Jiddo ʔiʕid ʕal-kirsi w ballash yiḥkīlna ʔiṣṣa ʕan lamma kān zghīr biḍ-ḍēʕa. Killna ḍḥikna ktīr lamma ḥaka kīf wiʔiʕ bin-nihir. Bil-ākhir, ʔaʕadna killna sawa w mnēkul baʔlēwa w shribna ʔahwe. Haydi aḥla layāli b-ḥayātna.",
+    english:
+      "Last Sunday the whole family gathered at my uncle's house. Teta prepared stuffed grape leaves and tabbouleh, and my uncle grilled meat on the barbecue. The kids were playing in the garden, and my aunt was talking with my mom about the old days. Grandpa sat in his chair and started telling us a story about when he was young in the village. We all laughed a lot when he told us how he fell in the river. At the end, we all sat together and ate baklava and drank coffee. These are the best nights of our lives.",
+    vocabHighlights: [
+      { arabic: "إجتمعت", transliteration: "jtamaʕit", english: "gathered" },
+      { arabic: "محشي", transliteration: "maḥshi", english: "stuffed grape leaves" },
+      { arabic: "المنقل", transliteration: "il-manʔal", english: "the barbecue / grill" },
+      { arabic: "الجنينة", transliteration: "il-jnēne", english: "the garden" },
+      { arabic: "وقع", transliteration: "wiʔiʕ", english: "fell" },
+      { arabic: "بقلاوة", transliteration: "baʔlēwa", english: "baklava" },
+    ],
+    comprehensionQuestions: [
+      { question: "When did the family gathering happen?", answer: "Last Sunday (الأحد الماضي)" },
+      { question: "What did Teta prepare?", answer: "Stuffed grape leaves (محشي) and tabbouleh" },
+      { question: "What story did Grandpa tell?", answer: "About when he was young and fell in the river" },
+      { question: "What did they eat and drink at the end?", answer: "Baklava and coffee" },
+    ],
+  },
+  {
+    id: "p3-reading-trip-south",
+    phaseId: 3,
+    title: "A Trip to the South",
+    titleArabic: "رحلة عالجنوب",
+    level: "intermediate",
+    arabic:
+      "الصَّيف الماضي رُحنا أَنا وأَصحابي رِحلة عَالجَنوب. طِلعنا مِن بيروت الصُّبح وسُقنا عَالأَوتوستراد. الطَّريق كانِت حِلوة كتير — مِن هون بَحر، ومِن هون جِبال خَضرا. أَوَّل شي وَقَّفنا بِصَيدا وتمَشَّينا بِالسوق القَديم. بَعدين كَمَّلنا عَصور وشُفنا القَلعة عَالبَحر. أَكَلنا سَمَك مَشوي بِمَطعَم صغير عَالشَّط. بَعد الغَدا رُحنا عَقَلعة بوفور وشُفنا مَنظَر خيالي مِن فوق. رجِعنا عَبيروت بِالليل تَعبانين بَس مَبسوطين كتير.",
+    transliteration:
+      "Iṣ-ṣēf il-māḍi ruḥna ana w aṣḥābi riḥle ʕal-janūb. Ṭliʕna min Bēyrūt iṣ-ṣubiḥ w suʔna ʕal-ōtōstrād. Iṭ-ṭarīʔ kānit ḥilwe ktīr — min hōn baḥar, w min hōn jbāl khaḍra. Awwal shi waʔʔafna b-Ṣayda w tmashshēna bis-sūʔ il-ʔadīm. Baʕdēn kammalna ʕa-Ṣūr w shufna il-ʔalʕa ʕal-baḥar. Akalna samak mashwi b-maṭʕam zghīr ʕash-shaṭṭ. Baʕd il-ghada ruḥna ʕa-ʔalʕit Bōfōr w shufna manẓar khayāli min fōʔ. Rjiʕna ʕa-Bēyrūt bil-lēl taʕbānīn bas mabsūṭīn ktīr.",
+    english:
+      "Last summer my friends and I went on a trip to the South. We left Beirut in the morning and drove on the highway. The road was very beautiful — on one side the sea, and on the other green mountains. First we stopped in Sidon and walked around the old market. Then we continued to Tyre and saw the castle by the sea. We ate grilled fish at a small restaurant on the beach. After lunch we went to Beaufort Castle and saw an incredible view from the top. We came back to Beirut at night, tired but very happy.",
+    vocabHighlights: [
+      { arabic: "الجنوب", transliteration: "il-janūb", english: "the south" },
+      { arabic: "الأوتوستراد", transliteration: "il-ōtōstrād", english: "the highway" },
+      { arabic: "السوق القديم", transliteration: "is-sūʔ il-ʔadīm", english: "the old market" },
+      { arabic: "القلعة", transliteration: "il-ʔalʕa", english: "the castle / fortress" },
+      { arabic: "سمك مشوي", transliteration: "samak mashwi", english: "grilled fish" },
+      { arabic: "منظر", transliteration: "manẓar", english: "view / scenery" },
+    ],
+    comprehensionQuestions: [
+      { question: "When did the trip happen?", answer: "Last summer (الصيف الماضي)" },
+      { question: "What did they see on the road?", answer: "The sea on one side and green mountains on the other" },
+      { question: "What two cities did they visit?", answer: "Sidon (صيدا) and Tyre (صور)" },
+      { question: "How did they feel coming back?", answer: "Tired but very happy (تعبانين بس مبسوطين كتير)" },
+    ],
+  },
+
   // ── Phase 5: Advanced Reading ──
   {
     id: "p5-reading-diaspora",
@@ -164,6 +276,62 @@ export const readingPassages: ReadingPassage[] = [
       { question: "What surprised the driver?", answer: "That the narrator is Lebanese but wasn't sure about speaking Arabic" },
       { question: "What did the driver say about Lebanese people?", answer: "They laugh because if they don't laugh, they cry" },
       { question: "Why did the driver refuse money?", answer: "He welcomed the narrator to his country — it was a gesture of hospitality" },
+    ],
+  },
+
+  // ── Phase 6: Advanced Reading ──
+  {
+    id: "p6-reading-diaspora-reflection",
+    phaseId: 6,
+    title: "A Diaspora Reflection",
+    titleArabic: "تأملات من الغربة",
+    level: "advanced",
+    arabic:
+      "صار إلي عَشر سنين بَرّا لبنان، وكِل يَوم بِحِس إنّو في شي ناقِص جُوّاتي. لَمّا فِتِّت أَوَّل مَرّة عَالمَطار، كِنت فَكَّرت إنّها رِحلة قَصيرة — بِتروح وبِترجع. بَس الأَيّام صارِت شهور، والشهور سنين، وإنت عَم تِنسى شكل شوارع بلدك. أَصعب شي هُوّي لَمّا حَدا يسألني: مِنَين إنت؟ لأنّو الجَواب ما عاد بَسيط. أَنا مِن لبنان بَس عايِش هون. لبناني بِالقَلب بَس حَياتي هون. بِاللّيل، بِسمَع فَيروز وبِحِس إنّو صَوتا عَم يسحَبني عَالوَرا — عَجَبَل صنّين، عَساحة الشُّهَدا، عَريحة المانجا بِصَيدا. بِكتُب شِعر بِاللّيل عَن بلَد ما عاد بِشبِه البلد يلي تَرَكتو. بِعرِف إنّو لبنان تغَيَّر، وأَنا كَمان تغَيَّرت. بَس الحَنين ما بيتغَيَّر — هَيدا الشّي الوَحيد الثَّابِت بِحَياتي.",
+    transliteration:
+      "Ṣār illi ʕashr snīn barra Libnān, w kill yōm bḥiss innu fī shi nāʔiṣ juwwēti. Lamma fattēt awwal marra ʕal-maṭār, kint fakkart innha riḥle ʔaṣīra — btrūḥ w btirjaʕ. Bas il-ayyām ṣārit shhūr, wish-shhūr snīn, w inta ʕam tinsa shakl shwāriʕ baldak. Aṣʕab shi huwwe lamma ḥada yisʔalni: mnēn inta? Laʔannu ij-jawāb ma ʕād basīṭ. Ana min Libnān bas ʕāyish hōn. Libnāni bil-ʔalb bas ḥayāti hōn. Bil-lēl, bismaʕ Fayrūz w bḥiss innu ṣōta ʕam yisḥabni ʕal-wara — ʕa-Jabal Ṣannīn, ʕa-Sāḥit ish-Shuhadā, ʕa-rīḥit il-manga b-Ṣayda. Biktub shiʕr bil-lēl ʕan balad ma ʕād byishbih il-balad yalli taraktu. Baʕrif innu Libnān tghayar, w ana kamēn tghayart. Bas il-ḥanīn ma byitghayar — hayda ish-shi il-waḥīd ith-thābit b-ḥayāti.",
+    english:
+      "It's been ten years since I left Lebanon, and every day I feel something is missing inside me. When I first entered the airport, I thought it was a short trip — you go and come back. But the days became months, and the months years, and you start forgetting what the streets of your country look like. The hardest thing is when someone asks me: Where are you from? Because the answer is no longer simple. I'm from Lebanon but I live here. Lebanese at heart but my life is here. At night, I listen to Fairouz and I feel her voice pulling me back — to Mount Sannine, to Martyrs' Square, to the smell of mangoes in Sidon. I write poetry at night about a country that no longer resembles the country I left. I know Lebanon changed, and I changed too. But the longing never changes — that's the only constant thing in my life.",
+    vocabHighlights: [
+      { arabic: "ناقص", transliteration: "nāʔiṣ", english: "missing / lacking" },
+      { arabic: "الحنين", transliteration: "il-ḥanīn", english: "longing / nostalgia" },
+      { arabic: "شعر", transliteration: "shiʕr", english: "poetry" },
+      { arabic: "الثابت", transliteration: "ith-thābit", english: "the constant / steady" },
+      { arabic: "يسحبني", transliteration: "yisḥabni", english: "pulls me" },
+      { arabic: "تغيّر", transliteration: "tghayar", english: "changed" },
+    ],
+    comprehensionQuestions: [
+      { question: "How long has the narrator been away from Lebanon?", answer: "Ten years (عشر سنين)" },
+      { question: "What is the hardest question for the narrator?", answer: "Where are you from? — because the answer is no longer simple" },
+      { question: "What does the narrator do at night?", answer: "Listens to Fairouz and writes poetry about Lebanon" },
+      { question: "What does the narrator say never changes?", answer: "The longing / nostalgia (الحنين ما بيتغيّر)" },
+    ],
+  },
+  {
+    id: "p6-reading-news",
+    phaseId: 6,
+    title: "Understanding the News",
+    titleArabic: "فهم الأخبار",
+    level: "advanced",
+    arabic:
+      "فَتَحت التِلفزيون وكان المُذيع عَم يحكي عَن الوَضع الإقتصادي بِلبنان. قال إنّو سِعر الدولار رِجِع إرتَفَع، وإنّو الناس عَم تشتكي مِن غَلا المَعيشة. وَزير المالِيّة طِلِع عَالتِلفزيون وقال: عَم نِشتغِل عَخُطّة إصلاحِيّة جديدة. بَس الناس بِالشّارِع ما صَدَّقو. واحَد قال: كِل يَوم مَنسمَع وُعود بَس ما مِنشوف نَتيجة. إمرا تانية قالِت: أَنا موَظَّفة بِالدَّولة ومَعاشي ما بيكَفّي خُبز. المُحَلِّل السياسي قال إنّو البلَد بحاجة لإصلاحات جِدِّيّة بِالقِطاع المَصرَفي وبِالإدارة العامّة. ضاف إنّو المُجتَمَع الدَّولي عَم يراقِب الوَضع وعَم يشتِرِط إصلاحات قَبل ما يقَدِّم مُساعَدات. قَفَّلت التِلفزيون وقُلت بقَلبي: يا ريت الأَفعال تِصير قَد الحَكي.",
+    transliteration:
+      "Fataḥt it-tilfizyōn w kān il-muzīʕ ʕam yiḥki ʕan il-waḍʕ il-iʔtiṣādi b-Libnān. ʔāl innu siʕr id-dōlār rijiʕ irtafaʕ, w innu in-nās ʕam tishtiki min ghala il-maʕīshe. Wazīr il-māliyye ṭiliʕ ʕat-tilfizyōn w ʔāl: ʕam nishtaghil ʕa-khuṭṭa iṣlāḥiyye jdīde. Bas in-nās bish-shāriʕ ma ṣaddaʔu. Wāḥad ʔāl: kill yōm mnismaʕ wuʕūd bas ma mnshūf natīje. Imra tānye ʔālit: ana mwaẓẓafe bid-dawle w maʕāshi ma byikaffi khubz. Il-muḥallil is-siyāsi ʔāl innu il-balad b-ḥāje la-iṣlāḥāt jiddiyye bil-ʔiṭāʕ il-maṣrafi w bil-idāra il-ʕāmme. Ḍāf innu il-mujtamaʕ id-dawli ʕam yrāʔib il-waḍʕ w ʕam yishtiriṭ iṣlāḥāt ʔabil ma yʔaddim musāʕadāt. ʔaffalt it-tilfizyōn w ʔult b-ʔalbi: ya rēt il-afʕāl tṣīr ʔadd il-ḥaki.",
+    english:
+      "I turned on the TV and the anchor was talking about the economic situation in Lebanon. He said the dollar price went up again, and that people are complaining about the high cost of living. The Minister of Finance appeared on TV and said: We are working on a new reform plan. But people on the street didn't believe it. One man said: Every day we hear promises but we don't see results. Another woman said: I'm a government employee and my salary isn't enough for bread. The political analyst said the country needs serious reforms in the banking sector and in public administration. He added that the international community is watching the situation and requiring reforms before providing aid. I turned off the TV and said to myself: I wish actions would match the words.",
+    vocabHighlights: [
+      { arabic: "الوضع الإقتصادي", transliteration: "il-waḍʕ il-iʔtiṣādi", english: "the economic situation" },
+      { arabic: "غلا المعيشة", transliteration: "ghala il-maʕīshe", english: "high cost of living" },
+      { arabic: "خطة إصلاحية", transliteration: "khuṭṭa iṣlāḥiyye", english: "reform plan" },
+      { arabic: "القطاع المصرفي", transliteration: "il-ʔiṭāʕ il-maṣrafi", english: "the banking sector" },
+      { arabic: "المجتمع الدولي", transliteration: "il-mujtamaʕ id-dawli", english: "the international community" },
+      { arabic: "مساعدات", transliteration: "musāʕadāt", english: "aid / assistance" },
+    ],
+    comprehensionQuestions: [
+      { question: "What was the news broadcast about?", answer: "The economic situation in Lebanon and the rising dollar price" },
+      { question: "What did the Minister of Finance promise?", answer: "A new reform plan" },
+      { question: "What did the government employee say?", answer: "Her salary isn't enough for bread" },
+      { question: "What does the narrator wish at the end?", answer: "That actions would match the words (يا ريت الأفعال تصير قد الحكي)" },
     ],
   },
 ];

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { srsCards, srsReviewLog, userXP } from "@/lib/db/schema";
+import { logActivity } from "@/lib/db/log-activity";
 import { eq } from "drizzle-orm";
 import { sm2, getNextReviewDate } from "@/lib/srs/algorithm";
 
@@ -75,6 +76,9 @@ export async function POST(request: Request) {
         earnedAt: now,
       })
       .run();
+
+    // Log daily activity (cards reviewed)
+    logActivity(session.user.id, { cardsReviewed: 1 });
 
     return NextResponse.json({
       success: true,

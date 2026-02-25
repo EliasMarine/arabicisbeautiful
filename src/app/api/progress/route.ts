@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { phaseProgress, userXP } from "@/lib/db/schema";
+import { logActivity } from "@/lib/db/log-activity";
 import { eq, and, sql } from "drizzle-orm";
 
 export async function GET() {
@@ -51,6 +52,9 @@ export async function POST(request: Request) {
   const now = new Date();
 
   if (existing) {
+    // Calculate how many NEW items were completed in this sync
+    const delta = Math.max(0, completedItems - (existing.completedItems ?? 0));
+
     db.update(phaseProgress)
       .set({
         completedItems,
@@ -60,6 +64,11 @@ export async function POST(request: Request) {
       })
       .where(eq(phaseProgress.id, existing.id))
       .run();
+
+    // Log daily activity for newly completed items
+    if (delta > 0) {
+      logActivity(session.user.id, { exercisesCompleted: delta });
+    }
   } else {
     db.insert(phaseProgress)
       .values({
@@ -72,6 +81,11 @@ export async function POST(request: Request) {
         updatedAt: now,
       })
       .run();
+
+    // Log daily activity for initial completion
+    if (completedItems > 0) {
+      logActivity(session.user.id, { exercisesCompleted: completedItems });
+    }
   }
 
   return NextResponse.json({ success: true });

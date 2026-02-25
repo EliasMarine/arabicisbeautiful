@@ -1,0 +1,513 @@
+import type { VerbConjugation } from "../types";
+
+export const phase2Verbs: VerbConjugation[] = [
+  // ─── 1. ishtara (to buy) ───
+  {
+    id: "p2-verb-ishtara",
+    phaseId: 2,
+    verb: "ishtara",
+    verbArabic: "اشترى",
+    meaning: "to buy",
+    pastTense: {
+      ana: "shtarēt",
+      enta: "shtarēt",
+      ente: "shtarēte",
+      huwwe: "ishtara",
+      hiyye: "ishtarat",
+      ne7na: "shtarēna",
+      ento: "shtarēto",
+      henne: "ishtaro",
+    },
+    presentTense: {
+      ana: "bishtire",
+      enta: "btishtire",
+      ente: "btishtire",
+      huwwe: "byishtire",
+      hiyye: "btishtire",
+      ne7na: "mnishtire",
+      ento: "btishtiro",
+      henne: "byishtiro",
+    },
+    imperative: {
+      singular_m: "shtire",
+      singular_f: "shtire",
+      plural: "shtiro",
+    },
+    exampleSentences: [
+      {
+        arabic: "اِشْتَرَيْتْ خُبِزْ مِنِ الْفِرِنْ",
+        transliteration: "shtarēt khubez min il-firen",
+        english: "I bought bread from the bakery.",
+      },
+      {
+        arabic: "بِتِشْتِري مِنْ وَيْنْ الْخُضْرَا؟",
+        transliteration: "btishtire min wēn il-khudra?",
+        english: "Where do you (f.) buy vegetables?",
+      },
+      {
+        arabic: "لازِمْ نِشْتِري هَدِيِّة لِأُمِّي",
+        transliteration: "lēzim nishtire hadiyye la-imme",
+        english: "We need to buy a gift for my mom.",
+      },
+    ],
+  },
+
+  // ─── 2. dafaʕ (to pay) ───
+  {
+    id: "p2-verb-dafa3",
+    phaseId: 2,
+    verb: "dafaʕ",
+    verbArabic: "دفع",
+    meaning: "to pay",
+    pastTense: {
+      ana: "dfaʕet",
+      enta: "dfaʕet",
+      ente: "dfaʕte",
+      huwwe: "dafaʕ",
+      hiyye: "dfaʕit",
+      ne7na: "dfaʕna",
+      ento: "dfaʕto",
+      henne: "dfaʕo",
+    },
+    presentTense: {
+      ana: "bidfaʕ",
+      enta: "btidfaʕ",
+      ente: "btidfaʕe",
+      huwwe: "byidfaʕ",
+      hiyye: "btidfaʕ",
+      ne7na: "mnidfaʕ",
+      ento: "btidfaʕo",
+      henne: "byidfaʕo",
+    },
+    imperative: {
+      singular_m: "idfaʕ",
+      singular_f: "idfaʕe",
+      plural: "idfaʕo",
+    },
+    exampleSentences: [
+      {
+        arabic: "دْفَعْتْ الْحِسَابْ بِالْكَاشْ",
+        transliteration: "dfaʕet il-ḥsēb bil-kēsh",
+        english: "I paid the bill in cash.",
+      },
+      {
+        arabic: "مِينْ بَدُّو يِدْفَعْ؟",
+        transliteration: "mīn baddo yidfaʕ?",
+        english: "Who wants to pay?",
+      },
+      {
+        arabic: "إِدْفَعْ عَالْكَاصَة مِنْ فَضْلَكْ",
+        transliteration: "idfaʕ ʕal-kāṣa min faḍlak",
+        english: "Pay at the register please.",
+      },
+    ],
+  },
+
+  // ─── 3. fataḥ (to open) ───
+  {
+    id: "p2-verb-fata7",
+    phaseId: 2,
+    verb: "fataḥ",
+    verbArabic: "فتح",
+    meaning: "to open",
+    pastTense: {
+      ana: "ftaḥet",
+      enta: "ftaḥet",
+      ente: "ftaḥte",
+      huwwe: "fataḥ",
+      hiyye: "ftaḥit",
+      ne7na: "ftaḥna",
+      ento: "ftaḥto",
+      henne: "ftaḥo",
+    },
+    presentTense: {
+      ana: "biftaḥ",
+      enta: "btiftaḥ",
+      ente: "btiftaḥe",
+      huwwe: "byiftaḥ",
+      hiyye: "btiftaḥ",
+      ne7na: "mniftaḥ",
+      ento: "btiftaḥo",
+      henne: "byiftaḥo",
+    },
+    imperative: {
+      singular_m: "iftaḥ",
+      singular_f: "iftaḥe",
+      plural: "iftaḥo",
+    },
+    exampleSentences: [
+      {
+        arabic: "إِفْتَحْ الْبَابْ لَوْ سَمَحْتْ",
+        transliteration: "iftaḥ il-bēb law samaḥt",
+        english: "Open the door please.",
+      },
+      {
+        arabic: "فَتَحْتِ الشِّبَّاكْ لِأَنُّو كْتِيرْ حَرّ",
+        transliteration: "ftaḥit ish-shibbēk la-inno ktīr ḥarr",
+        english: "She opened the window because it's very hot.",
+      },
+      {
+        arabic: "الدِّكَّانِة بْتِفْتَحْ السَّاعِة تِسْعِة",
+        transliteration: "id-dikkēne btiftaḥ is-sēʕa tisʕa",
+        english: "The shop opens at nine.",
+      },
+    ],
+  },
+
+  // ─── 4. sakkar (to close) ───
+  {
+    id: "p2-verb-sakkar",
+    phaseId: 2,
+    verb: "sakkar",
+    verbArabic: "سكّر",
+    meaning: "to close",
+    pastTense: {
+      ana: "sakkaret",
+      enta: "sakkaret",
+      ente: "sakkarte",
+      huwwe: "sakkar",
+      hiyye: "sakkarit",
+      ne7na: "sakkarna",
+      ento: "sakkarto",
+      henne: "sakkaro",
+    },
+    presentTense: {
+      ana: "bsakkir",
+      enta: "btsakkir",
+      ente: "btsakre",
+      huwwe: "bisakkir",
+      hiyye: "btsakkir",
+      ne7na: "mnsakkir",
+      ento: "btsakro",
+      henne: "bisakro",
+    },
+    imperative: {
+      singular_m: "sakkir",
+      singular_f: "sakre",
+      plural: "sakro",
+    },
+    exampleSentences: [
+      {
+        arabic: "سَكِّرْ الْبَابْ وَرَاكْ",
+        transliteration: "sakkir il-bēb warēk",
+        english: "Close the door behind you.",
+      },
+      {
+        arabic: "سَكَّرِتْ الدِّكَّانِة بَكِّيرْ الْيَوْمْ",
+        transliteration: "sakkarit id-dikkēne bakkīr il-yōm",
+        english: "She closed the shop early today.",
+      },
+      {
+        arabic: "مَا تْسَكِّرْ الشِّبَّاكْ، الْجَوّ حِلْوْ",
+        transliteration: "ma tsakkir ish-shibbēk, ij-jaww ḥilw",
+        english: "Don't close the window, the weather is nice.",
+      },
+    ],
+  },
+
+  // ─── 5. ʕimil (to do/make) ───
+  {
+    id: "p2-verb-3emel",
+    phaseId: 2,
+    verb: "ʕimil",
+    verbArabic: "عمل",
+    meaning: "to do/make",
+    pastTense: {
+      ana: "ʕmilt",
+      enta: "ʕmilt",
+      ente: "ʕmilte",
+      huwwe: "ʕimil",
+      hiyye: "ʕimlit",
+      ne7na: "ʕmilna",
+      ento: "ʕmilto",
+      henne: "ʕimlo",
+    },
+    presentTense: {
+      ana: "baʕmol",
+      enta: "btaʕmol",
+      ente: "btaʕmle",
+      huwwe: "byaʕmol",
+      hiyye: "btaʕmol",
+      ne7na: "mnaʕmol",
+      ento: "btaʕmlo",
+      henne: "byaʕmlo",
+    },
+    imperative: {
+      singular_m: "ʕmol",
+      singular_f: "ʕmle",
+      plural: "ʕmlo",
+    },
+    exampleSentences: [
+      {
+        arabic: "شُو عْمِلْتْ الْيَوْمْ؟",
+        transliteration: "shū ʕmilt il-yōm?",
+        english: "What did you do today?",
+      },
+      {
+        arabic: "بَيَعْمُلْ أَكِلْ لِبْنَانِي كِتِيرْ طَيِّبْ",
+        transliteration: "byaʕmol akil libnēne ktīr ṭayyib",
+        english: "He makes very delicious Lebanese food.",
+      },
+      {
+        arabic: "لازِمْ نِعْمُلْ شِي لِهَالْمُشْكِلِة",
+        transliteration: "lēzim naʕmol she la-hal-mushkle",
+        english: "We need to do something about this problem.",
+      },
+    ],
+  },
+
+  // ─── 6. ṭabbakh (to cook) ───
+  {
+    id: "p2-verb-tabbakh",
+    phaseId: 2,
+    verb: "ṭabakh",
+    verbArabic: "طبخ",
+    meaning: "to cook",
+    pastTense: {
+      ana: "ṭbakhet",
+      enta: "ṭbakhet",
+      ente: "ṭbakhte",
+      huwwe: "ṭabakh",
+      hiyye: "ṭabakhit",
+      ne7na: "ṭbakhna",
+      ento: "ṭbakhto",
+      henne: "ṭabakho",
+    },
+    presentTense: {
+      ana: "buṭbokh",
+      enta: "btuṭbokh",
+      ente: "btuṭbkhe",
+      huwwe: "byuṭbokh",
+      hiyye: "btuṭbokh",
+      ne7na: "mnuṭbokh",
+      ento: "btuṭbkho",
+      henne: "byuṭbkho",
+    },
+    imperative: {
+      singular_m: "uṭbokh",
+      singular_f: "uṭbkhe",
+      plural: "uṭbkho",
+    },
+    exampleSentences: [
+      {
+        arabic: "أُمِّي بْتُطْبُخْ أَحْسَنْ كُبِّة بِالْعَالَمْ",
+        transliteration: "imme btuṭbokh aḥsan kibbe bil-ʕēlam",
+        english: "My mom cooks the best kibbe in the world.",
+      },
+      {
+        arabic: "شُو طْبَخْتِ لِالْعَشَا؟",
+        transliteration: "shū ṭbakhte lal-ʕasha?",
+        english: "What did you (f.) cook for dinner?",
+      },
+      {
+        arabic: "بَدِّي إِتْعَلِّمْ أُطْبُخْ مُجَدَّرَة",
+        transliteration: "badde itʕallim uṭbokh mjaddara",
+        english: "I want to learn to cook mjaddara.",
+      },
+    ],
+  },
+
+  // ─── 7. ghassal (to wash) ───
+  {
+    id: "p2-verb-ghassal",
+    phaseId: 2,
+    verb: "ghassal",
+    verbArabic: "غسّل",
+    meaning: "to wash",
+    pastTense: {
+      ana: "ghassalet",
+      enta: "ghassalet",
+      ente: "ghassalte",
+      huwwe: "ghassal",
+      hiyye: "ghassalit",
+      ne7na: "ghassalna",
+      ento: "ghassalto",
+      henne: "ghassalo",
+    },
+    presentTense: {
+      ana: "bghassil",
+      enta: "btghassil",
+      ente: "btghassle",
+      huwwe: "bighassil",
+      hiyye: "btghassil",
+      ne7na: "mnghassil",
+      ento: "btghasslo",
+      henne: "bighasslo",
+    },
+    imperative: {
+      singular_m: "ghassil",
+      singular_f: "ghassle",
+      plural: "ghasslo",
+    },
+    exampleSentences: [
+      {
+        arabic: "غَسَّلْتِ التِّيَابْ الْيَوْمْ",
+        transliteration: "ghassalit it-tyēb il-yōm",
+        english: "She washed the clothes today.",
+      },
+      {
+        arabic: "غَسِّلْ إِيدَيْكْ قَبِلْ الْأَكِلْ",
+        transliteration: "ghassil īdēk ʔabil il-akil",
+        english: "Wash your hands before eating.",
+      },
+      {
+        arabic: "لازِمْ نْغَسِّلْ السَّيَّارَة، كْتِيرْ وَسْخِة",
+        transliteration: "lēzim nghassil is-sayyāra, ktīr waskhe",
+        english: "We need to wash the car, it's very dirty.",
+      },
+    ],
+  },
+
+  // ─── 8. nēm (to sleep) ───
+  {
+    id: "p2-verb-nem",
+    phaseId: 2,
+    verb: "nēm",
+    verbArabic: "نام",
+    meaning: "to sleep",
+    pastTense: {
+      ana: "nimet",
+      enta: "nimet",
+      ente: "nimte",
+      huwwe: "nēm",
+      hiyye: "nēmit",
+      ne7na: "nimna",
+      ento: "nimto",
+      henne: "nēmo",
+    },
+    presentTense: {
+      ana: "bnēm",
+      enta: "btnēm",
+      ente: "btnēme",
+      huwwe: "binēm",
+      hiyye: "btnēm",
+      ne7na: "mnnēm",
+      ento: "btnēmo",
+      henne: "binēmo",
+    },
+    imperative: {
+      singular_m: "nēm",
+      singular_f: "nēme",
+      plural: "nēmo",
+    },
+    exampleSentences: [
+      {
+        arabic: "نِمِتْ بَكِّيرْ مْبَارِحْ",
+        transliteration: "nimet bakkīr mbēriḥ",
+        english: "I slept early yesterday.",
+      },
+      {
+        arabic: "الْوْلَادْ مَا بِنَامُو قَبِلْ الْعَشَرَة",
+        transliteration: "il-wlēd ma bināmo ʔabil il-ʕashara",
+        english: "The kids don't sleep before ten.",
+      },
+      {
+        arabic: "نَامْ شْوَيّ، إِنْتَ تَعْبَانْ",
+        transliteration: "nēm shwayy, inta taʕbēn",
+        english: "Sleep a little, you're tired.",
+      },
+    ],
+  },
+
+  // ─── 9. fēʔ (to wake up) ───
+  {
+    id: "p2-verb-fe2",
+    phaseId: 2,
+    verb: "fēʔ",
+    verbArabic: "فاق",
+    meaning: "to wake up",
+    pastTense: {
+      ana: "fiʔet",
+      enta: "fiʔet",
+      ente: "fiʔte",
+      huwwe: "fēʔ",
+      hiyye: "fēʔit",
+      ne7na: "fiʔna",
+      ento: "fiʔto",
+      henne: "fēʔo",
+    },
+    presentTense: {
+      ana: "bfīʔ",
+      enta: "btfīʔ",
+      ente: "btfīʔe",
+      huwwe: "bifīʔ",
+      hiyye: "btfīʔ",
+      ne7na: "mnfīʔ",
+      ento: "btfīʔo",
+      henne: "bifīʔo",
+    },
+    imperative: {
+      singular_m: "fīʔ",
+      singular_f: "fīʔe",
+      plural: "fīʔo",
+    },
+    exampleSentences: [
+      {
+        arabic: "فِقْتْ عَالسَّاعِة سِتِّة الصُّبِحْ",
+        transliteration: "fiʔet ʕas-sēʕa sitte iṣ-ṣubiḥ",
+        english: "I woke up at six in the morning.",
+      },
+      {
+        arabic: "فِيقْ! رَحْ تِتْأَخَّرْ عَالشُّغُلْ",
+        transliteration: "fīʔ! raḥ titʔakhkhar ʕash-shughul",
+        english: "Wake up! You're going to be late for work.",
+      },
+      {
+        arabic: "هِيِّي دَايْمًا بْتْفِيقْ بَكِّيرْ",
+        transliteration: "hiyye dēyman btfīʔ bakkīr",
+        english: "She always wakes up early.",
+      },
+    ],
+  },
+
+  // ─── 10. sēfar (to travel) ───
+  {
+    id: "p2-verb-sefer",
+    phaseId: 2,
+    verb: "sēfar",
+    verbArabic: "سافر",
+    meaning: "to travel",
+    pastTense: {
+      ana: "sēfaret",
+      enta: "sēfaret",
+      ente: "sēfarte",
+      huwwe: "sēfar",
+      hiyye: "sēfarit",
+      ne7na: "sēfarna",
+      ento: "sēfarto",
+      henne: "sēfaro",
+    },
+    presentTense: {
+      ana: "bsēfir",
+      enta: "btsēfir",
+      ente: "btsēfre",
+      huwwe: "bisēfir",
+      hiyye: "btsēfir",
+      ne7na: "mnsēfir",
+      ento: "btsēfro",
+      henne: "bisēfro",
+    },
+    imperative: {
+      singular_m: "sēfir",
+      singular_f: "sēfre",
+      plural: "sēfro",
+    },
+    exampleSentences: [
+      {
+        arabic: "سَافَرْتْ عَفْرَنْسَا الصَّيْفِيِّة الْمَاضِيِة",
+        transliteration: "sēfaret ʕa-fransa iṣ-ṣēfiyye il-māḍye",
+        english: "I traveled to France last summer.",
+      },
+      {
+        arabic: "بَدْنَا نْسَافِرْ عَلُبْنَانْ الشَّهِرْ الْجَايْ",
+        transliteration: "badna nsēfir ʕa-libnēn ish-shaher ij-jēy",
+        english: "We want to travel to Lebanon next month.",
+      },
+      {
+        arabic: "هُوِّي بِيسَافِرْ كِتِيرْ لِالشُّغُلْ",
+        transliteration: "huwwe bisēfir ktīr lash-shughul",
+        english: "He travels a lot for work.",
+      },
+    ],
+  },
+];

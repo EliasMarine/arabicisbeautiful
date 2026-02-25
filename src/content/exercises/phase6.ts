@@ -245,4 +245,259 @@ export const phase6Exercises: ExerciseSet[] = [
       },
     ],
   },
+
+  // ── v2.0 Expansion ──
+
+  {
+    id: "p6-quiz-v2",
+    phaseId: 6,
+    title: "Phase 6 Quiz v2 — Current Events, Politics & Arts",
+    type: "multiple-choice",
+    questions: [
+      {
+        id: "p6-q11",
+        prompt: "The word أزمة in Lebanese news typically means:",
+        promptArabic: "أزمة",
+        options: [
+          "Celebration",
+          "Crisis",
+          "Election",
+          "Agreement",
+        ],
+        correctIndex: 1,
+        explanation:
+          "أزمة (azme) means 'crisis'. It's one of the most common words in Lebanese current events, used for economic, political, and social crises. You'll hear it constantly in the news: الأزمة الاقتصاديّة (il-azme l-iqtiṣādiyye) = the economic crisis.",
+      },
+      {
+        id: "p6-q12",
+        prompt: "إنتخابات refers to:",
+        promptArabic: "إنتخابات",
+        options: [
+          "Protests",
+          "Elections",
+          "Taxes",
+          "Negotiations",
+        ],
+        correctIndex: 1,
+        explanation:
+          "إنتخابات (intikhabēt) means 'elections'. The root is نخب (to choose/elect). You'll hear رح نروح ننتخب (raḥ nrūḥ nintakhib) = 'we're going to go vote'. إنتخب = to vote/elect, مرشّح (mrashshaḥ) = candidate.",
+      },
+      {
+        id: "p6-q13",
+        prompt: "A Lebanese person living abroad who says غربة عم تقتلني is expressing:",
+        promptArabic: "غربة عم تقتلني",
+        options: [
+          "Excitement about travel",
+          "The pain of living away from home — homesickness",
+          "A complaint about the weather",
+          "Anger at a friend",
+        ],
+        correctIndex: 1,
+        explanation:
+          "غربة (ghurbe) means 'exile / life away from home' and عم تقتلني (ʕam ti'tilni) means 'is killing me'. Together: 'living abroad is killing me'. This is a deeply emotional diaspora expression reflecting the longing (شوق) Lebanese emigrants feel for their homeland.",
+      },
+      {
+        id: "p6-q14",
+        prompt: "The phrase وطني يا وطني is commonly used in:",
+        promptArabic: "وطني يا وطني",
+        options: [
+          "Cooking recipes",
+          "Patriotic songs and poetry about Lebanon",
+          "Business negotiations",
+          "Religious sermons",
+        ],
+        correctIndex: 1,
+        explanation:
+          "وطني يا وطني (waṭani ya waṭani) means 'my homeland, oh my homeland'. It's a recurring phrase in Lebanese patriotic poetry and songs (أغاني وطنيّة). وطن (waṭan) = homeland, يا = vocative particle. It expresses deep love for Lebanon.",
+      },
+      {
+        id: "p6-q15",
+        prompt: "بزق is a Lebanese Arabic word for:",
+        promptArabic: "بزق",
+        options: [
+          "A type of stew",
+          "A traditional stringed musical instrument (buzuq)",
+          "A style of painting",
+          "A prayer ritual",
+        ],
+        correctIndex: 1,
+        explanation:
+          "بزق (buzuq) is a long-necked fretted stringed instrument central to Lebanese mountain music. It's closely related to the عود (ʕūd / oud) but has a distinctly sharper sound. Buzuq music is especially associated with the Lebanese dabke tradition.",
+      },
+      {
+        id: "p6-q16",
+        prompt: "يللي ما بيعرف الصقر بيشويه means:",
+        promptArabic: "يللي ما بيعرف الصقر بيشويه",
+        options: [
+          "Falcons are difficult to cook",
+          "He who doesn't know the falcon's value grills it — ignorance wastes treasure",
+          "Hunting falcons is an old tradition",
+          "Knowing birds is important for farmers",
+        ],
+        correctIndex: 1,
+        explanation:
+          "This Lebanese proverb means 'whoever doesn't recognize the falcon roasts it' — if you don't know the true value of something precious, you'll waste it. يللي (illi) = whoever, ما بيعرف = doesn't know, الصقر = the falcon, بيشويه = grills it. It's a warning about ignorance destroying value.",
+      },
+      {
+        id: "p6-q17",
+        prompt: "طائفة in Lebanese political context means:",
+        promptArabic: "طائفة",
+        options: [
+          "Political party",
+          "Religious sect / confessional community",
+          "Military brigade",
+          "Neighborhood",
+        ],
+        correctIndex: 1,
+        explanation:
+          "طائفة (ṭā'ife) means 'religious sect / confessional community'. Lebanon's political system is طائفي (ṭā'ifi) — sectarian — where power is divided among 18 recognized sects. This term is essential for understanding Lebanese politics and society.",
+      },
+      {
+        id: "p6-q18",
+        prompt: "A Lebanese emigrant saying بعتلي حوالة means someone:",
+        promptArabic: "بعتلي حوالة",
+        options: [
+          "Sent a letter",
+          "Sent a money transfer / remittance",
+          "Gave them a gift",
+          "Booked a flight ticket",
+        ],
+        correctIndex: 1,
+        explanation:
+          "حوالة (ḥawēle) means 'money transfer / remittance'. بعتلي (baʕatli) = sent me. Remittances from the Lebanese diaspora are a vital economic lifeline. You'll also hear تحويل (taḥwīl) = transfer. The diaspora sends billions in حوالات (ḥawēlēt) back to Lebanon annually.",
+      },
+    ],
+  },
+  {
+    id: "p6-fill-v2",
+    phaseId: 6,
+    title: "Phase 6 Fill in the Blank v2 — Politics, Diaspora & Literature",
+    type: "fill-blank",
+    fillBlanks: [
+      {
+        id: "p6-fb7",
+        sentence: "البلد بـ ___ means 'The country is in a crisis'.",
+        blank: "___",
+        answer: "أزمة",
+        acceptableAnswers: ["azme", "2azme", "أزمة"],
+        hint: "A common word in Lebanese news — starts with أ.",
+      },
+      {
+        id: "p6-fb8",
+        sentence: "رح نروح ___ means 'We're going to go vote'.",
+        blank: "___",
+        answer: "ننتخب",
+        acceptableAnswers: ["nintakhib", "nintakheb", "ننتخب"],
+        hint: "The verb 'to vote/elect' in the first person plural.",
+      },
+      {
+        id: "p6-fb9",
+        sentence: "___ عم تقتلني means 'Living abroad is killing me'.",
+        blank: "___",
+        answer: "الغربة",
+        acceptableAnswers: ["il-ghurbe", "el-ghurbe", "al-ghurbe", "الغربة"],
+        hint: "The word for 'exile / life far from home' with the definite article.",
+      },
+      {
+        id: "p6-fb10",
+        sentence: "بعتلّي ___ من بره means 'They sent me a remittance from abroad'.",
+        blank: "___",
+        answer: "حوالة",
+        acceptableAnswers: ["hawale", "7awale", "ḥawēle", "حوالة"],
+        hint: "The word for 'money transfer' — essential diaspora vocabulary.",
+      },
+      {
+        id: "p6-fb11",
+        sentence: "هيدا الشعر كتير ___ means 'This poetry is very beautiful'.",
+        blank: "___",
+        answer: "حلو",
+        acceptableAnswers: ["helo", "7ilu", "7elo", "حلو", "ḥilu"],
+        hint: "The Lebanese word for 'beautiful/sweet' — used for art and poetry.",
+      },
+      {
+        id: "p6-fb12",
+        sentence: "النظام الـ ___ بلبنان بيقسم السلطة بين الطوائف means 'The ___ system in Lebanon divides power among the sects'.",
+        blank: "___",
+        answer: "طائفي",
+        acceptableAnswers: ["ta2ifi", "ṭā'ifi", "taefi", "طائفي"],
+        hint: "The adjective describing Lebanon's confessional/sectarian system.",
+      },
+    ],
+  },
+  {
+    id: "p6-sentence-builder",
+    phaseId: 6,
+    title: "Phase 6 Sentence Builder — Advanced Structures",
+    type: "sentence-builder",
+    sentenceBuilderData: [
+      {
+        words: ["لو", "كنت", "بلبنان", "كنت", "رحت", "عالضيعة"],
+        correctOrder: [0, 1, 2, 3, 4, 5],
+        english: "If I were in Lebanon, I would have gone to the village",
+      },
+      {
+        words: ["اللي", "بيحب", "وطنو", "ما", "بينساه", "وين", "ما", "راح"],
+        correctOrder: [0, 1, 2, 3, 4, 5, 6, 7],
+        english: "Whoever loves their homeland never forgets it wherever they go",
+      },
+      {
+        words: ["مع", "إنو", "الوضع", "صعب", "الناس", "عم", "تقاوم"],
+        correctOrder: [0, 1, 2, 3, 4, 5, 6],
+        english: "Even though the situation is hard, people are resisting",
+      },
+      {
+        words: ["بتمنى", "يجي", "يوم", "نرجع", "كلنا", "عالبلد"],
+        correctOrder: [0, 1, 2, 3, 4, 5],
+        english: "I wish a day comes when we all return to the homeland",
+      },
+    ],
+  },
+  {
+    id: "p6-match-v2",
+    phaseId: 6,
+    title: "Phase 6 Matching v2 — Music, Politics & Diaspora",
+    type: "matching",
+    matchingPairs: [
+      {
+        arabic: "بزق",
+        transliteration: "buzuq",
+        english: "Traditional long-necked stringed instrument",
+      },
+      {
+        arabic: "مجوز",
+        transliteration: "mijwiz",
+        english: "Double-pipe reed instrument used in dabke",
+      },
+      {
+        arabic: "طائفة",
+        transliteration: "ṭā'ife",
+        english: "Religious sect / confessional community",
+      },
+      {
+        arabic: "مرشّح",
+        transliteration: "mrashshaḥ",
+        english: "Candidate (in an election)",
+      },
+      {
+        arabic: "غربة",
+        transliteration: "ghurbe",
+        english: "Exile / life away from the homeland",
+      },
+      {
+        arabic: "حوالة",
+        transliteration: "ḥawēle",
+        english: "Money transfer / remittance",
+      },
+      {
+        arabic: "زجل",
+        transliteration: "zajal",
+        english: "Improvised competitive sung poetry",
+      },
+      {
+        arabic: "مظاهرة",
+        transliteration: "muẓāhara",
+        english: "Protest / demonstration",
+      },
+    ],
+  },
 ];

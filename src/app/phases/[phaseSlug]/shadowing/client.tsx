@@ -1,19 +1,44 @@
 "use client";
 
+import { useMemo } from "react";
+import { useParams } from "next/navigation";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
-import { phase2Shadowing } from "@/content/shadowing/phase2";
+import { getShadowingByPhase } from "@/content/shadowing";
+import { PHASE_SLUGS } from "@/lib/constants";
 import { CheckCircle2 } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 
 export function ShadowingPageClient() {
-  const { markCompleted, isCompleted, completedIds, completedCount } = useProgress(2, "shadowing", phase2Shadowing.length);
+  const params = useParams();
+  const phaseSlug = params.phaseSlug as string;
+  const phaseId = PHASE_SLUGS.indexOf(phaseSlug as (typeof PHASE_SLUGS)[number]) + 1;
 
-  const sets = [
-    { title: "Set 1 — Your Day", items: phase2Shadowing.filter((s) => s.id.includes("shadow-1")) },
-    { title: "Set 2 — Talking About People", items: phase2Shadowing.filter((s) => s.id.includes("shadow-2")) },
-    { title: "Set 3 — Feelings", items: phase2Shadowing.filter((s) => s.id.includes("shadow-3")) },
-  ];
+  const items = useMemo(() => getShadowingByPhase(phaseId), [phaseId]);
+  const { markCompleted, isCompleted, completedCount } = useProgress(phaseId, "shadowing", items.length);
+
+  // Dynamically group items by their set number (e.g. p2-shadow-1a → set "1")
+  const sets = useMemo(() => {
+    const map = new Map<string, { title: string; items: typeof items }>();
+    for (const item of items) {
+      // Extract set number from id pattern: pN-shadow-{setNum}{letter}
+      const match = item.id.match(/shadow-(\d+)/);
+      const setNum = match ? match[1] : "1";
+      if (!map.has(setNum)) {
+        map.set(setNum, { title: `Set ${setNum}`, items: [] });
+      }
+      map.get(setNum)!.items.push(item);
+    }
+    return Array.from(map.values());
+  }, [items]);
+
+  if (items.length === 0) {
+    return (
+      <div className="text-center py-12 text-[var(--muted)]">
+        <p>No shadowing content available for this phase yet.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -80,7 +105,7 @@ export function ShadowingPageClient() {
       ))}
 
       <div className="text-center text-sm text-[var(--muted)]">
-        {completedCount}/{phase2Shadowing.length} sentences completed
+        {completedCount}/{items.length} sentences completed
       </div>
     </div>
   );

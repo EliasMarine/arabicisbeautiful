@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { journalEntries, userXP } from "@/lib/db/schema";
+import { logActivity } from "@/lib/db/log-activity";
 import { eq, and, desc } from "drizzle-orm";
 
 export async function GET(request: Request) {
@@ -69,6 +70,9 @@ export async function POST(request: Request) {
       earnedAt: now,
     })
     .run();
+
+  // Log daily activity (counts as 1 exercise)
+  logActivity(session.user.id, { exercisesCompleted: 1 });
 
   return NextResponse.json({ entry: result, xpEarned: 10 });
 }

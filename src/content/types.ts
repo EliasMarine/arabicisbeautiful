@@ -189,3 +189,93 @@ export interface LetterForm {
   medial: string;
   final: string;
 }
+
+// ── v2.0 New Content Types ──
+
+export interface ScenarioChoice {
+  text: string;
+  textArabic: string;
+  textTransliteration: string;
+  nextBranchId: string;
+  culturalNote?: string;
+}
+
+export interface ScenarioBranch {
+  id: string;
+  speaker: string;
+  speakerRole: "a" | "b" | "narrator";
+  arabic: string;
+  transliteration: string;
+  english: string;
+  choices?: ScenarioChoice[];
+  culturalTip?: string;
+}
+
+export interface ScenarioLesson {
+  id: string;
+  phaseId: number;
+  title: string;
+  titleArabic: string;
+  setting: string;
+  branches: ScenarioBranch[];
+  comprehensionCheck?: {
+    question: string;
+    options: string[];
+    correctIndex: number;
+  }[];
+  vocabSummary: {
+    arabic: string;
+    transliteration: string;
+    english: string;
+  }[];
+}
+
+export interface VerbConjugation {
+  id: string;
+  phaseId: number;
+  verb: string;
+  verbArabic: string;
+  meaning: string;
+  pastTense: {
+    ana: string;
+    enta: string;
+    ente: string;
+    huwwe: string;
+    hiyye: string;
+    ne7na: string;
+    ento: string;
+    henne: string;
+  };
+  presentTense: {
+    ana: string;
+    enta: string;
+    ente: string;
+    huwwe: string;
+    hiyye: string;
+    ne7na: string;
+    ento: string;
+    henne: string;
+  };
+  imperative?: {
+    singular_m: string;
+    singular_f: string;
+    plural: string;
+  };
+  exampleSentences: {
+    arabic: string;
+    transliteration: string;
+    english: string;
+  }[];
+}
+
+export interface MSAComparison {
+  id: string;
+  phaseId: number;
+  category: string;
+  items: {
+    concept: string;
+    msa: { arabic: string; transliteration: string };
+    lebanese: { arabic: string; transliteration: string };
+    notes: string;
+  }[];
+}

@@ -1,0 +1,513 @@
+import type { VerbConjugation } from "../types";
+
+export const phase3Verbs: VerbConjugation[] = [
+  // ── 1. fakkar (فكّر) — to think ──
+  {
+    id: "p3-verb-fakkar",
+    phaseId: 3,
+    verb: "fakkar",
+    verbArabic: "فكّر",
+    meaning: "to think",
+    pastTense: {
+      ana: "fakkart",
+      enta: "fakkart",
+      ente: "fakkarti",
+      huwwe: "fakkar",
+      hiyye: "fakkarit",
+      ne7na: "fakkarna",
+      ento: "fakkartu",
+      henne: "fakkaru",
+    },
+    presentTense: {
+      ana: "bfakkir",
+      enta: "btfakkir",
+      ente: "btfakkri",
+      huwwe: "byfakkir",
+      hiyye: "btfakkir",
+      ne7na: "mnfakkir",
+      ento: "btfakkru",
+      henne: "byfakkru",
+    },
+    imperative: {
+      singular_m: "fakkir",
+      singular_f: "fakkri",
+      plural: "fakkru",
+    },
+    exampleSentences: [
+      {
+        arabic: "عَمْ بْفَكِّر إِنُّو نْرُوح عَ الْجَبَل هَالْوِيكَنْد",
+        transliteration: "ʕam bfakkir inno nrūḥ ʕa l-jabal ha-l-wīkand",
+        english: "I'm thinking that we go to the mountain this weekend.",
+      },
+      {
+        arabic: "فَكَّرْت كْتِير قَبْل مَا أَخَدْت الْقَرَار",
+        transliteration: "fakkart ktīr ʔabl ma akhadt il-ʔarār",
+        english: "I thought a lot before I made the decision.",
+      },
+      {
+        arabic: "فَكِّر مْنِيح قَبْل مَا تْحْكِي",
+        transliteration: "fakkir mnīḥ ʔabl ma tiḥki",
+        english: "Think well before you speak.",
+      },
+    ],
+  },
+
+  // ── 2. ftakar (افتكر) — to remember ──
+  {
+    id: "p3-verb-ftakar",
+    phaseId: 3,
+    verb: "ftakar",
+    verbArabic: "افتكر",
+    meaning: "to remember",
+    pastTense: {
+      ana: "ftakart",
+      enta: "ftakart",
+      ente: "ftakarti",
+      huwwe: "ftakar",
+      hiyye: "ftakarit",
+      ne7na: "ftakarna",
+      ento: "ftakartu",
+      henne: "ftakaru",
+    },
+    presentTense: {
+      ana: "biftikir",
+      enta: "btiftikir",
+      ente: "btiftikri",
+      huwwe: "byiftikir",
+      hiyye: "btiftikir",
+      ne7na: "mniftikir",
+      ento: "btiftikru",
+      henne: "byiftikru",
+    },
+    imperative: {
+      singular_m: "ftikir",
+      singular_f: "ftikri",
+      plural: "ftikru",
+    },
+    exampleSentences: [
+      {
+        arabic: "افْتَكَرْت إِنُّو عِنْدِي مَوْعِد عِنْد الطَّبِيب",
+        transliteration: "ftakart inno ʕindi mawʕad ʕind iṭ-ṭabīb",
+        english: "I remembered that I have an appointment at the doctor.",
+      },
+      {
+        arabic: "مَا عَمْ بِفْتِكِر شُو قَالْ",
+        transliteration: "ma ʕam biftikir shū ʔāl",
+        english: "I can't remember what he said.",
+      },
+      {
+        arabic: "افْتِكِر كِيف كُنَّا نِلْعَب وِنْحْنَا زْغَار",
+        transliteration: "ftikir kīf kunna nilʕab w niḥna zghār",
+        english: "Remember how we used to play when we were little.",
+      },
+    ],
+  },
+
+  // ── 3. nisi (نسي) — to forget ──
+  {
+    id: "p3-verb-nisi",
+    phaseId: 3,
+    verb: "nisi",
+    verbArabic: "نسي",
+    meaning: "to forget",
+    pastTense: {
+      ana: "nsīt",
+      enta: "nsīt",
+      ente: "nsīti",
+      huwwe: "nisi",
+      hiyye: "nisyit",
+      ne7na: "nsīna",
+      ento: "nsītu",
+      henne: "nisyu",
+    },
+    presentTense: {
+      ana: "binsa",
+      enta: "btinsa",
+      ente: "btinsi",
+      huwwe: "byinsa",
+      hiyye: "btinsa",
+      ne7na: "mninsa",
+      ento: "btinsu",
+      henne: "byinsu",
+    },
+    imperative: {
+      singular_m: "nsa",
+      singular_f: "nsi",
+      plural: "nsu",
+    },
+    exampleSentences: [
+      {
+        arabic: "نْسِيت الْمَفَاتِيح بِالْبَيْت",
+        transliteration: "nsīt il-mafātīḥ bi-l-bayt",
+        english: "I forgot the keys at home.",
+      },
+      {
+        arabic: "مَا تِنْسَى تِتَّصِل فِيِّي بُكْرَا",
+        transliteration: "ma tinsa tittaṣil fiyyi bukra",
+        english: "Don't forget to call me tomorrow.",
+      },
+      {
+        arabic: "دَائِمًا بْيِنْسَى اسْمِي",
+        transliteration: "dāyman byinsa ismi",
+        english: "He always forgets my name.",
+      },
+    ],
+  },
+
+  // ── 4. saʔal (سأل) — to ask ──
+  {
+    id: "p3-verb-sa2al",
+    phaseId: 3,
+    verb: "saʔal",
+    verbArabic: "سأل",
+    meaning: "to ask",
+    pastTense: {
+      ana: "saʔalt",
+      enta: "saʔalt",
+      ente: "saʔalti",
+      huwwe: "saʔal",
+      hiyye: "saʔalit",
+      ne7na: "saʔalna",
+      ento: "saʔaltu",
+      henne: "saʔalu",
+    },
+    presentTense: {
+      ana: "bisʔal",
+      enta: "btisʔal",
+      ente: "btisʔali",
+      huwwe: "byisʔal",
+      hiyye: "btisʔal",
+      ne7na: "mnisʔal",
+      ento: "btisʔalu",
+      henne: "byisʔalu",
+    },
+    imperative: {
+      singular_m: "sʔal",
+      singular_f: "sʔali",
+      plural: "sʔalu",
+    },
+    exampleSentences: [
+      {
+        arabic: "سْأَلْتُو عَنِ الْمَوْضُوع بَسْ مَا جَاوَبْنِي",
+        transliteration: "saʔalto ʕan il-mawḍūʕ bas ma jāwabni",
+        english: "I asked him about the topic but he didn't answer me.",
+      },
+      {
+        arabic: "بَدِّي إِسْأَلَك سُؤَال مُهِمّ",
+        transliteration: "baddi isʔalak suʔāl muhimm",
+        english: "I want to ask you an important question.",
+      },
+      {
+        arabic: "سْأَل أَيّ حَدَا بِالشَّارِع وْبِيسَاعْدَك",
+        transliteration: "sʔal ayy ḥada bi-sh-shāriʕ w bisāʕdak",
+        english: "Ask anyone on the street and they'll help you.",
+      },
+    ],
+  },
+
+  // ── 5. jarrab (جرّب) — to try ──
+  {
+    id: "p3-verb-jarrab",
+    phaseId: 3,
+    verb: "jarrab",
+    verbArabic: "جرّب",
+    meaning: "to try",
+    pastTense: {
+      ana: "jarrabt",
+      enta: "jarrabt",
+      ente: "jarrabti",
+      huwwe: "jarrab",
+      hiyye: "jarrabit",
+      ne7na: "jarrabna",
+      ento: "jarrabtu",
+      henne: "jarrabu",
+    },
+    presentTense: {
+      ana: "bjarrib",
+      enta: "btjarrib",
+      ente: "btjarrbi",
+      huwwe: "byjarrib",
+      hiyye: "btjarrib",
+      ne7na: "mnjarrib",
+      ento: "btjarrbu",
+      henne: "byjarrbu",
+    },
+    imperative: {
+      singular_m: "jarrib",
+      singular_f: "jarrbi",
+      plural: "jarrbu",
+    },
+    exampleSentences: [
+      {
+        arabic: "جَرَّبْت هَالْأَكْلِة وْكْتِير طَيْبِة",
+        transliteration: "jarrabt ha-l-akle w ktīr ṭaybe",
+        english: "I tried this dish and it's very delicious.",
+      },
+      {
+        arabic: "جَرِّب تِحْكِي عَرَبِي مَا رَح يِضْحَكُوا عَلَيْك",
+        transliteration: "jarrib tiḥki ʕarabi ma raḥ yiḍḥaku ʕalayk",
+        english: "Try speaking Arabic, they won't laugh at you.",
+      },
+      {
+        arabic: "عَمْ بْجَرِّب أَتْعَلَّم لِبْنَانِي مِنِ الْإِنْتِرْنِت",
+        transliteration: "ʕam bjarrib atʕallam libnāni min il-intarnit",
+        english: "I'm trying to learn Lebanese from the internet.",
+      },
+    ],
+  },
+
+  // ── 6. sēʕad (ساعد) — to help ──
+  {
+    id: "p3-verb-se3ed",
+    phaseId: 3,
+    verb: "sāʕad",
+    verbArabic: "ساعد",
+    meaning: "to help",
+    pastTense: {
+      ana: "sāʕadt",
+      enta: "sāʕadt",
+      ente: "sāʕadti",
+      huwwe: "sāʕad",
+      hiyye: "sāʕadit",
+      ne7na: "sāʕadna",
+      ento: "sāʕadtu",
+      henne: "sāʕadu",
+    },
+    presentTense: {
+      ana: "bsēʕid",
+      enta: "btsēʕid",
+      ente: "btsēʕdi",
+      huwwe: "bysēʕid",
+      hiyye: "btsēʕid",
+      ne7na: "mnsēʕid",
+      ento: "btsēʕdu",
+      henne: "bysēʕdu",
+    },
+    imperative: {
+      singular_m: "sēʕid",
+      singular_f: "sēʕdi",
+      plural: "sēʕdu",
+    },
+    exampleSentences: [
+      {
+        arabic: "سَاعَدْنِي كْتِير لَمَّا كُنْت بِحَاجِة",
+        transliteration: "sāʕadni ktīr lamma kunt bi-ḥāje",
+        english: "He helped me a lot when I was in need.",
+      },
+      {
+        arabic: "بَدَّك سَاعْدِك تِشْتِغِل عَ الْمَشْرُوع؟",
+        transliteration: "baddak sāʕdak tishtghil ʕa l-mashrūʕ?",
+        english: "Do you want me to help you work on the project?",
+      },
+      {
+        arabic: "مْنِسَاعِد بَعْض كِلْ يَوْم",
+        transliteration: "mnsēʕid baʕḍ kill yawm",
+        english: "We help each other every day.",
+      },
+    ],
+  },
+
+  // ── 7. ḥabb (حبّ) — to love/like ──
+  {
+    id: "p3-verb-7abb",
+    phaseId: 3,
+    verb: "ḥabb",
+    verbArabic: "حبّ",
+    meaning: "to love/like",
+    pastTense: {
+      ana: "ḥabbāyt",
+      enta: "ḥabbāyt",
+      ente: "ḥabbāyti",
+      huwwe: "ḥabb",
+      hiyye: "ḥabbit",
+      ne7na: "ḥabbāyna",
+      ento: "ḥabbāytu",
+      henne: "ḥabbu",
+    },
+    presentTense: {
+      ana: "bḥibb",
+      enta: "btḥibb",
+      ente: "btḥibbi",
+      huwwe: "byḥibb",
+      hiyye: "btḥibb",
+      ne7na: "mnḥibb",
+      ento: "btḥibbu",
+      henne: "byḥibbu",
+    },
+    imperative: {
+      singular_m: "ḥibb",
+      singular_f: "ḥibbi",
+      plural: "ḥibbu",
+    },
+    exampleSentences: [
+      {
+        arabic: "بْحِبّ لِبْنَان مِنْ كِلّ قَلْبِي",
+        transliteration: "bḥibb libnān min kill ʔalbi",
+        english: "I love Lebanon with all my heart.",
+      },
+      {
+        arabic: "حَبَّيْت الْفِيلْم كْتِير، لَازِم تْشُوفُو",
+        transliteration: "ḥabbāyt il-fīlm ktīr, lāzim tshūfo",
+        english: "I liked the movie a lot, you have to watch it.",
+      },
+      {
+        arabic: "شُو بْتْحِبّ تَاكُل عَ الْغَدَا؟",
+        transliteration: "shū btḥibb tākul ʕa l-ghada?",
+        english: "What do you like to eat for lunch?",
+      },
+    ],
+  },
+
+  // ── 8. ʔāl (قال) — to say ──
+  {
+    id: "p3-verb-2al",
+    phaseId: 3,
+    verb: "ʔāl",
+    verbArabic: "قال",
+    meaning: "to say",
+    pastTense: {
+      ana: "ʔilt",
+      enta: "ʔilt",
+      ente: "ʔilti",
+      huwwe: "ʔāl",
+      hiyye: "ʔālit",
+      ne7na: "ʔilna",
+      ento: "ʔiltu",
+      henne: "ʔālu",
+    },
+    presentTense: {
+      ana: "bʔūl",
+      enta: "btʔūl",
+      ente: "btʔūli",
+      huwwe: "byʔūl",
+      hiyye: "btʔūl",
+      ne7na: "mnʔūl",
+      ento: "btʔūlu",
+      henne: "byʔūlu",
+    },
+    imperative: {
+      singular_m: "ʔūl",
+      singular_f: "ʔūli",
+      plural: "ʔūlu",
+    },
+    exampleSentences: [
+      {
+        arabic: "شُو قِلْتِلُّو لَمَّا شَافَك؟",
+        transliteration: "shū ʔiltillo lamma shāfak?",
+        english: "What did you tell him when he saw you?",
+      },
+      {
+        arabic: "قَال إِنُّو مَا فِي مَشْكِلِة",
+        transliteration: "ʔāl inno ma fī mashkle",
+        english: "He said that there's no problem.",
+      },
+      {
+        arabic: "قُولِّي رَأْيَك بِصَرَاحَة",
+        transliteration: "ʔūlli raʔyak bi-ṣarāḥa",
+        english: "Tell me your opinion honestly.",
+      },
+    ],
+  },
+
+  // ── 9. fhim (فهم) — to understand ──
+  {
+    id: "p3-verb-fhim",
+    phaseId: 3,
+    verb: "fhim",
+    verbArabic: "فهم",
+    meaning: "to understand",
+    pastTense: {
+      ana: "fhimt",
+      enta: "fhimt",
+      ente: "fhimti",
+      huwwe: "fhim",
+      hiyye: "fhimit",
+      ne7na: "fhimna",
+      ento: "fhimtu",
+      henne: "fhimu",
+    },
+    presentTense: {
+      ana: "bifham",
+      enta: "btifham",
+      ente: "btifhami",
+      huwwe: "byifham",
+      hiyye: "btifham",
+      ne7na: "mnifham",
+      ento: "btifhamu",
+      henne: "byifhamu",
+    },
+    imperative: {
+      singular_m: "fham",
+      singular_f: "fhami",
+      plural: "fhamu",
+    },
+    exampleSentences: [
+      {
+        arabic: "فْهِمْت شُو بَدَّك تْقُول",
+        transliteration: "fhimt shū baddak tʔūl",
+        english: "I understood what you want to say.",
+      },
+      {
+        arabic: "مَا عَمْ بِفْهَم لَيْش عِمِل هَيْك",
+        transliteration: "ma ʕam bifham laysh ʕimil hayk",
+        english: "I don't understand why he did that.",
+      },
+      {
+        arabic: "إِذَا مَا فْهِمْت، سْأَل مَرَّة تَانْيِة",
+        transliteration: "iza ma fhimt, sʔal marra tānye",
+        english: "If you didn't understand, ask again.",
+      },
+    ],
+  },
+
+  // ── 10. jamaʕ (جمع) — to collect/gather ──
+  {
+    id: "p3-verb-jama3",
+    phaseId: 3,
+    verb: "jamaʕ",
+    verbArabic: "جمع",
+    meaning: "to collect/gather",
+    pastTense: {
+      ana: "jamaʕt",
+      enta: "jamaʕt",
+      ente: "jamaʕti",
+      huwwe: "jamaʕ",
+      hiyye: "jamʕit",
+      ne7na: "jamaʕna",
+      ento: "jamaʕtu",
+      henne: "jamʕu",
+    },
+    presentTense: {
+      ana: "bijmaʕ",
+      enta: "btijmaʕ",
+      ente: "btijmaʕi",
+      huwwe: "byijmaʕ",
+      hiyye: "btijmaʕ",
+      ne7na: "mnijmaʕ",
+      ento: "btijmaʕu",
+      henne: "byijmaʕu",
+    },
+    imperative: {
+      singular_m: "jmaʕ",
+      singular_f: "jmaʕi",
+      plural: "jmaʕu",
+    },
+    exampleSentences: [
+      {
+        arabic: "جْمَعْنَا كِلّ الْعَيْلِة عَ الْغَدَا يَوْم الْأَحَد",
+        transliteration: "jamaʕna kill il-ʕayle ʕa l-ghada yawm il-aḥad",
+        english: "We gathered the whole family for lunch on Sunday.",
+      },
+      {
+        arabic: "عَمْ بِجْمَع مَعْلُومَات عَنِ الْمَوْضُوع",
+        transliteration: "ʕam bijmaʕ maʕlūmāt ʕan il-mawḍūʕ",
+        english: "I'm gathering information about the topic.",
+      },
+      {
+        arabic: "جْمَعُوا غْرَاضْكُن، عَمْ نِرُوح",
+        transliteration: "jmaʕu ghrāḍkon, ʕam nrūḥ",
+        english: "Gather your things, we're leaving.",
+      },
+    ],
+  },
+];

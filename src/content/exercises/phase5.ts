@@ -292,4 +292,158 @@ export const phase5Exercises: ExerciseSet[] = [
       },
     ],
   },
+
+  // ── v2.0 Expansion ──
+
+  {
+    id: "p5-quiz-v2",
+    phaseId: 5,
+    title: "Phase 5 Quiz v2 — Media, Slang & Debate",
+    type: "multiple-choice",
+    questions: [
+      {
+        id: "p5-q13",
+        prompt: "In a news broadcast, نشرة الأخبار means:",
+        promptArabic: "نشرة الأخبار",
+        options: [
+          "Breaking news alert",
+          "The news bulletin / newscast",
+          "A newspaper article",
+          "A press conference",
+        ],
+        correctIndex: 1,
+        explanation:
+          "نشرة الأخبار (nishrit il-akhbār) is the standard term for a news bulletin or newscast. نشرة means bulletin/broadcast and الأخبار means the news. You'll hear this at the start of every Lebanese TV news program.",
+      },
+      {
+        id: "p5-q14",
+        prompt: 'The youth slang expression أكيد أكيد is used to mean:',
+        options: [
+          "Maybe, I'm not sure",
+          "Absolutely / for sure (emphatic)",
+          "I disagree completely",
+          "That's old news",
+        ],
+        correctIndex: 1,
+        explanation:
+          "أكيد (akīd) means 'sure/certain'. Doubling it — أكيد أكيد — is a common Lebanese intensifier meaning 'absolutely, 100%'. Youth often use repetition for emphasis in colloquial speech.",
+      },
+      {
+        id: "p5-q15",
+        prompt: "In an academic context, أطروحة refers to:",
+        promptArabic: "أطروحة",
+        options: [
+          "A final exam",
+          "A thesis or dissertation",
+          "A homework assignment",
+          "A study group",
+        ],
+        correctIndex: 1,
+        explanation:
+          "أطروحة (uṭrūḥa) means thesis or dissertation. It comes from the root ط-ر-ح (to put forward/propose). Lebanese university students use this when discussing their academic research. رسالة is also used for a master's thesis.",
+      },
+      {
+        id: "p5-q16",
+        prompt: 'During a debate, بالعكس is used to say:',
+        promptArabic: "بالعكس",
+        options: [
+          "I agree with you",
+          "On the contrary / quite the opposite",
+          "Let's change the subject",
+          "You're absolutely right",
+        ],
+        correctIndex: 1,
+        explanation:
+          "بالعكس (bil-ʕaks) means 'on the contrary' — a key debate expression in Lebanese Arabic. It's used to politely introduce an opposing viewpoint. العكس means 'the opposite', so بالعكس literally = 'by the opposite'.",
+      },
+      {
+        id: "p5-q17",
+        prompt: "The expression مقهور/ة conveys a feeling of:",
+        promptArabic: "مقهور",
+        options: [
+          "Excitement and joy",
+          "Deep frustration or feeling wronged",
+          "Physical exhaustion",
+          "Mild annoyance",
+        ],
+        correctIndex: 1,
+        explanation:
+          "مقهور (ma'hūr, m.) / مقهورة (ma'hūra, f.) describes a deep emotional state of feeling oppressed, frustrated, or wronged by an unjust situation. It's stronger than زعلان (upset) and carries a sense of helplessness. Very common in Lebanese emotional expression.",
+      },
+      {
+        id: "p5-q18",
+        prompt: 'The slang term فلّ means:',
+        options: [
+          "He arrived",
+          "He left / bounced (slang)",
+          "He fell asleep",
+          "He got angry",
+        ],
+        correctIndex: 1,
+        explanation:
+          "فلّ (fall) is Lebanese youth slang meaning 'he left' or 'he bounced'. It's very informal. Example: فلّ من الحفلة بكّير = He bounced from the party early. The formal equivalent is راح or مشي.",
+      },
+      {
+        id: "p5-q19",
+        prompt: "مراسل صحفي refers to:",
+        promptArabic: "مراسل صحفي",
+        options: [
+          "A newspaper editor",
+          "A news correspondent / reporter",
+          "A TV anchor",
+          "A photographer",
+        ],
+        correctIndex: 1,
+        explanation:
+          "مراسل صحفي (murāsil ṣaḥafi) = news correspondent/reporter. مراسل comes from the root ر-س-ل (to send) — literally 'one who is sent'. صحفي means journalistic (from صحافة = journalism). This is standard media vocabulary across Arabic dialects.",
+      },
+      {
+        id: "p5-q20",
+        prompt: 'In a heated discussion, خلّيني كمّل is used to say:',
+        promptArabic: "خلّيني كمّل",
+        options: [
+          "Let me leave now",
+          "Let me finish (what I'm saying)",
+          "Leave me alone",
+          "Let me start over",
+        ],
+        correctIndex: 1,
+        explanation:
+          "خلّيني كمّل (khallīni kammil) = 'let me finish'. خلّيني = let me / allow me, كمّل = finish/continue. This is an essential debate and conversation phrase when someone is being interrupted. Very commonly heard in Lebanese discussions and talk shows.",
+      },
+    ],
+  },
+  {
+    id: "p5-sentence-builder",
+    phaseId: 5,
+    title: "Phase 5 Sentence Builder — Advanced Constructions",
+    type: "sentence-builder",
+    sentenceBuilderData: [
+      {
+        words: ["شفت", "شو", "بالأخبار", "اليوم", "؟"],
+        correctOrder: [1, 0, 2, 3, 4],
+        english: "Did you see what was on the news today?",
+      },
+      {
+        words: ["بالعكس", "،", "هيدا", "أحسن", "قرار"],
+        correctOrder: [0, 1, 2, 3, 4],
+        english: "On the contrary, this is the best decision.",
+      },
+      {
+        words: ["لو", "كنت", "درست", "أكتر", "،", "كنت", "نجحت"],
+        correctOrder: [0, 1, 2, 3, 4, 5, 6],
+        english: "If I had studied more, I would have passed.",
+      },
+      {
+        words: ["خلّيني", "كمّل", "الفكرة", "بعدين", "احكي"],
+        correctOrder: [0, 1, 2, 3, 4],
+        english: "Let me finish the idea, then speak.",
+      },
+      {
+        words: ["قالتلي", "إنها", "مقهورة", "من", "الوضع"],
+        correctOrder: [0, 1, 2, 3, 4],
+        english: "She told me that she's frustrated by the situation.",
+      },
+    ],
+  },
 ];
