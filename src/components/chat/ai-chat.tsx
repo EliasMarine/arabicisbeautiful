@@ -3,8 +3,9 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { ChatBubble } from "./chat-bubble";
 import { ArabicKeyboard } from "@/components/arabic/arabic-keyboard";
+import { useAudioRecorder } from "@/hooks/use-audio-recorder";
 import { insertAtCursor, backspaceAtCursor, restoreCursor } from "@/lib/keyboard-utils";
-import { Send, RotateCcw, History, X, Trash2, Keyboard } from "lucide-react";
+import { Send, RotateCcw, History, X, Trash2, Keyboard, Mic, MicOff, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -39,8 +40,11 @@ export function AIChat({ phaseId }: AIChatProps) {
   const [showHistory, setShowHistory] = useState(false);
   const [showKeyboard, setShowKeyboard] = useState(false);
   const [history, setHistory] = useState<ConversationSummary[]>([]);
+  const [isTranscribing, setIsTranscribing] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { isRecording, startRecording, stopRecording, error: recorderError } = useAudioRecorder();
 
   const starters = STARTERS[phaseId] || STARTERS[1];
 
@@ -182,6 +186,46 @@ export function AIChat({ phaseId }: AIChatProps) {
     });
   }, []);
 
+  // Speech-to-text: record audio → transcribe → insert into input
+  const handleVoiceInput = useCallback(async () => {
+    if (isRecording) {
+      // Stop recording and transcribe
+      const blob = await stopRecording();
+      if (!blob) return;
+
+      setIsTranscribing(true);
+      try {
+        const formData = new FormData();
+        formData.append("audio", blob, "recording.webm");
+
+        const res = await fetch("/api/transcribe", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        const data = await res.json();
+
+        if (data.text) {
+          // Append transcribed text to input (with space if input already has text)
+          setInput((prev) => {
+            const separator = prev.trim() ? " " : "";
+            return prev + separator + data.text;
+          });
+          // Focus the input after transcription
+          inputRef.current?.focus();
+        }
+      } catch (err) {
+        console.error("[Chat STT] Transcription failed:", err);
+      } finally {
+        setIsTranscribing(false);
+      }
+    } else {
+      // Start recording
+      await startRecording();
+    }
+  }, [isRecording, stopRecording, startRecording]);
+
   return (
     <div className="flex flex-col h-[500px] sm:h-[600px] bg-[var(--card-bg)] rounded-lg border border-[var(--sand)] shadow-sm overflow-hidden">
       {/* Header */}
@@ -300,6 +344,22 @@ export function AIChat({ phaseId }: AIChatProps) {
         )}
       </div>
 
+      {/* Recording banner — shows above input when recording */}
+      {isRecording && (
+        <div className="flex items-center justify-center gap-2 px-3 py-2 bg-red-500 text-white text-xs font-semibold animate-pulse">
+          <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+          Listening... Tap the mic button to stop
+        </div>
+      )}
+
+      {/* Transcribing indicator */}
+      {isTranscribing && (
+        <div className="flex items-center justify-center gap-2 px-3 py-2 bg-[var(--phase-color)] text-white text-xs font-semibold">
+          <Loader2 size={14} className="animate-spin" />
+          Transcribing your voice...
+        </div>
+      )}
+
       {/* Input */}
       <form
         onSubmit={handleSubmit}
@@ -310,16 +370,43 @@ export function AIChat({ phaseId }: AIChatProps) {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Type in Arabic or English..."
-          disabled={isStreaming}
+          placeholder={isRecording ? "Listening..." : "Type in Arabic or English..."}
+          disabled={isStreaming || isRecording}
           className={cn(
             "flex-1 bg-[var(--card-bg)] border border-[var(--sand)] rounded-full px-4 py-2 text-sm",
             "text-[var(--dark)] placeholder:text-[var(--muted)]",
             "focus:outline-none focus:border-[var(--phase-color)]",
-            "disabled:opacity-50"
+            "disabled:opacity-50",
+            isRecording && "border-red-300 placeholder:text-red-400"
           )}
           dir="auto"
         />
+        {/* Voice input (mic) button */}
+        <button
+          type="button"
+          onClick={handleVoiceInput}
+          disabled={isStreaming || isTranscribing}
+          className={cn(
+            "w-9 h-9 rounded-full flex items-center justify-center transition-all relative",
+            isRecording
+              ? "bg-red-500 text-white shadow-[0_0_0_3px_rgba(239,68,68,0.3)]"
+              : "bg-[var(--sand)] text-[var(--muted)] hover:text-[var(--phase-color)]",
+            "disabled:opacity-30"
+          )}
+          title={isRecording ? "Stop recording" : "Voice input"}
+        >
+          {isTranscribing ? (
+            <Loader2 size={16} className="animate-spin" />
+          ) : isRecording ? (
+            <>
+              <MicOff size={16} />
+              <span className="absolute inset-0 rounded-full border-2 border-red-500 animate-ping opacity-40" />
+            </>
+          ) : (
+            <Mic size={16} />
+          )}
+        </button>
+        {/* Arabic keyboard toggle */}
         <button
           type="button"
           onClick={() => setShowKeyboard(!showKeyboard)}
@@ -333,9 +420,10 @@ export function AIChat({ phaseId }: AIChatProps) {
         >
           <Keyboard size={16} />
         </button>
+        {/* Send button */}
         <button
           type="submit"
-          disabled={!input.trim() || isStreaming}
+          disabled={!input.trim() || isStreaming || isRecording}
           className={cn(
             "w-9 h-9 rounded-full flex items-center justify-center transition-all",
             "bg-[var(--phase-color)] text-white",
@@ -345,6 +433,13 @@ export function AIChat({ phaseId }: AIChatProps) {
           <Send size={16} />
         </button>
       </form>
+
+      {/* Recorder error */}
+      {recorderError && (
+        <div className="px-3 py-1.5 bg-red-50 text-red-600 text-xs text-center">
+          {recorderError}
+        </div>
+      )}
 
       {/* Arabic Keyboard Panel (below input) */}
       <div className="px-3 pb-2 bg-[var(--cream)]">
