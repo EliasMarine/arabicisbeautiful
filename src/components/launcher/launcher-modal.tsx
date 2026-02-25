@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,6 +16,7 @@ import {
   MessageCircle,
   Globe,
   Target,
+  HelpCircle,
 } from "lucide-react";
 import {
   PHASE_SLUGS,
@@ -41,6 +42,7 @@ interface LauncherModalProps {
 
 export function LauncherModal({ onClose }: LauncherModalProps) {
   const pathname = usePathname();
+  const [showBadgeHint, setShowBadgeHint] = useState(false);
 
   const currentPhaseSlug: PhaseSlug =
     PHASE_SLUGS.find((s) => pathname.startsWith(`/phases/${s}`)) ?? "reactivation";
@@ -134,7 +136,7 @@ export function LauncherModal({ onClose }: LauncherModalProps) {
           </div>
 
           {/* Activity Categories */}
-          {LAUNCHER_CATEGORIES.map((category) => (
+          {LAUNCHER_CATEGORIES.map((category, catIdx) => (
             <div key={category.id}>
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-[var(--gold)]">
@@ -143,6 +145,22 @@ export function LauncherModal({ onClose }: LauncherModalProps) {
                 <p className="text-[0.65rem] font-semibold uppercase tracking-wider text-[var(--muted)]">
                   {category.label}
                 </p>
+                {catIdx === 0 && (
+                  <div className="relative ml-auto">
+                    <button
+                      onClick={() => setShowBadgeHint((v) => !v)}
+                      className="text-[var(--muted)]/60 hover:text-[var(--muted)] transition-colors"
+                      aria-label="What do the numbered circles mean?"
+                    >
+                      <HelpCircle size={14} />
+                    </button>
+                    {showBadgeHint && (
+                      <div className="absolute right-0 top-full mt-1 w-52 bg-[var(--card-bg)] border border-[var(--sand)] rounded-lg shadow-lg p-3 z-10 text-[0.7rem] text-[var(--muted)] leading-relaxed">
+                        The numbered circles indicate which <strong className="text-[var(--dark)]">phases</strong> contain that activity. A <span className="inline-block w-3.5 h-3.5 rounded-full bg-[var(--gold)] align-middle" /> gold ring highlights your current phase.
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <div className="bg-[var(--card-bg)] border border-[var(--sand)] rounded-lg divide-y divide-[var(--sand)]">
                 {category.activities.map((activity) => {
