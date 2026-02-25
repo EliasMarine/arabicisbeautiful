@@ -11,7 +11,7 @@ interface UseSwipeOptions {
 export function useSwipe({
   onSwipeLeft,
   onSwipeRight,
-  threshold = 50,
+  threshold = 100,
 }: UseSwipeOptions) {
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const touchEnd = useRef<{ x: number; y: number } | null>(null);
@@ -36,9 +36,13 @@ export function useSwipe({
 
     const deltaX = touchStart.current.x - touchEnd.current.x;
     const deltaY = touchStart.current.y - touchEnd.current.y;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
 
-    // Only trigger if horizontal movement > vertical and exceeds threshold
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
+    // Require: horizontal distance > threshold, and horizontal movement
+    // must be at least 2x the vertical movement to avoid triggering
+    // during diagonal or vertical scrolling
+    if (absX > threshold && absX > absY * 2) {
       if (deltaX > 0) {
         onSwipeLeft?.();
       } else {
