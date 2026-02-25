@@ -187,100 +187,108 @@ export function RecordButton({
         </span>
       )}
 
-      {/* Results popup */}
+      {/* Results modal overlay */}
       {showResults && result && (
-        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 bg-[var(--card-bg)] border border-[var(--sand)] rounded-xl shadow-xl p-4 min-w-[240px] max-w-[300px]">
-          {/* Close button */}
-          <button
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/40 z-[100]"
             onClick={() => setShowResults(false)}
-            className="absolute top-2 right-2 text-[var(--muted)] hover:text-[var(--dark)] p-0.5"
-          >
-            <X size={16} />
-          </button>
+          />
+          {/* Modal */}
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[101] bg-[var(--card-bg)] border border-[var(--sand)] rounded-xl shadow-xl p-5 w-[min(300px,85vw)]">
+            {/* Close button */}
+            <button
+              onClick={() => setShowResults(false)}
+              className="absolute top-2 right-2 text-[var(--muted)] hover:text-[var(--dark)] p-0.5"
+            >
+              <X size={16} />
+            </button>
 
-          {/* Score header with icon */}
-          <div className="flex flex-col items-center gap-1 mb-3">
-            {scoreIcon}
-            <span
-              className={cn(
-                "text-2xl font-bold",
+            {/* Score header with icon */}
+            <div className="flex flex-col items-center gap-1 mb-3">
+              {scoreIcon}
+              <span
+                className={cn(
+                  "text-3xl font-bold",
+                  result.overallScore >= 80
+                    ? "text-[var(--green)]"
+                    : result.overallScore >= 50
+                    ? "text-[var(--gold)]"
+                    : "text-red-500"
+                )}
+              >
+                {result.overallScore}%
+              </span>
+              <p className={cn(
+                "text-xs font-semibold",
                 result.overallScore >= 80
                   ? "text-[var(--green)]"
                   : result.overallScore >= 50
                   ? "text-[var(--gold)]"
                   : "text-red-500"
-              )}
-            >
-              {result.overallScore}%
-            </span>
-            <p className={cn(
-              "text-xs font-semibold",
-              result.overallScore >= 80
-                ? "text-[var(--green)]"
-                : result.overallScore >= 50
-                ? "text-[var(--gold)]"
-                : "text-red-500"
-            )}>
-              {scoreLabel}
-            </p>
-          </div>
+              )}>
+                {scoreLabel}
+              </p>
+            </div>
 
-          {/* Word-by-word results */}
-          <div className="flex flex-wrap gap-1 justify-center mb-3" dir="rtl">
-            {result.wordResults.map((wr, i) => (
-              <span
-                key={i}
-                className={cn(
-                  "px-2 py-0.5 rounded-md text-xs font-[Noto_Naskh_Arabic,serif]",
-                  STATUS_COLORS[wr.status]
-                )}
-                title={
-                  wr.status === "wrong" || wr.status === "close"
-                    ? `Expected: ${wr.expected}`
-                    : wr.status === "missing"
-                    ? `Missing: ${wr.expected}`
-                    : wr.status === "correct"
-                    ? "Correct!"
-                    : undefined
-                }
-              >
-                {wr.status === "missing" ? wr.expected : wr.word}
+            {/* Word-by-word results */}
+            <div className="flex flex-wrap gap-1 justify-center mb-3" dir="rtl">
+              {result.wordResults.map((wr, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    "px-2 py-0.5 rounded-md text-xs font-[Noto_Naskh_Arabic,serif]",
+                    STATUS_COLORS[wr.status]
+                  )}
+                  title={
+                    wr.status === "wrong" || wr.status === "close"
+                      ? `Expected: ${wr.expected}`
+                      : wr.status === "missing"
+                      ? `Missing: ${wr.expected}`
+                      : wr.status === "correct"
+                      ? "Correct!"
+                      : undefined
+                  }
+                >
+                  {wr.status === "missing" ? wr.expected : wr.word}
+                </span>
+              ))}
+            </div>
+
+            {/* Legend */}
+            <div className="flex justify-center gap-3 mb-3 text-[0.55rem] text-[var(--muted)]">
+              <span className="flex items-center gap-0.5">
+                <span className="w-2 h-2 rounded-full bg-[var(--green)]" /> Correct
               </span>
-            ))}
-          </div>
+              <span className="flex items-center gap-0.5">
+                <span className="w-2 h-2 rounded-full bg-[var(--gold)]" /> Close
+              </span>
+              <span className="flex items-center gap-0.5">
+                <span className="w-2 h-2 rounded-full bg-red-500" /> Wrong
+              </span>
+            </div>
 
-          {/* Legend */}
-          <div className="flex justify-center gap-3 mb-3 text-[0.55rem] text-[var(--muted)]">
-            <span className="flex items-center gap-0.5">
-              <span className="w-2 h-2 rounded-full bg-[var(--green)]" /> Correct
-            </span>
-            <span className="flex items-center gap-0.5">
-              <span className="w-2 h-2 rounded-full bg-[var(--gold)]" /> Close
-            </span>
-            <span className="flex items-center gap-0.5">
-              <span className="w-2 h-2 rounded-full bg-red-500" /> Wrong
-            </span>
-          </div>
+            {/* Transcription */}
+            <div className="bg-[var(--sand)]/50 rounded-lg px-3 py-1.5 mb-3">
+              <p className="text-[0.6rem] text-[var(--muted)] mb-0.5">You said:</p>
+              <p
+                className="text-xs font-[Noto_Naskh_Arabic,serif] text-[var(--dark)]"
+                dir="rtl"
+              >
+                {result.transcription}
+              </p>
+            </div>
 
-          {/* Transcription */}
-          <div className="bg-[var(--sand)]/50 rounded-lg px-3 py-1.5 mb-3">
-            <p className="text-[0.6rem] text-[var(--muted)] mb-0.5">You said:</p>
-            <p
-              className="text-xs font-[Noto_Naskh_Arabic,serif] text-[var(--dark)]"
-              dir="rtl"
+            {/* Retry */}
+            <button
+              onClick={handleRetry}
+              className="flex items-center justify-center gap-1.5 w-full text-xs bg-[var(--phase-color)] text-white font-semibold py-2 rounded-lg hover:opacity-80 transition-opacity"
             >
-              {result.transcription}
-            </p>
+              <RotateCcw size={12} /> Try Again
+            </button>
           </div>
-
-          {/* Retry */}
-          <button
-            onClick={handleRetry}
-            className="flex items-center justify-center gap-1.5 w-full text-xs bg-[var(--phase-color)] text-white font-semibold py-1.5 rounded-lg hover:opacity-80 transition-opacity"
-          >
-            <RotateCcw size={12} /> Try Again
-          </button>
-        </div>
+        </>
       )}
 
       {/* Error display */}
