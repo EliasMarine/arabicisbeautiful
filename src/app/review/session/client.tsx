@@ -247,6 +247,13 @@ export function ReviewSessionClient() {
             >
               <Pause size={16} />
             </button>
+            <button
+              onClick={() => router.push("/review")}
+              className="p-1.5 rounded-lg hover:bg-[var(--sand)] transition-colors text-[var(--muted)]"
+              title="Exit session"
+            >
+              <X size={16} />
+            </button>
           </div>
         </div>
 

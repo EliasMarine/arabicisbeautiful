@@ -4,14 +4,14 @@ import { useState } from "react";
 import { useProgress } from "@/hooks/use-progress";
 
 const SKILLS = [
-  { id: "listening", label: "Listening Comprehension", desc: "Can you follow a Lebanese conversation without subtitles?" },
-  { id: "speaking", label: "Speaking Fluency", desc: "Can you express yourself naturally without long pauses?" },
-  { id: "vocabulary", label: "Vocabulary Range", desc: "Do you know 500+ active Lebanese words?" },
-  { id: "reading", label: "Arabic Script Reading", desc: "Can you read Lebanese Arabic text smoothly?" },
-  { id: "writing", label: "Arabic Writing", desc: "Can you write paragraphs in Arabic script?" },
-  { id: "culture", label: "Cultural Fluency", desc: "Do you know when to use يسلمو, إن شاء الله, and الله يرحمو?" },
-  { id: "humor", label: "Lebanese Humor", desc: "Can you understand and make jokes in Lebanese Arabic?" },
-  { id: "proverbs", label: "Proverbs & Idioms", desc: "Can you use 10+ Lebanese proverbs naturally?" },
+  { id: "listening", label: "Listening Comprehension", desc: "Can you follow a Lebanese conversation without subtitles?", tip: "Practice with the Shadowing and Minimal Pairs exercises." },
+  { id: "speaking", label: "Speaking Fluency", desc: "Can you express yourself naturally without long pauses?", tip: "Use the Pronunciation and Conversation exercises daily." },
+  { id: "vocabulary", label: "Vocabulary Range", desc: "Do you know 500+ active Lebanese words?", tip: "Review flashcards and explore the Vocabulary lessons." },
+  { id: "reading", label: "Arabic Script Reading", desc: "Can you read Lebanese Arabic text smoothly?", tip: "Read the News and Culture articles with tashkeel toggled off." },
+  { id: "writing", label: "Arabic Writing", desc: "Can you write paragraphs in Arabic script?", tip: "Practice in the AI Chat — ask it to correct your Arabic writing." },
+  { id: "culture", label: "Cultural Fluency", desc: "Do you know when to use يسلمو, إن شاء الله, and الله يرحمو?", tip: "Explore the Culture and Idioms lessons." },
+  { id: "humor", label: "Lebanese Humor", desc: "Can you understand and make jokes in Lebanese Arabic?", tip: "Check out the Culture lessons and practice with AI Chat." },
+  { id: "proverbs", label: "Proverbs & Idioms", desc: "Can you use 10+ Lebanese proverbs naturally?", tip: "Study the Proverbs and Idioms exercises." },
 ];
 
 export function AssessmentPageClient() {
@@ -80,6 +80,74 @@ export function AssessmentPageClient() {
           </div>
         )}
       </div>
+
+      {/* Recommendations — show once all skills are rated */}
+      {Object.keys(scores).length === SKILLS.length && (() => {
+        const weak = SKILLS.filter((s) => (scores[s.id] || 0) <= 2);
+        const medium = SKILLS.filter((s) => (scores[s.id] || 0) === 3);
+        const strong = SKILLS.filter((s) => (scores[s.id] || 0) >= 4);
+
+        return (
+          <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)] space-y-5">
+            <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold">
+              Your Focus Areas
+            </h3>
+
+            {weak.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-red-500 mb-2">
+                  Needs Work
+                </p>
+                <div className="space-y-2">
+                  {weak.map((s) => (
+                    <div key={s.id} className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                      <p className="text-sm font-semibold text-[var(--dark)]">{s.label}</p>
+                      <p className="text-xs text-[var(--muted)] mt-0.5">{s.tip}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {medium.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-orange-500 mb-2">
+                  Getting There
+                </p>
+                <div className="space-y-2">
+                  {medium.map((s) => (
+                    <div key={s.id} className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-3">
+                      <p className="text-sm font-semibold text-[var(--dark)]">{s.label}</p>
+                      <p className="text-xs text-[var(--muted)] mt-0.5">{s.tip}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {strong.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-green-500 mb-2">
+                  Strong Skills
+                </p>
+                <div className="space-y-2">
+                  {strong.map((s) => (
+                    <div key={s.id} className="bg-green-500/10 border border-green-500/20 rounded-lg p-3">
+                      <p className="text-sm font-semibold text-[var(--dark)]">{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {weak.length === 0 && medium.length === 0 && (
+              <p className="text-sm text-[var(--muted)]">
+                All skills rated 4 or above — great work! Keep practicing to maintain your level.
+              </p>
+            )}
+          </div>
+        );
+      })()}
     </div>
   );
 }
