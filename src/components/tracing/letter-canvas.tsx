@@ -61,10 +61,16 @@ export function LetterCanvas({ letter, size = 280, onScore }: LetterCanvasProps)
     }
   }, [letter, size]);
 
+  // Get the actual phase color from CSS variable
+  function getPhaseColor(): string {
+    if (typeof window === "undefined") return "#8B1A1A";
+    return getComputedStyle(document.documentElement).getPropertyValue("--phase-color").trim() || "#8B1A1A";
+  }
+
   // Draw a single path
   function drawPath(ctx: CanvasRenderingContext2D, path: { x: number; y: number }[]) {
     if (path.length < 2) return;
-    ctx.strokeStyle = "var(--phase-color, #8B1A1A)";
+    ctx.strokeStyle = getPhaseColor();
     ctx.lineWidth = 6;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -109,7 +115,7 @@ export function LetterCanvas({ letter, size = 280, onScore }: LetterCanvasProps)
     // Draw the latest segment
     const path = currentPathRef.current;
     if (path.length >= 2) {
-      ctx.strokeStyle = "var(--phase-color, #8B1A1A)";
+      ctx.strokeStyle = getPhaseColor();
       ctx.lineWidth = 6;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
