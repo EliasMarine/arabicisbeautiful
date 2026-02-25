@@ -8,6 +8,7 @@ import { PHASE_SLUGS, PHASE_TITLES, PHASE_COLORS } from "@/lib/constants";
 import type { PhaseSlug } from "@/lib/constants";
 import { GraduationCap, LogOut, Sun, Moon } from "lucide-react";
 import { useThemeContext } from "@/contexts/theme-context";
+import { QuickAccessLauncher } from "@/components/launcher/quick-access-launcher";
 
 export function Header({ userName }: { userName?: string | null }) {
   const pathname = usePathname();
@@ -41,6 +42,7 @@ export function Header({ userName }: { userName?: string | null }) {
           <span className="sm:hidden">Lebanese Arabic</span>
         </Link>
         <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0 ml-2">
+          <QuickAccessLauncher />
           <Link
             href="/review"
             className="flex items-center gap-1.5 text-sm text-[var(--nav-text)]/80 hover:text-[var(--nav-text)] transition-colors"

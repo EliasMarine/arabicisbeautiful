@@ -5,8 +5,9 @@ import Link from "next/link";
 import { PHASE_SLUGS, PHASE_TITLES, PHASE_COLORS } from "@/lib/constants";
 import { ProgressRing } from "@/components/progress/progress-ring";
 import { StreakCounter } from "@/components/progress/streak-counter";
-import { BookOpen, GraduationCap, Trophy, Target, Compass } from "lucide-react";
+import { BookOpen, GraduationCap, Trophy, Target, Compass, LayoutGrid } from "lucide-react";
 import { StatCardSkeleton, PhaseCardSkeleton } from "@/components/ui/skeleton";
+import { LauncherModal } from "@/components/launcher/launcher-modal";
 import { DailyGoal } from "@/components/dashboard/daily-goal";
 import { DailyReviewCard } from "@/components/dashboard/daily-review-card";
 import { CalendarHeatmap } from "@/components/dashboard/calendar-heatmap";
@@ -29,6 +30,7 @@ interface DashboardStats {
 export function Dashboard({ userName }: DashboardProps) {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showLauncher, setShowLauncher] = useState(false);
 
   useEffect(() => {
     fetch("/api/dashboard")
@@ -60,6 +62,21 @@ export function Dashboard({ userName }: DashboardProps) {
           Continue your Lebanese Arabic journey
         </p>
       </div>
+
+      {/* Explore Lessons */}
+      <button
+        onClick={() => setShowLauncher(true)}
+        className="w-full bg-[var(--card-bg)] border border-[var(--sand)] rounded-xl p-4 sm:p-5 hover:border-[var(--gold)] hover:shadow-md transition-all flex items-center gap-3 text-left group"
+      >
+        <span className="w-10 h-10 rounded-full bg-[var(--gold)]/15 flex items-center justify-center flex-shrink-0 group-hover:bg-[var(--gold)]/25 transition-colors">
+          <LayoutGrid size={20} className="text-[var(--gold)]" />
+        </span>
+        <div>
+          <p className="font-semibold text-sm text-[var(--dark)]">Explore Lessons</p>
+          <p className="text-xs text-[var(--muted)]">Jump to any activity — pronunciation, vocabulary, grammar, and more</p>
+        </div>
+      </button>
+      {showLauncher && <LauncherModal onClose={() => setShowLauncher(false)} />}
 
       {/* Placement Test CTA */}
       {!loading && totalXP === 0 && (

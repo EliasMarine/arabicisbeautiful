@@ -58,7 +58,7 @@ export default function RootLayout({
       >
         <Providers>{children}</Providers>
         <span className="fixed bottom-2 right-2 text-[0.6rem] text-[var(--muted)]/40 pointer-events-none select-none">
-          v2.3.1
+          v2.4.0
         </span>
       </body>
     </html>
