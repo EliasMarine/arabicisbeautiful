@@ -1,4 +1,6 @@
 import NextAuth from "next-auth";
+import type { DefaultSession } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/lib/db";
@@ -6,6 +8,18 @@ import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+
+declare module "next-auth" {
+  interface Session {
+    user: DefaultSession["user"] & { id: string; timezone: string };
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    timezone?: string;
+  }
+}
 
 const BCRYPT_ROUNDS = 12;
 
@@ -96,7 +110,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             .run();
         }
 
-        return { id: user.id, name: user.name, email: user.email };
+        return { id: user.id, name: user.name, email: user.email, timezone: user.timezone ?? "UTC" };
       },
     }),
   ],
@@ -105,11 +119,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (token.sub) {
         session.user.id = token.sub;
       }
+      session.user.timezone = (token.timezone as string) || "UTC";
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.sub = user.id;
+        token.timezone = (user as Record<string, unknown>).timezone as string || "UTC";
+      }
+      // Re-fetch timezone from DB when session is updated (e.g. after timezone change)
+      if (trigger === "update" && token.sub) {
+        const dbUser = db
+          .select({ timezone: users.timezone })
+          .from(users)
+          .where(eq(users.id, token.sub))
+          .get();
+        token.timezone = dbUser?.timezone || "UTC";
       }
       return token;
     },

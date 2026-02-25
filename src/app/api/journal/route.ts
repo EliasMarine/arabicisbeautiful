@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     .run();
 
   // Log daily activity (counts as 1 exercise)
-  logActivity(session.user.id, { exercisesCompleted: 1 });
+  logActivity(session.user.id, { exercisesCompleted: 1 }, session.user.timezone);
 
   return NextResponse.json({ entry: result, xpEarned: 10 });
 }

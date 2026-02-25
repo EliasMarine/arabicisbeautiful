@@ -1,6 +1,7 @@
 import { db } from ".";
 import { dailyActivity } from "./schema";
 import { eq, and } from "drizzle-orm";
+import { toLocalDateString } from "@/lib/timezone";
 
 /**
  * Upserts a daily activity record, incrementing the provided fields.
@@ -13,9 +14,10 @@ export function logActivity(
     minutesStudied?: number;
     cardsReviewed?: number;
     exercisesCompleted?: number;
-  }
+  },
+  timezone?: string
 ) {
-  const todayStr = new Date().toISOString().split("T")[0];
+  const todayStr = toLocalDateString(new Date(), timezone);
 
   const existing = db
     .select()

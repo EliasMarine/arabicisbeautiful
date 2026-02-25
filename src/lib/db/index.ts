@@ -30,6 +30,21 @@ try {
 try {
   sqlite.exec(`ALTER TABLE users ADD COLUMN has_completed_onboarding INTEGER DEFAULT 0`);
 } catch { /* column already exists */ }
+try {
+  sqlite.exec(`ALTER TABLE users ADD COLUMN timezone TEXT`);
+} catch { /* column already exists */ }
+
+// Junction table for individual completed items (source of truth for progress)
+sqlite.exec(`CREATE TABLE IF NOT EXISTS completed_items (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  phase_id INTEGER NOT NULL,
+  tab TEXT NOT NULL,
+  item_id TEXT NOT NULL,
+  completed_at INTEGER NOT NULL,
+  UNIQUE(user_id, phase_id, tab, item_id)
+)`);
+sqlite.exec(`CREATE INDEX IF NOT EXISTS idx_completed_items_lookup ON completed_items(user_id, phase_id, tab)`);
 
 export const db = drizzle(sqlite, { schema });
 export { sqlite };

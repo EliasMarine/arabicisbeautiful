@@ -163,7 +163,7 @@ export async function POST(request: Request) {
       .run();
 
     // 6. Log daily activity
-    logActivity(userId, { exercisesCompleted: 1 });
+    logActivity(userId, { exercisesCompleted: 1 }, session.user.timezone);
 
     return NextResponse.json({
       success: true,

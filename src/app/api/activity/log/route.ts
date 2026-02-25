@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       minutesStudied: mins,
       cardsReviewed: cards,
       exercisesCompleted: exercises,
-    });
+    }, session.user.timezone);
 
     return NextResponse.json({ success: true });
   } catch (error) {

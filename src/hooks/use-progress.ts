@@ -37,16 +37,59 @@ export function useProgress(phaseId: number, tab: string, totalItems: number) {
   );
   const syncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingSyncRef = useRef(false);
-  const latestCountRef = useRef(completedIds.size);
+  const latestIdsRef = useRef<Set<string>>(completedIds);
+  const hydratedRef = useRef(false);
 
   // Keep ref in sync
   useEffect(() => {
-    latestCountRef.current = completedIds.size;
+    latestIdsRef.current = completedIds;
   }, [completedIds]);
 
-  // Sync to API (debounced)
+  // Hydrate from server on mount — merge server IDs with any localStorage IDs
+  useEffect(() => {
+    if (hydratedRef.current) return;
+    hydratedRef.current = true;
+
+    fetch(`/api/progress?phaseId=${phaseId}&tab=${encodeURIComponent(tab)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.completedItemIds && Array.isArray(data.completedItemIds)) {
+          const serverIds = new Set<string>(data.completedItemIds);
+          setCompletedIds((prev) => {
+            // Merge: union of server + any local IDs added since mount
+            const merged = new Set(prev);
+            let changed = false;
+            for (const id of serverIds) {
+              if (!merged.has(id)) {
+                merged.add(id);
+                changed = true;
+              }
+            }
+            if (!changed) return prev;
+            saveToStorage(phaseId, tab, merged);
+            return merged;
+          });
+        }
+      })
+      .catch(() => {
+        // Offline — localStorage is still valid
+      });
+  }, [phaseId, tab]);
+
+  // Build payload for syncing to API
+  const buildPayload = useCallback(
+    (ids: Set<string>) => ({
+      phaseId,
+      tab,
+      completedItemIds: [...ids],
+      totalItems,
+    }),
+    [phaseId, tab, totalItems]
+  );
+
+  // Sync to API (debounced) — sends full ID list; server does INSERT OR IGNORE
   const syncToApi = useCallback(
-    (count: number) => {
+    (ids: Set<string>) => {
       if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
       pendingSyncRef.current = true;
 
@@ -54,12 +97,7 @@ export function useProgress(phaseId: number, tab: string, totalItems: number) {
         fetch("/api/progress", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            phaseId,
-            tab,
-            completedItems: count,
-            totalItems,
-          }),
+          body: JSON.stringify(buildPayload(ids)),
         })
           .then(() => {
             pendingSyncRef.current = false;
@@ -69,24 +107,17 @@ export function useProgress(phaseId: number, tab: string, totalItems: number) {
           });
       }, SYNC_DEBOUNCE_MS);
     },
-    [phaseId, tab, totalItems]
+    [buildPayload]
   );
 
-  // Flush pending sync on unmount / page unload
+  // Flush pending sync on unmount / page unload via sendBeacon
   useEffect(() => {
     const flush = () => {
       if (pendingSyncRef.current && typeof navigator?.sendBeacon === "function") {
         navigator.sendBeacon(
           "/api/progress",
           new Blob(
-            [
-              JSON.stringify({
-                phaseId,
-                tab,
-                completedItems: latestCountRef.current,
-                totalItems,
-              }),
-            ],
+            [JSON.stringify(buildPayload(latestIdsRef.current))],
             { type: "application/json" }
           )
         );
@@ -99,7 +130,7 @@ export function useProgress(phaseId: number, tab: string, totalItems: number) {
       if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
       flush();
     };
-  }, [phaseId, tab, totalItems]);
+  }, [buildPayload]);
 
   const markCompleted = useCallback(
     (itemId: string) => {
@@ -108,7 +139,7 @@ export function useProgress(phaseId: number, tab: string, totalItems: number) {
         const next = new Set(prev);
         next.add(itemId);
         saveToStorage(phaseId, tab, next);
-        syncToApi(next.size);
+        syncToApi(next);
         return next;
       });
     },
@@ -134,7 +165,7 @@ export function useProgress(phaseId: number, tab: string, totalItems: number) {
         }
         if (!changed) return prev;
         saveToStorage(phaseId, tab, next);
-        syncToApi(next.size);
+        syncToApi(next);
         return next;
       });
     },

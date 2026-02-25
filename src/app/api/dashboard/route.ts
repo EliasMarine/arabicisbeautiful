@@ -9,6 +9,7 @@ import {
   phaseProgress,
 } from "@/lib/db/schema";
 import { eq, lte, sql, and, desc } from "drizzle-orm";
+import { toLocalDateString } from "@/lib/timezone";
 
 export async function GET() {
   const session = await auth();
@@ -18,6 +19,7 @@ export async function GET() {
 
   try {
     const userId = session.user.id;
+    const tz = session.user.timezone;
 
     // Total XP
     const xpResult = db
@@ -47,17 +49,17 @@ export async function GET() {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      // Check if there's activity today or yesterday (to allow for timezone differences)
+      // Check if there's activity today or yesterday
       const checkDate = new Date(today);
 
       for (let i = 0; i < 365; i++) {
-        const dateStr = checkDate.toISOString().split("T")[0];
+        const dateStr = toLocalDateString(checkDate, tz);
         const hasActivity = activities.some((a) => a.date === dateStr);
 
         if (i === 0 && !hasActivity) {
           // Check yesterday too (in case user hasn't studied yet today)
           checkDate.setDate(checkDate.getDate() - 1);
-          const yesterdayStr = checkDate.toISOString().split("T")[0];
+          const yesterdayStr = toLocalDateString(checkDate, tz);
           const hasYesterday = activities.some((a) => a.date === yesterdayStr);
           if (!hasYesterday) break;
           streak = 1;
@@ -105,7 +107,7 @@ export async function GET() {
     }
 
     // Today's study minutes
-    const todayStr = new Date().toISOString().split("T")[0];
+    const todayStr = toLocalDateString(new Date(), tz);
     const todayActivity = db
       .select({ minutes: sql<number>`coalesce(${dailyActivity.minutesStudied}, 0)` })
       .from(dailyActivity)

@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { srsCards, srsReviewLog } from "@/lib/db/schema";
 import { eq, lte, sql, and, gte } from "drizzle-orm";
-import { formatDate } from "@/lib/utils";
+import { getStartOfLocalDay } from "@/lib/timezone";
 
 export async function GET() {
   const session = await auth();
@@ -13,7 +13,7 @@ export async function GET() {
 
   try {
     const now = new Date();
-    const today = formatDate(now);
+    const tz = session.user.timezone;
 
     const dueCount = db
       .select({ count: sql<number>`count(*)` })
@@ -32,7 +32,7 @@ export async function GET() {
       .where(eq(srsCards.userId, session.user.id))
       .get();
 
-    const todayStart = new Date(today + "T00:00:00");
+    const todayStart = getStartOfLocalDay(tz);
     const reviewedToday = db
       .select({ count: sql<number>`count(*)` })
       .from(srsReviewLog)

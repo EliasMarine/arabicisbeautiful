@@ -51,23 +51,23 @@ export function CalendarHeatmap() {
   }, []);
 
   // Build grid data: last ~52 weeks (364 days) ending today
-  // IMPORTANT: Use UTC dates throughout to match server-stored dates
+  // Dates now match user's local timezone (stored by server)
   const { grid, monthPositions, totalDays } = useMemo(() => {
     const activityMap = new Map<string, ActivityDay>();
     for (const a of activities) {
       activityMap.set(a.date, a);
     }
 
-    // Use UTC date to match server's date storage (toISOString-based)
+    // Use local date to match server-stored timezone-aware dates
     const now = new Date();
-    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     // Start from the Sunday of the week 51 weeks ago
     const start = new Date(today);
-    start.setUTCDate(start.getUTCDate() - 363);
+    start.setDate(start.getDate() - 363);
     // Adjust to the previous Sunday
-    while (start.getUTCDay() !== 0) {
-      start.setUTCDate(start.getUTCDate() - 1);
+    while (start.getDay() !== 0) {
+      start.setDate(start.getDate() - 1);
     }
 
     const weeks: (ActivityDay | null)[][] = [];
@@ -80,12 +80,12 @@ export function CalendarHeatmap() {
     let totalActive = 0;
 
     while (cursor <= today) {
-      const dayOfWeek = cursor.getUTCDay();
-      const dateStr = cursor.toISOString().split("T")[0];
+      const dayOfWeek = cursor.getDay();
+      const dateStr = cursor.toLocaleDateString("en-CA");
 
       // Track month transitions
-      if (cursor.getUTCMonth() !== currentMonth && dayOfWeek === 0) {
-        currentMonth = cursor.getUTCMonth();
+      if (cursor.getMonth() !== currentMonth && dayOfWeek === 0) {
+        currentMonth = cursor.getMonth();
         months.push({ label: MONTH_LABELS[currentMonth], col });
       }
 
@@ -107,7 +107,7 @@ export function CalendarHeatmap() {
         col++;
       }
 
-      cursor.setUTCDate(cursor.getUTCDate() + 1);
+      cursor.setDate(cursor.getDate() + 1);
     }
 
     // Push remaining partial week

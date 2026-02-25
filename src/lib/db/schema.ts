@@ -10,6 +10,7 @@ export const users = sqliteTable("users", {
   passwordHash: text("password_hash"),
   studyGoalMinutes: integer("study_goal_minutes").default(10),
   hasCompletedOnboarding: integer("has_completed_onboarding").default(0),
+  timezone: text("timezone"),
   createdAt: integer("created_at", { mode: "timestamp" }),
 });
 
@@ -68,6 +69,17 @@ export const phaseProgress = sqliteTable("phase_progress", {
   totalItems: integer("total_items").default(0),
   lastAccessedAt: integer("last_accessed_at", { mode: "timestamp" }),
   updatedAt: integer("updated_at", { mode: "timestamp" }),
+});
+
+export const completedItems = sqliteTable("completed_items", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  phaseId: integer("phase_id").notNull(),
+  tab: text("tab").notNull(),
+  itemId: text("item_id").notNull(),
+  completedAt: integer("completed_at", { mode: "timestamp" }).notNull(),
 });
 
 export const exerciseResults = sqliteTable("exercise_results", {

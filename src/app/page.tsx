@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Dashboard } from "@/components/dashboard";
 import { OnboardingClient } from "@/components/onboarding/onboarding-client";
+import { TimezoneSync } from "@/components/timezone-sync";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
@@ -30,6 +31,7 @@ export default async function Home() {
         <Dashboard userId={session.user.id!} userName={session.user.name!} />
       </main>
       <OnboardingClient showOnboarding={showOnboarding} />
+      <TimezoneSync serverTimezone={session.user.timezone} />
     </div>
   );
 }

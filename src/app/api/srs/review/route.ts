@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { sqlite } from "@/lib/db";
 import { srsCards, srsReviewLog, userXP } from "@/lib/db/schema";
 import { logActivity } from "@/lib/db/log-activity";
 import { eq } from "drizzle-orm";
@@ -41,44 +42,49 @@ export async function POST(request: Request) {
 
     const now = new Date();
     const nextReview = getNextReviewDate(result.interval);
+    const tz = session.user.timezone;
 
-    // Update card with new SM-2 values
-    db.update(srsCards)
-      .set({
-        easeFactor: result.easeFactor,
-        interval: result.interval,
-        repetitions: result.repetitions,
-        nextReviewAt: nextReview,
-        lastReviewedAt: now,
-      })
-      .where(eq(srsCards.id, cardId))
-      .run();
+    // Wrap all mutations in a transaction for atomicity
+    const txn = sqlite.transaction(() => {
+      // Update card with new SM-2 values
+      db.update(srsCards)
+        .set({
+          easeFactor: result.easeFactor,
+          interval: result.interval,
+          repetitions: result.repetitions,
+          nextReviewAt: nextReview,
+          lastReviewedAt: now,
+        })
+        .where(eq(srsCards.id, cardId))
+        .run();
 
-    // Log the review for analytics
-    db.insert(srsReviewLog)
-      .values({
-        userId: session.user.id,
-        cardId,
-        rating,
-        easeFactor: result.easeFactor,
-        interval: result.interval,
-        reviewedAt: now,
-      })
-      .run();
+      // Log the review for analytics
+      db.insert(srsReviewLog)
+        .values({
+          userId: session.user.id,
+          cardId,
+          rating,
+          easeFactor: result.easeFactor,
+          interval: result.interval,
+          reviewedAt: now,
+        })
+        .run();
 
-    // Award XP for review (5 XP per card reviewed)
-    db.insert(userXP)
-      .values({
-        userId: session.user.id,
-        amount: 5,
-        source: "review",
-        sourceId: String(cardId),
-        earnedAt: now,
-      })
-      .run();
+      // Award XP for review (5 XP per card reviewed)
+      db.insert(userXP)
+        .values({
+          userId: session.user.id,
+          amount: 5,
+          source: "review",
+          sourceId: String(cardId),
+          earnedAt: now,
+        })
+        .run();
 
-    // Log daily activity (cards reviewed)
-    logActivity(session.user.id, { cardsReviewed: 1 });
+      // Log daily activity (cards reviewed)
+      logActivity(session.user.id, { cardsReviewed: 1 }, tz);
+    });
+    txn();
 
     return NextResponse.json({
       success: true,
