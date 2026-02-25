@@ -55,7 +55,7 @@ export function DiacriticsToggle({ className }: DiacriticsToggleProps) {
         </button>
 
         {showTooltip && (
-          <div className="absolute top-full right-0 mt-1.5 w-56 bg-[var(--card)] border border-[var(--sand)] rounded-lg shadow-lg p-3 z-50 text-left">
+          <div className="absolute top-full right-0 mt-1.5 w-56 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg shadow-lg p-3 z-50 text-left">
             <p className="text-xs font-semibold text-[var(--dark)] mb-1">
               What is Tashkeel?
             </p>
