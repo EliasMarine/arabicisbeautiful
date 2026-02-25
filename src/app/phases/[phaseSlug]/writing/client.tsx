@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { ArabicKeyboard } from "@/components/arabic/arabic-keyboard";
+import { insertAtCursor, backspaceAtCursor, restoreCursor } from "@/lib/keyboard-utils";
 import { phase5WritingPrompts } from "@/content/journal/phase3";
 import { PenLine } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
@@ -11,6 +12,7 @@ export function WritingPageClient() {
   const [activePrompt, setActivePrompt] = useState(0);
   const [text, setText] = useState("");
   const [showExample, setShowExample] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { markCompleted } = useProgress(5, "writing", phase5WritingPrompts.length);
 
   // Mark prompt as completed when user types 20+ characters
@@ -19,6 +21,22 @@ export function WritingPageClient() {
       markCompleted(phase5WritingPrompts[activePrompt].id);
     }
   }, [text, activePrompt, markCompleted]);
+
+  const handleKeyboardInsert = useCallback((char: string) => {
+    setText((prev) => {
+      const { newValue, cursorPos } = insertAtCursor(textareaRef, prev, char);
+      restoreCursor(textareaRef, cursorPos);
+      return newValue;
+    });
+  }, []);
+
+  const handleKeyboardBackspace = useCallback(() => {
+    setText((prev) => {
+      const { newValue, cursorPos } = backspaceAtCursor(textareaRef, prev);
+      restoreCursor(textareaRef, cursorPos);
+      return newValue;
+    });
+  }, []);
 
   const prompt = phase5WritingPrompts[activePrompt];
 
@@ -64,6 +82,7 @@ export function WritingPageClient() {
         </h3>
 
         <textarea
+          ref={textareaRef}
           dir="rtl"
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -73,8 +92,8 @@ export function WritingPageClient() {
 
         <div className="mt-2">
           <ArabicKeyboard
-            onInsert={(char) => setText((prev) => prev + char)}
-            onBackspace={() => setText((prev) => prev.slice(0, -1))}
+            onInsert={handleKeyboardInsert}
+            onBackspace={handleKeyboardBackspace}
           />
         </div>
 
@@ -87,7 +106,7 @@ export function WritingPageClient() {
               {showExample ? "Hide Example" : "Show Example Response"}
             </button>
             {showExample && (
-              <div className="mt-2 bg-[#fdf8ee] border border-[var(--gold)] rounded-lg p-4">
+              <div className="mt-2 bg-[var(--cream)] border border-[var(--gold)] rounded-lg p-4">
                 <p dir="rtl" className="text-base font-[Noto_Naskh_Arabic,serif] text-[var(--dark)] leading-loose">
                   {prompt.exampleResponse}
                 </p>

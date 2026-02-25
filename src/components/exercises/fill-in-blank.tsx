@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { AudioButton } from "@/components/arabic/audio-button";
 import { ArabicKeyboard } from "@/components/arabic/arabic-keyboard";
+import { insertAtCursor, backspaceAtCursor, restoreCursor } from "@/lib/keyboard-utils";
 import { fireConfetti } from "@/lib/confetti";
 import type { FillBlankQuestion } from "@/content/types";
 
@@ -60,13 +61,19 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
   }
 
   const handleKeyboardInsert = useCallback((char: string) => {
-    setAnswer((prev) => prev + char);
-    inputRef.current?.focus();
+    setAnswer((prev) => {
+      const { newValue, cursorPos } = insertAtCursor(inputRef, prev, char);
+      restoreCursor(inputRef, cursorPos);
+      return newValue;
+    });
   }, []);
 
   const handleKeyboardBackspace = useCallback(() => {
-    setAnswer((prev) => prev.slice(0, -1));
-    inputRef.current?.focus();
+    setAnswer((prev) => {
+      const { newValue, cursorPos } = backspaceAtCursor(inputRef, prev);
+      restoreCursor(inputRef, cursorPos);
+      return newValue;
+    });
   }, []);
 
   // Fire confetti when finished

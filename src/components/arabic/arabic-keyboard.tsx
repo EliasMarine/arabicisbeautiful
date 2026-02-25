@@ -6,6 +6,10 @@ import { Keyboard, X } from "lucide-react";
 interface ArabicKeyboardProps {
   onInsert: (char: string) => void;
   onBackspace: () => void;
+  /** Controlled open state — when provided, the component skips its own toggle button */
+  isOpen?: boolean;
+  /** Called when the user clicks the close (X) button in controlled mode */
+  onClose?: () => void;
 }
 
 const ROWS = [
@@ -16,22 +20,16 @@ const ROWS = [
 
 const DIACRITICS = ["َ", "ُ", "ِ", "ّ", "ْ", "ً", "ٌ", "ٍ"];
 
-export function ArabicKeyboard({ onInsert, onBackspace }: ArabicKeyboardProps) {
-  const [open, setOpen] = useState(false);
-
-  if (!open) {
-    return (
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="flex items-center gap-1.5 text-xs font-semibold text-[var(--phase-color)] bg-[var(--sand)] hover:bg-[var(--phase-color)] hover:text-white px-3 py-1.5 rounded-lg transition-colors"
-      >
-        <Keyboard size={14} />
-        Arabic Keyboard
-      </button>
-    );
-  }
-
+/** Shared keyboard panel layout (used by both controlled and uncontrolled modes) */
+function KeyboardPanel({
+  onInsert,
+  onBackspace,
+  onClose,
+}: {
+  onInsert: (char: string) => void;
+  onBackspace: () => void;
+  onClose: () => void;
+}) {
   return (
     <div className="bg-[var(--card-bg)] border border-[var(--sand)] rounded-xl shadow-lg p-3 mt-2">
       <div className="flex justify-between items-center mb-2">
@@ -40,7 +38,7 @@ export function ArabicKeyboard({ onInsert, onBackspace }: ArabicKeyboardProps) {
         </span>
         <button
           type="button"
-          onClick={() => setOpen(false)}
+          onClick={onClose}
           className="text-[var(--muted)] hover:text-[var(--dark)] p-0.5"
         >
           <X size={14} />
@@ -65,7 +63,7 @@ export function ArabicKeyboard({ onInsert, onBackspace }: ArabicKeyboardProps) {
               <button
                 type="button"
                 onClick={onBackspace}
-                className="px-3 h-9 sm:h-10 bg-red-50 hover:bg-red-100 text-red-700 rounded-md text-xs font-semibold transition-colors"
+                className="px-3 h-9 sm:h-10 bg-[var(--sand)] hover:bg-red-500/20 text-red-400 rounded-md text-xs font-semibold transition-colors"
               >
                 ←
               </button>
@@ -82,7 +80,7 @@ export function ArabicKeyboard({ onInsert, onBackspace }: ArabicKeyboardProps) {
             key={d}
             type="button"
             onClick={() => onInsert(d)}
-            className="w-8 h-8 bg-[#fdf8ee] hover:bg-[var(--gold)] hover:text-white rounded-md text-lg font-[Noto_Naskh_Arabic,serif] transition-colors flex items-center justify-center"
+            className="w-8 h-8 bg-[var(--cream)] hover:bg-[var(--gold)] hover:text-white rounded-md text-lg font-[Noto_Naskh_Arabic,serif] transition-colors flex items-center justify-center"
           >
             {"ـ" + d}
           </button>
@@ -100,5 +98,43 @@ export function ArabicKeyboard({ onInsert, onBackspace }: ArabicKeyboardProps) {
         </button>
       </div>
     </div>
+  );
+}
+
+export function ArabicKeyboard({ onInsert, onBackspace, isOpen, onClose }: ArabicKeyboardProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
+
+  // Controlled mode: parent manages open/close state
+  if (isOpen !== undefined) {
+    if (!isOpen) return null;
+    return (
+      <KeyboardPanel
+        onInsert={onInsert}
+        onBackspace={onBackspace}
+        onClose={onClose ?? (() => {})}
+      />
+    );
+  }
+
+  // Uncontrolled mode: self-managed toggle (backward compatible)
+  if (!internalOpen) {
+    return (
+      <button
+        type="button"
+        onClick={() => setInternalOpen(true)}
+        className="flex items-center gap-1.5 text-xs font-semibold text-[var(--phase-color)] bg-[var(--sand)] hover:bg-[var(--phase-color)] hover:text-white px-3 py-1.5 rounded-lg transition-colors"
+      >
+        <Keyboard size={14} />
+        Arabic Keyboard
+      </button>
+    );
+  }
+
+  return (
+    <KeyboardPanel
+      onInsert={onInsert}
+      onBackspace={onBackspace}
+      onClose={() => setInternalOpen(false)}
+    />
   );
 }

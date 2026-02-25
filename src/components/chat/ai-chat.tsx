@@ -2,7 +2,9 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { ChatBubble } from "./chat-bubble";
-import { Send, RotateCcw, History, X, Trash2 } from "lucide-react";
+import { ArabicKeyboard } from "@/components/arabic/arabic-keyboard";
+import { insertAtCursor, backspaceAtCursor, restoreCursor } from "@/lib/keyboard-utils";
+import { Send, RotateCcw, History, X, Trash2, Keyboard } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -35,6 +37,7 @@ export function AIChat({ phaseId }: AIChatProps) {
   const [isStreaming, setIsStreaming] = useState(false);
   const [conversationId, setConversationId] = useState<number | null>(null);
   const [showHistory, setShowHistory] = useState(false);
+  const [showKeyboard, setShowKeyboard] = useState(false);
   const [history, setHistory] = useState<ConversationSummary[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -162,6 +165,22 @@ export function AIChat({ phaseId }: AIChatProps) {
     },
     [input, sendMessage]
   );
+
+  const handleKeyboardInsert = useCallback((char: string) => {
+    setInput((prev) => {
+      const { newValue, cursorPos } = insertAtCursor(inputRef, prev, char);
+      restoreCursor(inputRef, cursorPos);
+      return newValue;
+    });
+  }, []);
+
+  const handleKeyboardBackspace = useCallback(() => {
+    setInput((prev) => {
+      const { newValue, cursorPos } = backspaceAtCursor(inputRef, prev);
+      restoreCursor(inputRef, cursorPos);
+      return newValue;
+    });
+  }, []);
 
   return (
     <div className="flex flex-col h-[500px] sm:h-[600px] bg-[var(--card-bg)] rounded-lg border border-[var(--sand)] shadow-sm overflow-hidden">
@@ -302,6 +321,19 @@ export function AIChat({ phaseId }: AIChatProps) {
           dir="auto"
         />
         <button
+          type="button"
+          onClick={() => setShowKeyboard(!showKeyboard)}
+          className={cn(
+            "w-9 h-9 rounded-full flex items-center justify-center transition-all",
+            showKeyboard
+              ? "bg-[var(--phase-color)] text-white"
+              : "bg-[var(--sand)] text-[var(--muted)] hover:text-[var(--phase-color)]"
+          )}
+          title="Arabic Keyboard"
+        >
+          <Keyboard size={16} />
+        </button>
+        <button
           type="submit"
           disabled={!input.trim() || isStreaming}
           className={cn(
@@ -313,6 +345,16 @@ export function AIChat({ phaseId }: AIChatProps) {
           <Send size={16} />
         </button>
       </form>
+
+      {/* Arabic Keyboard Panel (below input) */}
+      <div className="px-3 pb-2 bg-[var(--cream)]">
+        <ArabicKeyboard
+          isOpen={showKeyboard}
+          onClose={() => setShowKeyboard(false)}
+          onInsert={handleKeyboardInsert}
+          onBackspace={handleKeyboardBackspace}
+        />
+      </div>
     </div>
   );
 }

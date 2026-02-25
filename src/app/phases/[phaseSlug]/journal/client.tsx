@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { PHASE_SLUGS } from "@/lib/constants";
+import { ArabicKeyboard } from "@/components/arabic/arabic-keyboard";
+import { insertAtCursor, backspaceAtCursor, restoreCursor } from "@/lib/keyboard-utils";
 import { PenLine, Save, Trash2 } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 
@@ -32,6 +34,23 @@ export function JournalPageClient() {
   const [content, setContent] = useState("");
   const [mood, setMood] = useState<string>("good");
   const [saving, setSaving] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleKeyboardInsert = useCallback((char: string) => {
+    setContent((prev) => {
+      const { newValue, cursorPos } = insertAtCursor(textareaRef, prev, char);
+      restoreCursor(textareaRef, cursorPos);
+      return newValue;
+    });
+  }, []);
+
+  const handleKeyboardBackspace = useCallback(() => {
+    setContent((prev) => {
+      const { newValue, cursorPos } = backspaceAtCursor(textareaRef, prev);
+      restoreCursor(textareaRef, cursorPos);
+      return newValue;
+    });
+  }, []);
   // Track journal progress: 5 entries = 100% for this tab
   const { markCompleted } = useProgress(phaseId, "journal", 5);
 
@@ -101,12 +120,20 @@ export function JournalPageClient() {
         />
 
         <textarea
+          ref={textareaRef}
           dir="rtl"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="اكتب هون..."
           className="w-full min-h-[120px] border border-[var(--sand)] rounded-lg p-4 text-lg font-[Noto_Naskh_Arabic,serif] text-[var(--dark)] leading-loose resize-y focus:outline-none focus:border-[var(--phase-color)] focus:ring-2 focus:ring-[var(--phase-color)]/10"
         />
+
+        <div className="mt-2">
+          <ArabicKeyboard
+            onInsert={handleKeyboardInsert}
+            onBackspace={handleKeyboardBackspace}
+          />
+        </div>
 
         <div className="flex items-center justify-between mt-3">
           <div className="flex gap-2">
