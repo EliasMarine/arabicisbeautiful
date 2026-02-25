@@ -6,6 +6,7 @@ import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
 import { RecordButton } from "@/components/arabic/record-button";
 import { FlipCard } from "@/components/exercises/flip-card";
+import { CollapsibleSection } from "@/components/ui/collapsible-section";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { getVocabByPhase } from "@/content/vocab";
 import { useProgress } from "@/hooks/use-progress";
@@ -79,15 +80,13 @@ export function VocabPageClient() {
         </div>
       </div>
 
-      {groups.map((group) => (
-        <div
+      {groups.map((group, idx) => (
+        <CollapsibleSection
           key={group.title}
-          className="bg-[var(--card-bg)] rounded-lg p-4 sm:p-6 shadow-sm border border-[var(--sand)]"
+          title={group.title}
+          count={group.items.length}
+          defaultOpen={idx === 0}
         >
-          <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
-            {group.title}
-          </h3>
-
           {viewMode === "table" ? (
             <>
               {/* Desktop table */}
@@ -175,7 +174,7 @@ export function VocabPageClient() {
               ))}
             </div>
           )}
-        </div>
+        </CollapsibleSection>
       ))}
 
       <div className="text-center text-sm text-[var(--muted)]">

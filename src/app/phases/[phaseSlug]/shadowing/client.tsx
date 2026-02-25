@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
 import { RecordButton } from "@/components/arabic/record-button";
+import { CollapsibleSection } from "@/components/ui/collapsible-section";
 import { getShadowingByPhase } from "@/content/shadowing";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { CheckCircle2 } from "lucide-react";
@@ -58,11 +59,13 @@ export function ShadowingPageClient() {
         </div>
       </div>
 
-      {sets.map((set) => (
-        <div key={set.title} className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
-          <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
-            {set.title}
-          </h3>
+      {sets.map((set, idx) => (
+        <CollapsibleSection
+          key={set.title}
+          title={set.title}
+          count={set.items.length}
+          defaultOpen={idx === 0}
+        >
           <div className="space-y-4">
             {set.items.map((item) => (
               <div
@@ -103,7 +106,7 @@ export function ShadowingPageClient() {
               </div>
             ))}
           </div>
-        </div>
+        </CollapsibleSection>
       ))}
 
       <div className="text-center text-sm text-[var(--muted)]">

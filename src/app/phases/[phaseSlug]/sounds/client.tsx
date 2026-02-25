@@ -1,16 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { useParams } from "next/navigation";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
+import { CollapsibleSection } from "@/components/ui/collapsible-section";
 import { phase1Sounds, msaVsLebaneseComparison, arabicAlphabet, letterForms } from "@/content/sounds/phase1";
 import { useProgress } from "@/hooks/use-progress";
 
 export function SoundsPageClient() {
   const params = useParams();
   const phaseSlug = params.phaseSlug as string;
-  const [showForms, setShowForms] = useState(false);
   const totalSoundItems = arabicAlphabet.length + phase1Sounds.length + msaVsLebaneseComparison.length;
   const { markCompleted, completedCount } = useProgress(1, "sounds", totalSoundItems);
 
@@ -30,10 +29,7 @@ export function SoundsPageClient() {
       </p>
 
       {/* Arabic Alphabet */}
-      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
-        <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
-          The Arabic Alphabet — 28 Letters
-        </h3>
+      <CollapsibleSection title="The Arabic Alphabet — 28 Letters" count={arabicAlphabet.length} defaultOpen>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {arabicAlphabet.map((item) => (
             <div key={item.name} className="bg-[var(--sand)] rounded-lg p-4 text-center">
@@ -68,26 +64,14 @@ export function SoundsPageClient() {
             </div>
           ))}
         </div>
-      </div>
+      </CollapsibleSection>
 
       {/* Letter Forms Table */}
-      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold">
-            Letter Forms — Position Matters
-          </h3>
-          <button
-            onClick={() => setShowForms(!showForms)}
-            className="text-xs font-semibold text-[var(--phase-color)] hover:underline"
-          >
-            {showForms ? "Hide Table" : "Show Table"}
-          </button>
-        </div>
+      <CollapsibleSection title="Letter Forms — Position Matters" count={letterForms.length}>
         <p className="text-sm text-[var(--muted)] mb-3">
           Arabic letters change shape depending on where they appear in a word.
           Each letter has isolated, initial (start), medial (middle), and final (end) forms.
         </p>
-        {showForms && (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -124,14 +108,10 @@ export function SoundsPageClient() {
               </tbody>
             </table>
           </div>
-        )}
-      </div>
+      </CollapsibleSection>
 
       {/* Unique Lebanese Sounds */}
-      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
-        <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
-          The Sounds That Define the Dialect
-        </h3>
+      <CollapsibleSection title="The Sounds That Define the Dialect" count={phase1Sounds.length}>
         <p className="text-sm text-[var(--muted)] mb-4">
           These sounds don&apos;t exist in English. Master them and everything clicks.
         </p>
@@ -154,13 +134,10 @@ export function SoundsPageClient() {
             </div>
           ))}
         </div>
-      </div>
+      </CollapsibleSection>
 
       {/* MSA vs Lebanese */}
-      <div className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]">
-        <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
-          Lebanese vs. Modern Standard Arabic — Key Differences
-        </h3>
+      <CollapsibleSection title="Lebanese vs. MSA — Key Differences" count={msaVsLebaneseComparison.length}>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -187,7 +164,7 @@ export function SoundsPageClient() {
             </tbody>
           </table>
         </div>
-      </div>
+      </CollapsibleSection>
 
       <div className="text-center text-sm text-[var(--muted)]">
         {completedCount}/{totalSoundItems} sounds practiced

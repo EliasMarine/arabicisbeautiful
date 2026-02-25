@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
 import { RecordButton } from "@/components/arabic/record-button";
+import { CollapsibleSection } from "@/components/ui/collapsible-section";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { getDialoguesByPhase } from "@/content/dialogues";
 import { useProgress } from "@/hooks/use-progress";
@@ -32,14 +33,13 @@ export function DialoguesPageClient() {
         {phaseId >= 3 && " Try to predict the next line before revealing it."}
       </p>
 
-      {dialogues.map((dialogue) => (
-        <div
+      {dialogues.map((dialogue, idx) => (
+        <CollapsibleSection
           key={dialogue.id}
-          className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]"
+          title={dialogue.title}
+          count={dialogue.lines.length}
+          defaultOpen={idx === 0}
         >
-          <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-2">
-            {dialogue.title}
-          </h3>
           {dialogue.context && (
             <p className="text-xs text-[var(--muted)] italic mb-4">{dialogue.context}</p>
           )}
@@ -75,7 +75,7 @@ export function DialoguesPageClient() {
               </div>
             ))}
           </div>
-        </div>
+        </CollapsibleSection>
       ))}
 
       <div className="text-center text-sm text-[var(--muted)]">

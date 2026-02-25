@@ -2,6 +2,7 @@
 
 import { useMemo, useEffect } from "react";
 import { useParams } from "next/navigation";
+import { CollapsibleSection } from "@/components/ui/collapsible-section";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { getCultureByPhase } from "@/content/culture";
 import { useProgress } from "@/hooks/use-progress";
@@ -30,15 +31,13 @@ export function CulturePageClient() {
 
   return (
     <div className="space-y-6">
-      {notes.map((note) => (
-        <div
+      {notes.map((note, idx) => (
+        <CollapsibleSection
           key={note.id}
-          className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]"
+          title={note.title}
+          count={note.items?.length}
+          defaultOpen={idx === 0}
         >
-          <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-4">
-            {note.title}
-          </h3>
-
           {note.content && (
             <p className="text-sm text-[var(--dark)] leading-relaxed mb-4 whitespace-pre-line">
               {note.content}
@@ -65,7 +64,7 @@ export function CulturePageClient() {
               ))}
             </div>
           )}
-        </div>
+        </CollapsibleSection>
       ))}
     </div>
   );

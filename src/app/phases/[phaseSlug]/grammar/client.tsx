@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useParams } from "next/navigation";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
+import { CollapsibleSection } from "@/components/ui/collapsible-section";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { getGrammarByPhase } from "@/content/grammar";
 import { useProgress } from "@/hooks/use-progress";
@@ -32,22 +33,22 @@ export function GrammarPageClient() {
           : "Build on your foundation with these essential patterns. Each one unlocks a new way to express yourself."}
       </p>
 
-      {rules.map((rule) => (
-        <div
+      {rules.map((rule, idx) => (
+        <CollapsibleSection
           key={rule.id}
-          className="bg-[var(--card-bg)] rounded-lg p-6 shadow-sm border border-[var(--sand)]"
-          onClick={() => markCompleted(rule.id)}
+          title={rule.title}
+          count={rule.examples?.length}
+          defaultOpen={idx === 0}
+          className="cursor-pointer"
         >
-          <h3 className="font-[var(--font-playfair)] text-lg text-[var(--phase-color)] font-bold mb-2 flex items-center gap-2">
-            {rule.title}
-            {rule.tag && (
-              <span className="bg-[var(--sand)] text-xs font-semibold text-[var(--muted)] px-2 py-0.5 rounded-full uppercase tracking-wide">
-                {rule.tag}
-              </span>
-            )}
-          </h3>
+          <div onClick={() => markCompleted(rule.id)}>
+          {rule.tag && (
+            <span className="inline-block bg-[var(--sand)] text-xs font-semibold text-[var(--muted)] px-2 py-0.5 rounded-full uppercase tracking-wide mb-3">
+              {rule.tag}
+            </span>
+          )}
 
-          <div className="bg-gradient-to-r from-[#fdf9f3] to-[#faf3e4] border border-[var(--gold)] rounded-lg p-4 mb-4">
+          <div className="bg-gradient-to-r from-[#fdf9f3] to-[#faf3e4] dark:from-[var(--sand)] dark:to-[var(--sand)] border border-[var(--gold)] rounded-lg p-4 mb-4">
             <p className="text-sm leading-relaxed">{rule.explanation}</p>
           </div>
 
@@ -112,7 +113,8 @@ export function GrammarPageClient() {
               ))}
             </ul>
           )}
-        </div>
+          </div>
+        </CollapsibleSection>
       ))}
 
       <div className="text-center text-sm text-[var(--muted)]">
