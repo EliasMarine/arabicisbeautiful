@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
+import { RecordButton } from "@/components/arabic/record-button";
 import { FlipCard } from "@/components/exercises/flip-card";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { getVocabByPhase } from "@/content/vocab";
@@ -119,7 +120,10 @@ export function VocabPageClient() {
                           </td>
                         )}
                         <td className="py-2 px-3 text-right">
-                          <AudioButton size="sm" onDemandText={item.arabic} onPlay={() => markCompleted(item.id)} />
+                          <span className="inline-flex items-center gap-1">
+                            <AudioButton size="sm" onDemandText={item.arabic} onPlay={() => markCompleted(item.id)} />
+                            <RecordButton size="sm" expectedText={item.arabic} expectedTransliteration={item.transliteration} />
+                          </span>
                         </td>
                       </tr>
                     ))}
@@ -148,7 +152,10 @@ export function VocabPageClient() {
                           </div>
                         )}
                       </div>
-                      <AudioButton size="sm" onDemandText={item.arabic} onPlay={() => markCompleted(item.id)} />
+                      <span className="inline-flex items-center gap-1">
+                        <AudioButton size="sm" onDemandText={item.arabic} onPlay={() => markCompleted(item.id)} />
+                        <RecordButton size="sm" expectedText={item.arabic} expectedTransliteration={item.transliteration} />
+                      </span>
                     </div>
                   </div>
                 ))}

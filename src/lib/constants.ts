@@ -55,6 +55,7 @@ export const PHASE_TABS: Record<PhaseSlug, { id: string; label: string }[]> = {
   reactivation: [
     { id: "sounds", label: "Sounds & Letters" },
     { id: "minimal-pairs", label: "Minimal Pairs" },
+    { id: "tracing", label: "Letter Tracing" },
     { id: "vocab", label: "Core Vocabulary" },
     { id: "verbs", label: "Verb Conjugations" },
     { id: "grammar", label: "Grammar" },
@@ -62,6 +63,7 @@ export const PHASE_TABS: Record<PhaseSlug, { id: string; label: string }[]> = {
     { id: "dialogues", label: "Dialogues" },
     { id: "shadowing", label: "Shadowing" },
     { id: "culture", label: "Culture" },
+    { id: "chat", label: "AI Chat" },
     { id: "exercises", label: "Exercises" },
   ],
   "speaking-in-phrases": [
@@ -74,6 +76,7 @@ export const PHASE_TABS: Record<PhaseSlug, { id: string; label: string }[]> = {
     { id: "msa-comparison", label: "MSA vs Lebanese" },
     { id: "reading", label: "Reading Practice" },
     { id: "culture", label: "Culture" },
+    { id: "chat", label: "AI Chat" },
     { id: "exercises", label: "Exercises" },
   ],
   "structured-conversation": [
@@ -89,6 +92,7 @@ export const PHASE_TABS: Record<PhaseSlug, { id: string; label: string }[]> = {
     { id: "idioms", label: "Idioms & Proverbs" },
     { id: "msa-comparison", label: "MSA vs Lebanese" },
     { id: "culture", label: "Culture" },
+    { id: "chat", label: "AI Chat" },
     { id: "exercises", label: "Exercises" },
   ],
   "expanding-vocabulary": [
@@ -99,6 +103,7 @@ export const PHASE_TABS: Record<PhaseSlug, { id: string; label: string }[]> = {
     { id: "content", label: "Content Guide" },
     { id: "msa-comparison", label: "MSA vs Lebanese" },
     { id: "culture", label: "Culture" },
+    { id: "chat", label: "AI Chat" },
     { id: "exercises", label: "Exercises" },
   ],
   "fluency-push": [
@@ -108,6 +113,7 @@ export const PHASE_TABS: Record<PhaseSlug, { id: string; label: string }[]> = {
     { id: "idioms", label: "Idioms & Proverbs" },
     { id: "msa-comparison", label: "MSA vs Lebanese" },
     { id: "culture", label: "Culture" },
+    { id: "chat", label: "AI Chat" },
     { id: "exercises", label: "Exercises" },
   ],
   maintenance: [
@@ -117,6 +123,7 @@ export const PHASE_TABS: Record<PhaseSlug, { id: string; label: string }[]> = {
     { id: "msa-comparison", label: "MSA vs Lebanese" },
     { id: "culture", label: "Cultural Depth" },
     { id: "assessment", label: "Assessment" },
+    { id: "chat", label: "AI Chat" },
     { id: "resources", label: "Resources" },
   ],
 };

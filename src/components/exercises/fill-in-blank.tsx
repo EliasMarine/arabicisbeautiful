@@ -9,7 +9,7 @@ import type { FillBlankQuestion } from "@/content/types";
 
 interface FillInBlankProps {
   questions: FillBlankQuestion[];
-  onComplete?: (score: number, total: number) => void;
+  onComplete?: (score: number, total: number, wrongIds: string[], correctIds: string[]) => void;
 }
 
 function normalize(s: string): string {
@@ -23,6 +23,8 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
   const [isCorrect, setIsCorrect] = useState(false);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
+  const [wrongIds, setWrongIds] = useState<string[]>([]);
+  const [correctIds, setCorrectIds] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const question = questions[currentIndex];
@@ -37,7 +39,12 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
     );
     setIsCorrect(correct);
     setShowResult(true);
-    if (correct) setScore((s) => s + 1);
+    if (correct) {
+      setScore((s) => s + 1);
+      setCorrectIds((prev) => [...prev, question.id]);
+    } else {
+      setWrongIds((prev) => [...prev, question.id]);
+    }
   }
 
   function handleNext() {
@@ -48,7 +55,7 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
       setIsCorrect(false);
     } else {
       setFinished(true);
-      onComplete?.(score, questions.length);
+      onComplete?.(score, questions.length, wrongIds, correctIds);
     }
   }
 
@@ -82,6 +89,11 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
           {score}/{questions.length}
         </p>
         <p className="text-[var(--muted)] mb-4">{pct}% correct</p>
+        {wrongIds.length > 0 && (
+          <p className="text-xs text-[var(--muted)] mb-3">
+            {wrongIds.length} item{wrongIds.length !== 1 ? "s" : ""} added to your weak areas for extra practice
+          </p>
+        )}
         <button
           onClick={() => {
             setCurrentIndex(0);
@@ -90,6 +102,8 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
             setIsCorrect(false);
             setScore(0);
             setFinished(false);
+            setWrongIds([]);
+            setCorrectIds([]);
           }}
           className="bg-[var(--phase-color)] text-white px-6 py-2 rounded-lg text-sm font-semibold hover:opacity-80"
         >

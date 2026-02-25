@@ -8,7 +8,7 @@ import type { MatchingPair } from "@/content/types";
 
 interface MatchingExerciseProps {
   pairs: MatchingPair[];
-  onComplete?: (score: number, total: number) => void;
+  onComplete?: (score: number, total: number, wrongIds: string[], correctIds: string[]) => void;
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -33,6 +33,8 @@ export function MatchingExercise({
     right: number;
   } | null>(null);
   const [attempts, setAttempts] = useState(0);
+  const [wrongArabicItems, setWrongArabicItems] = useState<Set<string>>(new Set());
+  const [correctArabicItems, setCorrectArabicItems] = useState<Set<string>>(new Set());
 
   function handleLeftClick(index: number) {
     if (matched.has(index)) return;
@@ -66,13 +68,17 @@ export function MatchingExercise({
       setMatched(newMatched);
       setSelectedLeft(null);
       setSelectedRight(null);
+      setCorrectArabicItems((prev) => new Set(prev).add(leftPair.arabic));
 
       if (newMatched.size === pairs.length) {
         const score = pairs.length;
-        onComplete?.(score, pairs.length);
+        const wrongIds = Array.from(wrongArabicItems);
+        const correctIds = Array.from(new Set([...correctArabicItems, leftPair.arabic]));
+        onComplete?.(score, pairs.length, wrongIds, correctIds);
       }
     } else {
       setWrongPair({ left: leftIdx, right: rightIdx });
+      setWrongArabicItems((prev) => new Set(prev).add(leftPair.arabic));
       setTimeout(() => {
         setSelectedLeft(null);
         setSelectedRight(null);

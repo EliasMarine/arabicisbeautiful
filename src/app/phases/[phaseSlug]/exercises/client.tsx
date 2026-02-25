@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { QuizMultipleChoice } from "@/components/exercises/quiz-multiple-choice";
 import { FillInBlank } from "@/components/exercises/fill-in-blank";
@@ -10,11 +10,21 @@ import { PHASE_SLUGS } from "@/lib/constants";
 import { getExercisesByPhase } from "@/content/exercises";
 import { getVocabByPhase } from "@/content/vocab";
 import { useProgress } from "@/hooks/use-progress";
+import { AlertTriangle } from "lucide-react";
 
 type ExerciseType = "quiz" | "fill-blank" | "matching" | "sentence-builder";
 
+interface WeakItem {
+  itemId: string;
+  itemType: string;
+  errorCount: number;
+  totalAttempts: number;
+  errorRate: number;
+}
+
 export function ExercisesPageClient() {
   const [activeExercise, setActiveExercise] = useState<ExerciseType>("quiz");
+  const [weakItems, setWeakItems] = useState<WeakItem[]>([]);
   const params = useParams();
   const phaseSlug = params.phaseSlug as string;
   const phaseId = PHASE_SLUGS.indexOf(phaseSlug as (typeof PHASE_SLUGS)[number]) + 1;
@@ -23,6 +33,45 @@ export function ExercisesPageClient() {
   const vocab = useMemo(() => getVocabByPhase(phaseId), [phaseId]);
   // Track 4 exercise types as completable items
   const { markCompleted, completedCount } = useProgress(phaseId, "exercises", 4);
+
+  // Fetch weak items on mount
+  useEffect(() => {
+    fetch(`/api/exercises/weak-items?phaseId=${phaseId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.error && data.weakItems) {
+          setWeakItems(data.weakItems);
+        }
+      })
+      .catch(() => {});
+  }, [phaseId]);
+
+  // Report exercise results to the API
+  const reportResult = useCallback(
+    (
+      exerciseType: string,
+      score: number,
+      total: number,
+      wrongIds: string[] = [],
+      correctIds: string[] = []
+    ) => {
+      fetch("/api/exercises/result", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          exerciseId: `${phaseSlug}-${exerciseType}-${Date.now()}`,
+          phaseId,
+          exerciseType,
+          score,
+          totalQuestions: total,
+          correctAnswers: score,
+          wrongItemIds: wrongIds,
+          correctItemIds: correctIds,
+        }),
+      }).catch(() => {});
+    },
+    [phaseId, phaseSlug]
+  );
 
   // Extract quiz questions from exercise sets
   const quizQuestions = useMemo(() => {
@@ -70,6 +119,16 @@ export function ExercisesPageClient() {
         Test your knowledge with different exercise types. Don&apos;t overthink — go with what feels natural.
       </p>
 
+      {/* Weak Areas Badge */}
+      {weakItems.length > 0 && (
+        <div className="flex items-center gap-2 bg-[var(--sand)] border border-[var(--gold)]/30 rounded-lg px-3 py-2">
+          <AlertTriangle size={14} className="text-[var(--gold)] flex-shrink-0" />
+          <span className="text-xs text-[var(--muted)]">
+            <strong className="text-[var(--dark)]">{weakItems.length} weak area{weakItems.length !== 1 ? "s" : ""}</strong> detected — these items will appear more often to help you improve
+          </span>
+        </div>
+      )}
+
       {/* Exercise Type Selector */}
       <div className="flex flex-wrap gap-2">
         {exercises.map((ex) => (
@@ -94,8 +153,9 @@ export function ExercisesPageClient() {
       {effectiveExercise === "quiz" && quizQuestions.length > 0 && (
         <QuizMultipleChoice
           questions={quizQuestions}
-          onComplete={(score, total) => {
+          onComplete={(score, total, wrongIds, correctIds) => {
             markCompleted("quiz");
+            reportResult("multiple-choice", score, total, wrongIds, correctIds);
           }}
         />
       )}
@@ -103,8 +163,9 @@ export function ExercisesPageClient() {
       {effectiveExercise === "fill-blank" && fillBlanks.length > 0 && (
         <FillInBlank
           questions={fillBlanks}
-          onComplete={(score, total) => {
+          onComplete={(score, total, wrongIds, correctIds) => {
             markCompleted("fill-blank");
+            reportResult("fill-blank", score, total, wrongIds, correctIds);
           }}
         />
       )}
@@ -112,8 +173,9 @@ export function ExercisesPageClient() {
       {effectiveExercise === "matching" && matchingPairs.length > 0 && (
         <MatchingExercise
           pairs={matchingPairs}
-          onComplete={(score, total) => {
+          onComplete={(score, total, wrongIds, correctIds) => {
             markCompleted("matching");
+            reportResult("matching", score, total, wrongIds, correctIds);
           }}
         />
       )}

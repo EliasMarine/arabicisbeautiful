@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useParams } from "next/navigation";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
+import { RecordButton } from "@/components/arabic/record-button";
 import { getShadowingByPhase } from "@/content/shadowing";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { CheckCircle2 } from "lucide-react";
@@ -79,6 +80,7 @@ export function ShadowingPageClient() {
                         {item.arabic}
                       </ArabicText>
                       <AudioButton size="sm" onDemandText={item.arabic} onPlay={() => markCompleted(item.id)} />
+                      <RecordButton size="sm" expectedText={item.arabic} expectedTransliteration={item.transliteration} />
                     </div>
                     <div className="text-[var(--green)] italic text-sm mt-1">
                       {item.transliteration}

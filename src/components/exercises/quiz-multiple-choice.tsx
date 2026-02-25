@@ -8,7 +8,7 @@ import type { QuizQuestion } from "@/content/types";
 
 interface QuizMultipleChoiceProps {
   questions: QuizQuestion[];
-  onComplete?: (score: number, total: number) => void;
+  onComplete?: (score: number, total: number, wrongIds: string[], correctIds: string[]) => void;
 }
 
 export function QuizMultipleChoice({
@@ -20,6 +20,8 @@ export function QuizMultipleChoice({
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
+  const [wrongIds, setWrongIds] = useState<string[]>([]);
+  const [correctIds, setCorrectIds] = useState<string[]>([]);
 
   const question = questions[currentIndex];
 
@@ -29,6 +31,9 @@ export function QuizMultipleChoice({
     setShowResult(true);
     if (optionIndex === question.correctIndex) {
       setScore((s) => s + 1);
+      setCorrectIds((prev) => [...prev, question.id]);
+    } else {
+      setWrongIds((prev) => [...prev, question.id]);
     }
   }
 
@@ -39,10 +44,8 @@ export function QuizMultipleChoice({
       setShowResult(false);
     } else {
       setFinished(true);
-      onComplete?.(
-        score + (selectedOption === question.correctIndex ? 1 : 0),
-        questions.length
-      );
+      const finalScore = score + (selectedOption === question.correctIndex ? 1 : 0);
+      onComplete?.(finalScore, questions.length, wrongIds, correctIds);
     }
   }
 
@@ -67,6 +70,11 @@ export function QuizMultipleChoice({
           {finalScore}/{questions.length}
         </p>
         <p className="text-[var(--muted)] mb-4">{pct}% correct</p>
+        {wrongIds.length > 0 && (
+          <p className="text-xs text-[var(--muted)] mb-3">
+            {wrongIds.length} item{wrongIds.length !== 1 ? "s" : ""} added to your weak areas for extra practice
+          </p>
+        )}
         <button
           onClick={() => {
             setCurrentIndex(0);
@@ -74,6 +82,8 @@ export function QuizMultipleChoice({
             setShowResult(false);
             setScore(0);
             setFinished(false);
+            setWrongIds([]);
+            setCorrectIds([]);
           }}
           className="bg-[var(--phase-color)] text-white px-6 py-2 rounded-lg text-sm font-semibold hover:opacity-80 transition-opacity"
         >

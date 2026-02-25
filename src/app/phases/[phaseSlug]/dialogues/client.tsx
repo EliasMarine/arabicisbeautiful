@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useParams } from "next/navigation";
 import { ArabicText } from "@/components/arabic/arabic-text";
 import { AudioButton } from "@/components/arabic/audio-button";
+import { RecordButton } from "@/components/arabic/record-button";
 import { PHASE_SLUGS } from "@/lib/constants";
 import { getDialoguesByPhase } from "@/content/dialogues";
 import { useProgress } from "@/hooks/use-progress";
@@ -67,8 +68,9 @@ export function DialoguesPageClient() {
                     {line.english}
                   </div>
                 </div>
-                <div className="flex-shrink-0 mt-0.5">
+                <div className="flex-shrink-0 mt-0.5 flex items-center gap-1">
                   <AudioButton size="sm" onDemandText={line.arabic} onPlay={() => markCompleted(dialogue.id)} />
+                  <RecordButton size="sm" expectedText={line.arabic} expectedTransliteration={line.transliteration} />
                 </div>
               </div>
             ))}

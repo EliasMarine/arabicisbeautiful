@@ -138,6 +138,31 @@ export const dailyActivity = sqliteTable("daily_activity", {
   exercisesCompleted: integer("exercises_completed").default(0),
 });
 
+export const itemErrorLog = sqliteTable("item_error_log", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  itemId: text("item_id").notNull(),
+  itemType: text("item_type").notNull(), // "vocab" | "exercise" | "verb" | "pronunciation"
+  phaseId: integer("phase_id").notNull(),
+  errorCount: integer("error_count").default(0),
+  totalAttempts: integer("total_attempts").default(0),
+  lastAttemptAt: integer("last_attempt_at", { mode: "timestamp" }),
+});
+
+export const aiConversations = sqliteTable("ai_conversations", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  phaseId: integer("phase_id").notNull(),
+  title: text("title").notNull(),
+  messages: text("messages").notNull(), // JSON string: {role, content}[]
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }),
+});
+
 export const skillAssessments = sqliteTable("skill_assessments", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   userId: text("user_id")
