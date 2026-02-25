@@ -105,7 +105,7 @@ export function VocabPageClient() {
                   </thead>
                   <tbody>
                     {group.items.map((item) => (
-                      <tr key={item.id} className="border-b border-[var(--sand)] last:border-0 hover:bg-[#fdf9f3]">
+                      <tr key={item.id} className="border-b border-[var(--sand)] last:border-0 hover:bg-[var(--hover-row)]">
                         <td className="py-2 px-3">
                           <ArabicText size="md">{item.arabic}</ArabicText>
                         </td>

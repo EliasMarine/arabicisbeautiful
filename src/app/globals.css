@@ -23,6 +23,9 @@
   --card-border: var(--sand);
   --input-bg: #ffffff;
   --nav-text: #FAF6EE;
+  --callout-bg: #fdf8ee;
+  --callout-bg-alt: #faf3e4;
+  --hover-row: #fdf9f3;
 }
 
 .dark {
@@ -39,6 +42,9 @@
   --input-bg: #2a2015;
   --nav-text: #FAF6EE;
   --arabic-text: #F6C547;
+  --callout-bg: #2a2218;
+  --callout-bg-alt: #2a2015;
+  --hover-row: #2a2218;
 }
 
 @theme inline {

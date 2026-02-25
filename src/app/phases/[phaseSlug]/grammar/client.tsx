@@ -48,7 +48,7 @@ export function GrammarPageClient() {
             </span>
           )}
 
-          <div className="bg-gradient-to-r from-[#fdf9f3] to-[#faf3e4] dark:from-[var(--sand)] dark:to-[var(--sand)] border border-[var(--gold)] rounded-lg p-4 mb-4">
+          <div className="bg-gradient-to-r from-[var(--callout-bg)] to-[var(--callout-bg-alt)] border border-[var(--gold)] rounded-lg p-4 mb-4">
             <p className="text-sm leading-relaxed">{rule.explanation}</p>
           </div>
 
@@ -67,7 +67,7 @@ export function GrammarPageClient() {
                 </thead>
                 <tbody>
                   {rule.table.rows.map((row, ri) => (
-                    <tr key={ri} className="border-b border-[var(--sand)] last:border-0 hover:bg-[#fdf9f3]">
+                    <tr key={ri} className="border-b border-[var(--sand)] last:border-0 hover:bg-[var(--hover-row)]">
                       {row.map((cell, ci) => (
                         <td key={ci} className="py-2 px-3">
                           {/[\u0600-\u06FF]/.test(cell) ? (

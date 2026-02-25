@@ -49,7 +49,7 @@ export function CulturePageClient() {
               {note.items.map((item) => (
                 <div
                   key={item.label}
-                  className="bg-gradient-to-r from-[#fdf9f3] to-[#faf3e4] border border-[var(--gold)] rounded-lg p-4"
+                  className="bg-gradient-to-r from-[var(--callout-bg)] to-[var(--callout-bg-alt)] border border-[var(--gold)] rounded-lg p-4"
                 >
                   <strong className="text-[var(--phase-color)] text-sm block mb-1">
                     {item.label}

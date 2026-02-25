@@ -86,7 +86,7 @@ export function SoundsPageClient() {
               </thead>
               <tbody>
                 {letterForms.map((form) => (
-                  <tr key={form.name} className="border-b border-[var(--sand)] last:border-0 hover:bg-[#fdf9f3]">
+                  <tr key={form.name} className="border-b border-[var(--sand)] last:border-0 hover:bg-[var(--hover-row)]">
                     <td className="py-2 px-3 text-xs font-semibold text-[var(--dark)]">{form.name}</td>
                     <td className="py-2 px-3 text-center">
                       <ArabicText size="lg">{form.isolated}</ArabicText>
@@ -151,7 +151,7 @@ export function SoundsPageClient() {
             </thead>
             <tbody>
               {msaVsLebaneseComparison.map((row) => (
-                <tr key={row.feature} className="border-b border-[var(--sand)] last:border-0 hover:bg-[#fdf9f3]">
+                <tr key={row.feature} className="border-b border-[var(--sand)] last:border-0 hover:bg-[var(--hover-row)]">
                   <td className="py-2 px-3">{row.feature}</td>
                   <td className="py-2 px-3"><ArabicText size="sm">{row.msa}</ArabicText></td>
                   <td className="py-2 px-3 text-[var(--green)] italic">{row.lebanese}</td>
@@ -170,7 +170,7 @@ export function SoundsPageClient() {
         {completedCount}/{totalSoundItems} sounds practiced
       </div>
 
-      <div className="bg-[#fdf8ee] border-l-4 border-[var(--gold)] rounded-r-lg p-5">
+      <div className="bg-[var(--callout-bg)] border-l-4 border-[var(--gold)] rounded-r-lg p-5">
         <strong className="block text-[var(--phase-color)] text-sm mb-1">Week 1-2 Mission</strong>
         <p className="text-sm text-[var(--dark)] leading-relaxed">
           Watch 20-30 min/day of Lebanese content: LBCI or MTV Lebanon on YouTube,

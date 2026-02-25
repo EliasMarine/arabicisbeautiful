@@ -49,7 +49,7 @@ export function ShadowingPageClient() {
         Do each sentence 5 times until it flows naturally.
       </p>
 
-      <div className="bg-[#fdf8ee] border-l-4 border-[var(--gold)] rounded-r-lg p-5">
+      <div className="bg-[var(--callout-bg)] border-l-4 border-[var(--gold)] rounded-r-lg p-5">
         <strong className="block text-[var(--phase-color)] text-sm mb-1">The 4-Step Workflow</strong>
         <div className="flex gap-4 text-sm text-[var(--dark)]">
           <span className="bg-[var(--sand)] px-2 py-0.5 rounded text-xs font-semibold">1. Read</span>

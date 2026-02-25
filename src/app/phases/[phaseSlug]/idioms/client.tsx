@@ -38,7 +38,7 @@ export function IdiomsPageClient() {
         </h3>
         <div className="space-y-4">
           {proverbs.map((p) => (
-            <div key={p.id} className="bg-gradient-to-r from-[#fdf9f3] to-[#faf3e4] border border-[var(--gold)] rounded-lg p-4">
+            <div key={p.id} className="bg-gradient-to-r from-[var(--callout-bg)] to-[var(--callout-bg-alt)] border border-[var(--gold)] rounded-lg p-4">
               <div className="flex items-start justify-between gap-2">
                 <div dir="rtl" className="text-right flex-1">
                   <ArabicText size="lg" className="text-arabic">

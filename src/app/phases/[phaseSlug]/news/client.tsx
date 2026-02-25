@@ -43,7 +43,7 @@ export function NewsPageClient() {
         </div>
       </div>
 
-      <div className="bg-[#fdf8ee] border-l-4 border-[var(--gold)] rounded-r-lg p-5">
+      <div className="bg-[var(--callout-bg)] border-l-4 border-[var(--gold)] rounded-r-lg p-5">
         <strong className="block text-[var(--phase-color)] text-sm mb-1">Key Vocabulary for News</strong>
         <p className="text-sm text-[var(--dark)] leading-relaxed">
           حكومة (government), أزمة (crisis), انتخابات (elections), اقتصاد (economy),

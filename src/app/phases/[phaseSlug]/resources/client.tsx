@@ -66,7 +66,7 @@ export function ResourcesPageClient() {
         </div>
       ))}
 
-      <div className="bg-gradient-to-r from-[#fdf9f3] to-[#faf3e4] border border-[var(--gold)] rounded-xl p-6 text-center">
+      <div className="bg-gradient-to-r from-[var(--callout-bg)] to-[var(--callout-bg-alt)] border border-[var(--gold)] rounded-xl p-6 text-center">
         <h3 className="font-[var(--font-playfair)] text-xl text-[var(--phase-color)] font-bold mb-2">
           Congratulations!
         </h3>

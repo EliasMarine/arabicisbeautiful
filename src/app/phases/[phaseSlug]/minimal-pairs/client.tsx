@@ -190,7 +190,7 @@ export function MinimalPairsClient() {
         </div>
 
         {/* Tip */}
-        <div className="bg-[#fdf8ee] border-l-4 border-[var(--gold)] rounded-r-lg p-3 mb-4">
+        <div className="bg-[var(--callout-bg)] border-l-4 border-[var(--gold)] rounded-r-lg p-3 mb-4">
           <p className="text-xs text-[var(--dark)] leading-relaxed">{pair.tip}</p>
         </div>
 

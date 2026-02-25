@@ -34,7 +34,7 @@ export function ProverbsPageClient() {
             <div className="text-base font-medium text-[var(--dark)] mt-1">
               &quot;{p.english}&quot;
             </div>
-            <div className="mt-3 bg-gradient-to-r from-[#fdf9f3] to-[#faf3e4] border border-[var(--gold)] rounded-lg p-3">
+            <div className="mt-3 bg-gradient-to-r from-[var(--callout-bg)] to-[var(--callout-bg-alt)] border border-[var(--gold)] rounded-lg p-3">
               <p className="text-sm text-[var(--dark)] leading-relaxed">
                 {p.meaning}
               </p>

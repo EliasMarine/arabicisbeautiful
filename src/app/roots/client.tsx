@@ -143,7 +143,7 @@ export function RootsExplorerClient() {
       </div>
 
       {/* Info card */}
-      <div className="bg-[#fdf8ee] border-l-4 border-[var(--gold)] rounded-r-lg p-5">
+      <div className="bg-[var(--callout-bg)] border-l-4 border-[var(--gold)] rounded-r-lg p-5">
         <strong className="block text-[var(--dark)] text-sm mb-1">How Arabic Roots Work</strong>
         <p className="text-sm text-[var(--dark)] leading-relaxed">
           Most Arabic words are built from a 3-letter root that carries a core meaning.
