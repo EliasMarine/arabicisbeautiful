@@ -1,62 +1,104 @@
 @import "tailwindcss";
 
 :root {
+  --deep: #FAF6EE;
   --cream: #FAF6EE;
   --sand: #E8DCC8;
   --dark: #1C1208;
+  --dark-mid: #ebe3d5;
+  --dark-card: #ffffff;
+  --dark-card-hover: #faf8f4;
   --muted: #5C4F3D;
   --gold: #C9973A;
+  --gold-bright: #E8A849;
+  --gold-dim: rgba(201,151,58,0.6);
+  --gold-pale: #f0d69b;
   --green: #2D6A4F;
+  --green-dim: #2D6A4F;
+  --orange: #f59e0b;
+  --red: #ef4444;
+  --blue: #60a5fa;
   --sidebar-bg: #16100a;
+  --sidebar-w: 240px;
 
-  --p1: #8B1A1A;
-  --p2: #1a3a5c;
-  --p3: #4a1a6b;
-  --p4: #1b4332;
-  --p5: #7d3000;
-  --p6: #0d5050;
+  --p1: #c0392b;
+  --p2: #2980b9;
+  --p3: #8e44ad;
+  --p4: #27ae60;
+  --p5: #d35400;
+  --p6: #16a085;
 
   --phase-color: var(--p1);
-  --arabic-text: #8B1A1A;
+  --arabic-text: #c0392b;
 
   --card-bg: #ffffff;
   --card-border: var(--sand);
+  --card-hover: #faf8f4;
   --input-bg: #ffffff;
+  --input-focus: rgba(201,151,58,0.5);
   --nav-text: #FAF6EE;
   --callout-bg: #fdf8ee;
   --callout-bg-alt: #faf3e4;
   --hover-row: #fdf9f3;
+
+  --border: rgba(201,151,58,0.12);
+  --border-strong: rgba(201,151,58,0.22);
+
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(201, 151, 58, 0.2);
+  --glass-shadow: rgba(160, 140, 100, 0.15);
 }
 
 .dark {
+  --deep: #0d0905;
   --cream: #1C1208;
   --sand: #2a2015;
   --dark: #FAF6EE;
-  --muted: #a09585;
+  --dark-mid: #241c10;
+  --dark-card: #1e1710;
+  --dark-card-hover: #272012;
+  --muted: #8a7d6a;
   --gold: #C9973A;
+  --gold-bright: #E8A849;
   --green: #4ade80;
+  --green-dim: #2D6A4F;
   --sidebar-bg: #0d0905;
 
-  --card-bg: #241c10;
+  --card-bg: #1e1710;
   --card-border: #3a2f20;
+  --card-hover: #272012;
   --input-bg: #2a2015;
+  --input-focus: rgba(201,151,58,0.4);
   --nav-text: #FAF6EE;
   --arabic-text: #F6C547;
   --callout-bg: #2a2218;
   --callout-bg-alt: #2a2015;
   --hover-row: #2a2218;
+
+  --border: rgba(201,151,58,0.1);
+  --border-strong: rgba(201,151,58,0.18);
+
+  --glass-bg: rgba(28, 18, 8, 0.55);
+  --glass-border: rgba(201, 151, 58, 0.18);
+  --glass-shadow: rgba(12, 8, 2, 0.6);
 }
 
 @theme inline {
   --color-cream: var(--cream);
   --color-sand: var(--sand);
   --color-dark: var(--dark);
+  --color-deep: var(--deep);
   --color-muted: var(--muted);
   --color-gold: var(--gold);
+  --color-gold-bright: var(--gold-bright);
   --color-green: var(--green);
   --color-sidebar: var(--sidebar-bg);
   --color-card: var(--card-bg);
+  --color-card-hover: var(--card-hover);
   --color-arabic: var(--arabic-text);
+  --color-blue: var(--blue);
+  --color-orange: var(--orange);
+  --color-red: var(--red);
 
   --color-phase-1: var(--p1);
   --color-phase-2: var(--p2);
@@ -67,7 +109,7 @@
 }
 
 body {
-  background: var(--cream);
+  background: var(--deep);
   color: var(--dark);
   font-family: "Source Sans 3", "Inter", system-ui, sans-serif;
   -webkit-text-size-adjust: 100%;
@@ -140,6 +182,44 @@ button, a {
     opacity: 1;
     transform: scale(1) translateY(0);
   }
+}
+
+/* ─── Redesign Keyframes ─── */
+
+@keyframes patternDrift {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(60px, 60px); }
+}
+
+@keyframes auroraFade {
+  0%   { opacity: 0.3; transform: scale(1) translate(0,0); }
+  50%  { opacity: 0.7; transform: scale(1.15) translate(20px, -10px); }
+  100% { opacity: 0.4; transform: scale(0.95) translate(-10px, 15px); }
+}
+
+@keyframes particleFloat {
+  0%   { opacity: 0; transform: translateY(100vh) scale(0); }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.3; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+}
+
+@keyframes shimmer {
+  0%, 100% { left: -100%; }
+  50%      { left: 140%; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%  { transform: translateX(-6px); }
+  40%  { transform: translateX(6px); }
+  60%  { transform: translateX(-4px); }
+  80%  { transform: translateX(4px); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Reduced motion */

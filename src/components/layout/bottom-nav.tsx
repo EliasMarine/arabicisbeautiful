@@ -31,7 +31,7 @@ export function BottomNav() {
     "reactivation";
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[var(--sidebar-bg)] border-t border-[rgba(201,151,58,0.25)] sm:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[var(--sidebar-bg)] border-t border-[rgba(201,151,58,0.25)] md:hidden">
       <div className="flex items-center justify-around h-16 px-2">
         {NAV_ITEMS.map((item) => {
           let href = item.href;

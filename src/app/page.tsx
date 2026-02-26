@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { Header } from "@/components/layout/header";
+import { AppShell } from "@/components/layout/app-shell";
 import { Dashboard } from "@/components/dashboard";
 import { OnboardingClient } from "@/components/onboarding/onboarding-client";
 import { TimezoneSync } from "@/components/timezone-sync";
@@ -25,11 +25,12 @@ export default async function Home() {
   const showOnboarding = !user?.hasCompletedOnboarding;
 
   return (
-    <div className="min-h-screen bg-[var(--cream)]">
-      <Header userName={session.user.name} />
-      <main className="pt-[100px] max-w-5xl mx-auto px-3 sm:px-6 pb-24 sm:pb-16">
-        <Dashboard userId={session.user.id!} userName={session.user.name!} />
-      </main>
+    <div className="min-h-screen bg-[var(--deep)]">
+      <AppShell userName={session.user.name} userEmail={session.user.email}>
+        <div className="max-w-[960px] mx-auto px-4 md:px-7 py-8">
+          <Dashboard userId={session.user.id!} userName={session.user.name!} />
+        </div>
+      </AppShell>
       <OnboardingClient showOnboarding={showOnboarding} />
       <TimezoneSync serverTimezone={session.user.timezone} />
     </div>

@@ -10,12 +10,12 @@ export const PHASE_SLUGS = [
 export type PhaseSlug = (typeof PHASE_SLUGS)[number];
 
 export const PHASE_COLORS: Record<PhaseSlug, string> = {
-  reactivation: "#8B1A1A",
-  "speaking-in-phrases": "#1a3a5c",
-  "structured-conversation": "#4a1a6b",
-  "expanding-vocabulary": "#1b4332",
-  "fluency-push": "#7d3000",
-  maintenance: "#0d5050",
+  reactivation: "#c0392b",
+  "speaking-in-phrases": "#2980b9",
+  "structured-conversation": "#8e44ad",
+  "expanding-vocabulary": "#27ae60",
+  "fluency-push": "#d35400",
+  maintenance: "#16a085",
 };
 
 export const PHASE_TITLES: Record<PhaseSlug, { en: string; ar: string; subtitle: string }> = {

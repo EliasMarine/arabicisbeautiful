@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
-import { Header } from "@/components/layout/header";
-import { PhaseTabNav } from "@/components/layout/phase-tab-nav";
+import { AppShell } from "@/components/layout/app-shell";
+import { PhaseTabBar } from "@/components/layout/phase-tab-bar";
 import { PhaseContentWrapper } from "@/components/layout/phase-content-wrapper";
 import { PHASE_SLUGS, PHASE_TABS, PHASE_TITLES, PHASE_COLORS } from "@/lib/constants";
 import type { PhaseSlug } from "@/lib/constants";
@@ -31,46 +31,43 @@ export default async function PhaseLayout({
   const phaseNum = PHASE_SLUGS.indexOf(slug) + 1;
 
   return (
-    <div className="min-h-screen bg-[var(--cream)]">
-      <Header userName={session.user.name} />
-
-      {/* Phase Hero */}
-      <div
-        className="mt-[100px] rounded-xl mx-auto max-w-[900px] px-3 sm:px-6"
-      >
+    <div className="min-h-screen bg-[var(--deep)]">
+      <AppShell userName={session.user.name} userEmail={session.user.email}>
+        {/* Phase Hero - full width within main area */}
         <div
-          className="rounded-xl p-5 sm:p-8 text-white relative overflow-hidden"
+          className="relative overflow-hidden"
           style={{
-            background: `linear-gradient(135deg, ${color}, ${color}88)`,
+            background: `linear-gradient(135deg, ${color}, color-mix(in srgb, ${color} 70%, #000))`,
           }}
         >
-          <div className="absolute right-[-1rem] top-[-2rem] text-[6rem] sm:text-[10rem] opacity-[0.06] font-serif pointer-events-none leading-none">
-            {titles.ar}
+          {/* Decorative Arabic letter */}
+          <div className="absolute right-10 top-[-20px] text-[12rem] font-bold opacity-[0.06] text-white pointer-events-none font-[Noto_Naskh_Arabic,serif]">
+            أ
           </div>
-          <div className="relative z-10">
-            <span className="inline-block bg-white/15 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2 sm:mb-3 backdrop-blur-sm">
+          <div className="px-8 py-7 relative z-10">
+            <span className="inline-block px-2.5 py-0.5 rounded-md bg-white/15 text-[0.72rem] font-semibold text-white/85 uppercase tracking-wide mb-2.5">
               Phase {phaseNum}
             </span>
-            <h2 className="font-[var(--font-playfair)] text-2xl sm:text-3xl font-black leading-tight">
+            <h1 className="font-[var(--font-playfair)] text-[1.6rem] font-extrabold text-white mb-1">
               {titles.en}
-            </h2>
+            </h1>
             <p
               dir="rtl"
-              className="text-[var(--gold)] italic text-base sm:text-lg font-[Noto_Naskh_Arabic,serif] mt-1"
+              className="font-[Noto_Naskh_Arabic,serif] text-base text-[var(--gold-pale)] italic"
             >
-              {titles.ar} — {titles.subtitle}
+              {titles.ar}
             </p>
           </div>
         </div>
-      </div>
 
-      {/* Tab Navigation */}
-      <PhaseTabNav slug={slug} tabs={tabs} color={color} />
+        {/* Tab Bar */}
+        <PhaseTabBar slug={slug} tabs={tabs} color={color} />
 
-      {/* Content */}
-      <main className="max-w-[900px] mx-auto px-3 sm:px-6 pb-24 sm:pb-16 pt-4">
-        <PhaseContentWrapper slug={slug}>{children}</PhaseContentWrapper>
-      </main>
+        {/* Content */}
+        <main className="max-w-[900px] mx-auto px-4 md:px-7 pb-24 md:pb-8 pt-7">
+          <PhaseContentWrapper slug={slug}>{children}</PhaseContentWrapper>
+        </main>
+      </AppShell>
     </div>
   );
 }
