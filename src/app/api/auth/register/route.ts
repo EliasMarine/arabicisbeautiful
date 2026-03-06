@@ -4,6 +4,10 @@ import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { hashPassword } from "@/lib/auth";
 import crypto from "crypto";
+import {
+  createMobileToken,
+  buildMobileUserProfile,
+} from "@/lib/mobile-auth";
 
 // Rate limiter for registration
 const registerAttempts = new Map<string, { count: number; lastAttempt: number }>();
@@ -127,6 +131,19 @@ export async function POST(request: Request) {
         createdAt: new Date(),
       })
       .run();
+
+    // Check if this is a mobile request (wants token-based auth)
+    const isMobile =
+      request.headers.get("X-Client") === "mobile" ||
+      request.headers.get("Accept")?.includes("application/json");
+
+    if (isMobile) {
+      const token = await createMobileToken(id);
+      const profile = buildMobileUserProfile(id);
+      if (profile) {
+        return NextResponse.json({ success: true, token, user: profile });
+      }
+    }
 
     return NextResponse.json({ success: true, userId: id });
   } catch (error) {
