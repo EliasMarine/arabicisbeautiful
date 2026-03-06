@@ -27,7 +27,7 @@ export function hashPassword(password: string): string {
   return bcrypt.hashSync(password, BCRYPT_ROUNDS);
 }
 
-export function verifyPassword(password: string, hash: string): boolean {
+function verifyPassword(password: string, hash: string): boolean {
   // Support both bcrypt ($2a$/$2b$ prefix) and legacy SHA-256 (64 hex chars)
   if (hash.startsWith("$2a$") || hash.startsWith("$2b$")) {
     return bcrypt.compareSync(password, hash);

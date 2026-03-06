@@ -1,6 +1,6 @@
 {
   "name": "lebanese-lessons",
-  "version": "3.0.2",
+  "version": "3.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
