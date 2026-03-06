@@ -57,6 +57,7 @@ export function ReviewSessionClient() {
   const [selectedPhase, setSelectedPhase] = useState(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [showXPPopup, setShowXPPopup] = useState<number | null>(null);
+  const [cardTransition, setCardTransition] = useState<"enter" | "exit" | "idle">("enter");
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const router = useRouter();
 
@@ -102,7 +103,7 @@ export function ReviewSessionClient() {
   const handleRate = useCallback(
     async (rating: 0 | 1 | 2 | 3) => {
       const card = cards[currentIndex];
-      if (!card) return;
+      if (!card || cardTransition === "exit") return;
 
       try {
         const res = await fetch("/api/srs/review", {
@@ -134,15 +135,20 @@ export function ReviewSessionClient() {
 
       setReviewed((r) => r + 1);
 
-      if (currentIndex < cards.length - 1) {
-        setCurrentIndex((i) => i + 1);
-      } else {
-        setSessionState("finished");
-        // Fire confetti on completion
-        setTimeout(() => fireConfetti("big"), 300);
-      }
+      // Animate card exit, then move to next
+      setCardTransition("exit");
+      setTimeout(() => {
+        if (currentIndex < cards.length - 1) {
+          setCurrentIndex((i) => i + 1);
+          setCardTransition("enter");
+        } else {
+          setSessionState("finished");
+          // Fire confetti on completion
+          setTimeout(() => fireConfetti("big"), 300);
+        }
+      }, 250);
     },
-    [cards, currentIndex]
+    [cards, currentIndex, cardTransition]
   );
 
   // Keyboard shortcuts
@@ -440,8 +446,22 @@ export function ReviewSessionClient() {
       </div>
 
       {/* Card area */}
-      <div className="flex-1 flex items-center justify-center px-4 relative">
-        <div className="w-full max-w-sm">
+      <div className="flex-1 flex items-center justify-center px-4 relative overflow-hidden">
+        <div
+          className="w-full max-w-sm transition-all duration-250 ease-out"
+          style={{
+            opacity: cardTransition === "exit" ? 0 : 1,
+            transform:
+              cardTransition === "exit"
+                ? "translateX(-60px) scale(0.95)"
+                : cardTransition === "enter"
+                ? "translateX(0) scale(1)"
+                : "translateX(0) scale(1)",
+          }}
+          onTransitionEnd={() => {
+            if (cardTransition === "enter") setCardTransition("idle");
+          }}
+        >
           <FlipCard
             key={card.id}
             arabic={card.arabic}
@@ -453,7 +473,10 @@ export function ReviewSessionClient() {
 
         {/* XP popup */}
         {showXPPopup !== null && (
-          <div className="absolute top-4 right-8 animate-bounce">
+          <div
+            className="absolute top-4 right-8"
+            style={{ animation: "xpFloat 0.8s ease-out forwards" }}
+          >
             <span className="bg-[var(--xp-purple)] text-white text-sm font-extrabold px-3 py-1.5 rounded-xl shadow-lg">
               +{showXPPopup} XP
             </span>

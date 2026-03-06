@@ -658,16 +658,16 @@ function ToggleSwitch({
       role="switch"
       aria-checked={checked}
       onClick={() => onChange(!checked)}
-      className="relative inline-flex h-7 w-12 items-center rounded-full transition-colors duration-200 cursor-pointer flex-shrink-0"
+      className="relative inline-flex h-8 w-14 items-center rounded-full transition-colors duration-200 cursor-pointer flex-shrink-0"
       style={{
         background: checked ? color : "var(--bg-surface)",
-        border: checked ? "none" : "1px solid var(--border)",
+        border: checked ? "none" : "2px solid var(--border)",
       }}
     >
       <span
-        className="inline-block h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200"
+        className="inline-block h-6 w-6 rounded-full bg-white shadow-md transition-transform duration-200"
         style={{
-          transform: checked ? "translateX(22px)" : "translateX(4px)",
+          transform: checked ? "translateX(28px)" : "translateX(3px)",
         }}
       />
     </button>

@@ -165,7 +165,9 @@ export function ReviewDashboardClient() {
             </div>
           )}
           <div className="relative z-10">
-            <Brain className="mx-auto mb-3 text-[var(--brand)]" size={40} />
+            <div className="w-14 h-14 rounded-2xl bg-[var(--brand-dim)] flex items-center justify-center mx-auto mb-3">
+              <Brain className="text-[var(--brand)]" size={28} />
+            </div>
             <p className="text-6xl sm:text-7xl font-extrabold text-[var(--text)] tabular-nums">
               {loading ? (
                 <span className="inline-block w-16 h-16 rounded-xl bg-[var(--bg-surface)] animate-pulse" />

@@ -31,8 +31,8 @@ const PODIUM_CONFIG = [
     order: "order-2",
     translate: "",
     badge: (
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-2xl animate-bounce">
-        <Crown size={28} className="text-[var(--warning)] fill-[var(--warning)]" />
+      <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+        <Crown size={24} className="text-[var(--warning)] fill-[var(--warning)] drop-shadow-md" />
       </div>
     ),
     label: "1st",
@@ -93,7 +93,7 @@ export function Podium({ users }: PodiumProps) {
 
   return (
     <div
-      className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] p-6 pb-8"
+      className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] p-6 pb-8 overflow-hidden"
       style={{ animation: "fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both" }}
     >
       <div className="text-center mb-6">
@@ -121,7 +121,7 @@ export function Podium({ users }: PodiumProps) {
               }}
             >
               {/* Avatar */}
-              <div className="relative mb-3">
+              <div className="relative mb-3 mt-5">
                 {!isEmpty && config.badge}
                 <div
                   className={`${config.size} ${config.ring} rounded-full flex items-center justify-center ${

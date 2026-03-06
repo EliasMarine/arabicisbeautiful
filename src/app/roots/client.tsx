@@ -117,14 +117,14 @@ export function RootsExplorerClient() {
                             </span>
                           </div>
                         </div>
-                        <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
+                        <div className="flex flex-col items-end gap-2 flex-shrink-0">
                           {word.form && (
-                            <span className="text-[0.55rem] bg-[var(--card-bg)] text-[var(--muted)] px-2 py-0.5 rounded-full font-medium">
+                            <span className="text-[0.65rem] bg-[var(--card-bg)] text-[var(--muted)] px-2.5 py-1 rounded-full font-medium">
                               {word.form}
                             </span>
                           )}
                           <span className={cn(
-                            "text-[0.55rem] px-2 py-0.5 rounded-full font-medium",
+                            "text-[0.65rem] px-2.5 py-1 rounded-full font-medium",
                             word.partOfSpeech === "verb" && "bg-blue-100 text-blue-700",
                             word.partOfSpeech === "noun" && "bg-green-100 text-green-700",
                             word.partOfSpeech === "adj" && "bg-purple-100 text-purple-700",

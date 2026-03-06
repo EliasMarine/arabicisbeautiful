@@ -282,6 +282,12 @@ button, a {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes xpFloat {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  50%  { opacity: 1; transform: translateY(-12px) scale(1.1); }
+  100% { opacity: 0; transform: translateY(-24px) scale(0.9); }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .flip-card-inner {
