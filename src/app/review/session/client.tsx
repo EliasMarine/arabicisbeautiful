@@ -266,6 +266,7 @@ export function ReviewSessionClient() {
         </div>
 
         <FlipCard
+          key={card.id}
           arabic={card.arabic}
           transliteration={card.transliteration}
           english={card.english}
