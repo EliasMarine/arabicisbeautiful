@@ -108,6 +108,10 @@
   --color-phase-6: var(--p6);
 }
 
+html {
+  font-size: 112.5%; /* 18px base instead of 16px — scales all rem values up */
+}
+
 body {
   background: var(--deep);
   color: var(--dark);

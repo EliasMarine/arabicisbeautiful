@@ -24,7 +24,7 @@ export function PhaseTabBar({ slug, tabs, color }: PhaseTabBarProps) {
   }, [pathname]);
 
   return (
-    <div className="bg-[var(--dark)] border-b border-[var(--border)]">
+    <div className="bg-[var(--cream)] border-b border-[var(--border)]">
       <div
         className="flex overflow-x-auto px-7"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
