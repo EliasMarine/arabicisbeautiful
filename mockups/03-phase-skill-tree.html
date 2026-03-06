@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lebanese Lessons 3.0 — Phase Skill Tree</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #131F24;
+    --bg-card: #1B2B33;
+    --bg-card-hover: #223540;
+    --text: #F0F4F5;
+    --text-muted: #7A9BAD;
+    --text-dim: #4A6B7A;
+    --border: rgba(255,255,255,0.06);
+    --red: #FF4B4B;
+    --blue: #1CB0F6;
+    --purple: #CE82FF;
+    --green: #58CC02;
+    --orange: #FF9600;
+    --teal: #00CD9C;
+    --gold: #FFC800;
+    --pink: #FF86D0;
+    --sidebar-w: 260px;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ─── Sidebar (simplified) ─── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: #0D171C;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+    padding: 20px 0;
+  }
+
+  .sidebar-logo {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 24px; margin-bottom: 32px;
+  }
+
+  .sidebar-logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--green), #2EAA00);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 22px; font-weight: 700; color: white;
+    box-shadow: 0 4px 12px rgba(88,204,2,0.3);
+  }
+
+  .sidebar-logo-text { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
+
+  .nav-section { padding: 0 12px; margin-bottom: 24px; }
+  .nav-section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--text-dim); padding: 0 12px; margin-bottom: 8px;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+    border-radius: 12px; cursor: pointer; transition: all 0.15s;
+    font-size: 15px; font-weight: 600; color: var(--text-muted); text-decoration: none;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+  .nav-item.active { background: rgba(255,75,75,0.12); color: var(--red); }
+  .nav-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+
+  .phase-number {
+    font-size: 12px; font-weight: 800; width: 24px; height: 24px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;
+  }
+
+  /* ─── Main Content ─── */
+  .main {
+    margin-left: var(--sidebar-w);
+    max-width: 720px;
+    margin-right: auto;
+    padding: 0 40px;
+  }
+
+  /* ─── Phase Header ─── */
+  .phase-hero {
+    position: relative;
+    padding: 40px 0 32px;
+    overflow: hidden;
+  }
+
+  .phase-hero-bg {
+    position: absolute;
+    top: 0; left: -40px; right: -40px; bottom: 0;
+    background: linear-gradient(135deg, #3a1515, #1a0808);
+    border-bottom: 1px solid rgba(255,75,75,0.15);
+    z-index: 0;
+  }
+
+  .phase-hero-bg::after {
+    content: 'أ';
+    position: absolute;
+    right: 40px; top: -30px;
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 200px;
+    font-weight: 700;
+    opacity: 0.04;
+    color: white;
+  }
+
+  .phase-hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .phase-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,75,75,0.2);
+    color: var(--red);
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  .phase-title {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+
+  .phase-arabic-title {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 20px;
+    color: rgba(255,200,0,0.7);
+    direction: rtl;
+    margin-bottom: 12px;
+  }
+
+  .phase-desc {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 500px;
+    line-height: 1.5;
+  }
+
+  .phase-progress-strip {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .phase-progress-bar-bg {
+    flex: 1;
+    height: 12px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .phase-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), #FF6B6B);
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .phase-progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 2px; bottom: 2px; left: 2px; right: 2px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    border-radius: 8px;
+  }
+
+  .phase-progress-text {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--red);
+    flex-shrink: 0;
+  }
+
+  /* ─── Skill Tree ─── */
+  .skill-tree {
+    padding: 32px 0 60px;
+  }
+
+  .unit-section {
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .unit-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .unit-number {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 900; color: white;
+    flex-shrink: 0;
+  }
+
+  .unit-title {
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .unit-subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .unit-badge {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 8px;
+  }
+
+  /* ─── Lesson Nodes ─── */
+  .lesson-path {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+  }
+
+  .lesson-path::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    bottom: 40px;
+    width: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    z-index: 0;
+  }
+
+  .lesson-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Zigzag offset */
+  .lesson-row:nth-child(odd) { margin-left: -60px; }
+  .lesson-row:nth-child(even) { margin-left: 60px; }
+
+  .lesson-node {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .lesson-node:hover {
+    transform: scale(1.1);
+  }
+
+  .lesson-node.completed {
+    background: var(--green);
+    box-shadow: 0 6px 0 #3d9900, 0 0 20px rgba(88,204,2,0.2);
+  }
+
+  .lesson-node.completed::after {
+    content: '✓';
+    position: absolute;
+    bottom: -2px; right: -2px;
+    width: 24px; height: 24px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900; color: #1a1a00;
+    border: 3px solid var(--bg);
+  }
+
+  .lesson-node.current {
+    background: var(--red);
+    box-shadow: 0 6px 0 #CC2222, 0 0 30px rgba(255,75,75,0.3);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 6px 0 #CC2222, 0 0 20px rgba(255,75,75,0.2); }
+    50% { box-shadow: 0 6px 0 #CC2222, 0 0 40px rgba(255,75,75,0.4); }
+  }
+
+  .lesson-node.locked {
+    background: #1E2E36;
+    border: 3px solid rgba(255,255,255,0.08);
+    color: var(--text-dim);
+    box-shadow: 0 4px 0 #15232B;
+    cursor: default;
+  }
+
+  .lesson-node.locked:hover {
+    transform: none;
+  }
+
+  .lesson-node.bonus {
+    background: linear-gradient(135deg, var(--purple), #A855F7);
+    box-shadow: 0 6px 0 #8A3ACC, 0 0 20px rgba(206,130,255,0.2);
+  }
+
+  .lesson-node.review {
+    background: linear-gradient(135deg, var(--blue), #0099DD);
+    box-shadow: 0 6px 0 #0077AA, 0 0 20px rgba(28,176,246,0.2);
+  }
+
+  .lesson-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    max-width: 120px;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .lesson-label .type {
+    font-size: 11px;
+    color: var(--text-dim);
+    display: block;
+  }
+
+  /* ─── Crown for completed units ─── */
+  .unit-crown {
+    width: 64px; height: 64px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .unit-crown.earned {
+    filter: drop-shadow(0 0 16px rgba(255,200,0,0.4));
+  }
+
+  .unit-crown.locked {
+    opacity: 0.2;
+    filter: grayscale(1);
+  }
+
+  /* ─── Tooltip ─── */
+  .lesson-tooltip {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e2e36;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 12px 16px;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    display: none;
+    z-index: 10;
+  }
+
+  .lesson-node:hover .lesson-tooltip {
+    display: block;
+  }
+
+  .tooltip-title {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .tooltip-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .tooltip-xp {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-top: 4px;
+  }
+
+  .tooltip-arrow {
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px; height: 12px;
+    background: #1e2e36;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">ع</div>
+    <div class="sidebar-logo-text">Lebanese<br>Lessons</div>
+  </div>
+
+  <nav>
+    <div class="nav-section">
+      <div class="nav-section-label">Learn</div>
+      <a class="nav-item" href="#"><div class="nav-icon">🏠</div>Dashboard</a>
+      <a class="nav-item" href="#"><div class="nav-icon">🔄</div>Review</a>
+      <a class="nav-item" href="#"><div class="nav-icon">🏆</div>Leaderboard</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Phases</div>
+      <a class="nav-item active" href="#"><div class="phase-number" style="background:var(--red);">1</div>Reactivation</a>
+      <a class="nav-item" href="#"><div class="phase-number" style="background:var(--blue);">2</div>Speaking</a>
+      <a class="nav-item" href="#"><div class="phase-number" style="background:var(--purple);">3</div>Conversation</a>
+      <a class="nav-item" href="#"><div class="phase-number" style="background:var(--green);">4</div>Vocabulary</a>
+      <a class="nav-item" href="#"><div class="phase-number" style="background:var(--orange);">5</div>Fluency</a>
+      <a class="nav-item" href="#"><div class="phase-number" style="background:var(--teal);">6</div>Maintenance</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="main">
+  <!-- Phase Hero -->
+  <div class="phase-hero">
+    <div class="phase-hero-bg"></div>
+    <div class="phase-hero-content">
+      <div class="phase-tag">🔴 Phase 1</div>
+      <h1 class="phase-title">Reactivation</h1>
+      <div class="phase-arabic-title">أهلا من جديد</div>
+      <p class="phase-desc">Rebuild your foundation: the Arabic alphabet, key sounds, and core vocabulary for everyday Lebanese conversation.</p>
+
+      <div class="phase-progress-strip">
+        <div class="phase-progress-bar-bg">
+          <div class="phase-progress-bar-fill" style="width: 42%;"></div>
+        </div>
+        <span class="phase-progress-text">42%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skill Tree -->
+  <div class="skill-tree">
+
+    <!-- UNIT 1: Sounds & Letters (Completed) -->
+    <div class="unit-section">
+      <div class="unit-header">
+        <div class="unit-number" style="background: var(--green);">1</div>
+        <div>
+          <div class="unit-title">Sounds & Letters</div>
+          <div class="unit-subtitle">The Arabic alphabet and Lebanese sounds</div>
+        </div>
+        <div class="unit-badge" style="background: rgba(88,204,2,0.12); color: var(--green);">✓ Complete</div>
+      </div>
+
+      <div class="lesson-path">
+        <div class="lesson-row">
+          <div class="lesson-label">
+            The Alphabet
+            <span class="type">Learn</span>
+          </div>
+          <div class="lesson-node completed">📖</div>
+          <div class="lesson-label">
+            Letter Forms
+            <span class="type">Practice</span>
+          </div>
+        </div>
+        <div class="lesson-row">
+          <div class="lesson-label">
+            Unique Sounds
+            <span class="type">Listen</span>
+          </div>
+          <div class="lesson-node completed">🔊</div>
+          <div class="lesson-label">
+            Minimal Pairs
+            <span class="type">Quiz</span>
+          </div>
+        </div>
+        <div class="lesson-row">
+          <div class="lesson-label">
+            Letter Tracing
+            <span class="type">Write</span>
+          </div>
+          <div class="lesson-node completed">✏️</div>
+          <div class="lesson-label">
+            Sound Review
+            <span class="type">Test</span>
+          </div>
+        </div>
+        <div class="unit-crown earned">👑</div>
+      </div>
+    </div>
+
+    <!-- UNIT 2: Core Vocabulary (Completed) -->
+    <div class="unit-section">
+      <div class="unit-header">
+        <div class="unit-number" style="background: var(--green);">2</div>
+        <div>
+          <div class="unit-title">Core Vocabulary</div>
+          <div class="unit-subtitle">Essential words for daily life</div>
+        </div>
+        <div class="unit-badge" style="background: rgba(88,204,2,0.12); color: var(--green);">✓ Complete</div>
+      </div>
+
+      <div class="lesson-path">
+        <div class="lesson-row">
+          <div class="lesson-label">
+            Greetings
+            <span class="type">Learn</span>
+          </div>
+          <div class="lesson-node completed">👋</div>
+          <div class="lesson-label">
+            Numbers
+            <span class="type">Practice</span>
+          </div>
+        </div>
+        <div class="lesson-row">
+          <div class="lesson-label">
+            Food & Drink
+            <span class="type">Learn</span>
+          </div>
+          <div class="lesson-node completed">🍽️</div>
+          <div class="lesson-label">
+            Colors
+            <span class="type">Practice</span>
+          </div>
+        </div>
+        <div class="lesson-row">
+          <div class="lesson-label">
+            Vocab Blitz
+            <span class="type">Speed Round</span>
+          </div>
+          <div class="lesson-node completed">⚡</div>
+          <div class="lesson-label">
+            Unit Review
+            <span class="type">Test</span>
+          </div>
+        </div>
+        <div class="unit-crown earned">👑</div>
+      </div>
+    </div>
+
+    <!-- UNIT 3: Family & Home (Current) -->
+    <div class="unit-section">
+      <div class="unit-header">
+        <div class="unit-number" style="background: var(--red);">3</div>
+        <div>
+          <div class="unit-title">Family & Home</div>
+          <div class="unit-subtitle">Talk about your family and where you live</div>
+        </div>
+        <div class="unit-badge" style="background: rgba(255,75,75,0.12); color: var(--red);">3 of 5</div>
+      </div>
+
+      <div class="lesson-path">
+        <div class="lesson-row">
+          <div class="lesson-label">
+            Family Members
+            <span class="type">Learn</span>
+          </div>
+          <div class="lesson-node completed">👨‍👩‍👧</div>
+          <div class="lesson-label">
+            My House
+            <span class="type">Learn</span>
+          </div>
+        </div>
+        <div class="lesson-row">
+          <div class="lesson-label">
+            Describe People
+            <span class="type">Practice</span>
+          </div>
+          <div class="lesson-node completed">🗣️</div>
+          <div class="lesson-label">
+            Possessives
+            <span class="type">Grammar</span>
+          </div>
+        </div>
+        <div class="lesson-row">
+          <div class="lesson-label" style="color: var(--red); font-weight: 800;">
+            At Home
+            <span class="type" style="color: var(--red);">Conversation</span>
+          </div>
+          <div class="lesson-node current">
+            🎭
+            <div class="lesson-tooltip">
+              <div class="tooltip-title">At Home — Conversation</div>
+              <div class="tooltip-desc">Practice talking about your home</div>
+              <div class="tooltip-xp">⚡ +15 XP</div>
+              <div class="tooltip-arrow"></div>
+            </div>
+          </div>
+          <div class="lesson-label" style="font-weight: 800;">
+            START HERE
+            <span class="type" style="color: var(--red);">→ Next lesson</span>
+          </div>
+        </div>
+        <div class="lesson-row">
+          <div class="lesson-label">
+            Memory Match
+            <span class="type">Game</span>
+          </div>
+          <div class="lesson-node locked">🧩</div>
+          <div class="lesson-label">
+            Family Quiz
+            <span class="type">Test</span>
+          </div>
+        </div>
+        <div class="lesson-row">
+          <div class="lesson-label">
+            Unit Review
+            <span class="type">Final Test</span>
+          </div>
+          <div class="lesson-node locked">📝</div>
+          <div class="lesson-label"></div>
+        </div>
+        <div class="unit-crown locked">👑</div>
+      </div>
+    </div>
+
+    <!-- UNIT 4: Verb Basics (Locked) -->
+    <div class="unit-section">
+      <div class="unit-header">
+        <div class="unit-number" style="background: #2a3a42; color: var(--text-dim);">4</div>
+        <div>
+          <div class="unit-title" style="color: var(--text-dim);">Verb Basics</div>
+          <div class="unit-subtitle">Present tense conjugation patterns</div>
+        </div>
+        <div class="unit-badge" style="background: rgba(255,255,255,0.04); color: var(--text-dim);">🔒 Locked</div>
+      </div>
+
+      <div class="lesson-path">
+        <div class="lesson-row">
+          <div class="lesson-label" style="color: var(--text-dim);">
+            Common Verbs
+            <span class="type">Learn</span>
+          </div>
+          <div class="lesson-node locked">📖</div>
+          <div class="lesson-label" style="color: var(--text-dim);">
+            I / You / He
+            <span class="type">Practice</span>
+          </div>
+        </div>
+        <div class="lesson-row">
+          <div class="lesson-label" style="color: var(--text-dim);">
+            Conjugation Drill
+            <span class="type">Speed Round</span>
+          </div>
+          <div class="lesson-node locked">⚡</div>
+          <div class="lesson-label" style="color: var(--text-dim);">
+            Build Sentences
+            <span class="type">Practice</span>
+          </div>
+        </div>
+        <div class="lesson-row">
+          <div class="lesson-label" style="color: var(--text-dim);">
+            Verb Review
+            <span class="type">Test</span>
+          </div>
+          <div class="lesson-node locked">📝</div>
+          <div class="lesson-label" style="color: var(--text-dim);"></div>
+        </div>
+        <div class="unit-crown locked">👑</div>
+      </div>
+    </div>
+
+    <!-- Bonus: Challenge Node -->
+    <div class="unit-section">
+      <div class="unit-header">
+        <div class="unit-number" style="background: linear-gradient(135deg, var(--purple), #A855F7);">⭐</div>
+        <div>
+          <div class="unit-title">Phase 1 Challenge</div>
+          <div class="unit-subtitle">Prove your mastery to unlock Phase 2</div>
+        </div>
+        <div class="unit-badge" style="background: rgba(206,130,255,0.12); color: var(--purple);">🔒 Complete all units</div>
+      </div>
+
+      <div class="lesson-path">
+        <div class="lesson-row">
+          <div class="lesson-label" style="color: var(--text-dim);">
+            Boss Challenge
+            <span class="type">Mixed Quiz</span>
+          </div>
+          <div class="lesson-node locked" style="width: 88px; height: 88px; font-size: 40px;">🏆</div>
+          <div class="lesson-label" style="color: var(--text-dim);">
+            +100 Bonus XP
+            <span class="type">Unlock Phase 2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+</body>
+</html>

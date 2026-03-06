@@ -4,7 +4,9 @@ import { db } from "@/lib/db";
 import { exerciseResults, itemErrorLog, userXP, srsCards } from "@/lib/db/schema";
 import { logActivity } from "@/lib/db/log-activity";
 import { eq, and } from "drizzle-orm";
-import { calculateExerciseXP } from "@/lib/exercises/difficulty";
+import { calculateExerciseXP } from "@/lib/gamification/xp";
+import { logActivity as logFeedActivity } from "@/lib/gamification/activity-logger";
+import { checkAndAwardBadges } from "@/lib/gamification/badge-engine";
 
 /**
  * POST /api/exercises/result
@@ -150,8 +152,9 @@ export async function POST(request: Request) {
       }
     }
 
-    // 5. Award XP
-    const xpAmount = calculateExerciseXP(score, totalQuestions);
+    // 5. Award XP (uses correctAnswers for accurate calculation)
+    const actualCorrect = correctAnswers ?? score;
+    const xpAmount = calculateExerciseXP(actualCorrect, totalQuestions);
     db.insert(userXP)
       .values({
         userId,
@@ -165,10 +168,25 @@ export async function POST(request: Request) {
     // 6. Log daily activity
     logActivity(userId, { exercisesCompleted: 1 }, session.user.timezone);
 
+    // 7. Log to activity feed
+    const accuracy = totalQuestions > 0 ? Math.round((actualCorrect / totalQuestions) * 100) : 0;
+    logFeedActivity(userId, "lesson_complete", {
+      exerciseId,
+      exerciseType,
+      accuracy,
+      xpEarned: xpAmount,
+      timeSpentSeconds: timeSpentSeconds ?? 0,
+      phaseId,
+    }).catch(() => {}); // non-blocking
+
+    // 8. Check for newly earned badges
+    const newBadges = await checkAndAwardBadges(userId, session.user.timezone);
+
     return NextResponse.json({
       success: true,
       xpEarned: xpAmount,
       wrongItemsTracked: wrongItemIds.length,
+      newBadges,
     });
   } catch (error) {
     console.error("Exercise result error:", error);

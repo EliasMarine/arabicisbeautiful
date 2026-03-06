@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lebanese Lessons 3.0 — Leaderboard & Activity Feed</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #131F24;
+    --bg-card: #1B2B33;
+    --bg-card-hover: #223540;
+    --text: #F0F4F5;
+    --text-muted: #7A9BAD;
+    --text-dim: #4A6B7A;
+    --border: rgba(255,255,255,0.06);
+    --red: #FF4B4B;
+    --blue: #1CB0F6;
+    --purple: #CE82FF;
+    --green: #58CC02;
+    --orange: #FF9600;
+    --teal: #00CD9C;
+    --gold: #FFC800;
+    --pink: #FF86D0;
+    --sidebar-w: 260px;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: #0D171C;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+    padding: 20px 0;
+  }
+
+  .sidebar-logo {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 24px; margin-bottom: 32px;
+  }
+
+  .sidebar-logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--green), #2EAA00);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 22px; font-weight: 700; color: white;
+    box-shadow: 0 4px 12px rgba(88,204,2,0.3);
+  }
+
+  .sidebar-logo-text { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
+
+  .nav-section { padding: 0 12px; margin-bottom: 24px; }
+  .nav-section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--text-dim); padding: 0 12px; margin-bottom: 8px;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+    border-radius: 12px; cursor: pointer; transition: all 0.15s;
+    font-size: 15px; font-weight: 600; color: var(--text-muted); text-decoration: none;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+  .nav-item.active { background: rgba(255,200,0,0.1); color: var(--gold); }
+  .nav-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .phase-number {
+    font-size: 12px; font-weight: 800; width: 24px; height: 24px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;
+  }
+
+  .sidebar-user {
+    padding: 16px 20px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px; margin-top: auto;
+  }
+
+  .user-avatar-sm {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: white;
+  }
+
+  .user-name { font-weight: 700; font-size: 14px; }
+  .user-level { font-size: 12px; color: var(--text-muted); }
+
+  /* ─── Main ─── */
+  .main {
+    margin-left: var(--sidebar-w);
+    padding: 32px 40px;
+    max-width: 900px;
+  }
+
+  /* ─── Page Header ─── */
+  .page-header {
+    margin-bottom: 32px;
+  }
+
+  .page-title {
+    font-size: 28px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .page-subtitle {
+    font-size: 15px;
+    color: var(--text-muted);
+  }
+
+  /* ─── Tabs ─── */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 14px;
+    padding: 4px;
+    margin-bottom: 28px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 11px;
+    border: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .tab:hover { color: var(--text); }
+
+  .tab.active {
+    background: var(--bg-card);
+    color: var(--text);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  /* ─── Podium Section ─── */
+  .podium-section {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 36px;
+    padding: 20px 0;
+  }
+
+  .podium-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+
+  .podium-card:hover { transform: translateY(-4px); }
+
+  .podium-avatar {
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; color: white;
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  .podium-avatar.first {
+    width: 88px; height: 88px; font-size: 32px;
+    box-shadow: 0 0 40px rgba(255,200,0,0.3);
+    border: 4px solid var(--gold);
+  }
+
+  .podium-avatar.second {
+    width: 72px; height: 72px; font-size: 26px;
+    border: 3px solid #C0C0C0;
+  }
+
+  .podium-avatar.third {
+    width: 72px; height: 72px; font-size: 26px;
+    border: 3px solid #CD7F32;
+  }
+
+  .podium-crown {
+    position: absolute;
+    top: -20px;
+    font-size: 28px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+
+  .podium-rank {
+    position: absolute;
+    bottom: -6px; right: -4px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900;
+    border: 3px solid var(--bg);
+  }
+
+  .podium-name {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+
+  .podium-xp {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .podium-streak {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .podium-bar {
+    width: 100%;
+    border-radius: 12px 12px 0 0;
+    margin-top: 12px;
+  }
+
+  .podium-bar.first {
+    height: 120px;
+    background: linear-gradient(180deg, rgba(255,200,0,0.2), rgba(255,200,0,0.05));
+    border: 1px solid rgba(255,200,0,0.15);
+    border-bottom: none;
+    width: 140px;
+  }
+
+  .podium-bar.second {
+    height: 88px;
+    background: linear-gradient(180deg, rgba(192,192,192,0.15), rgba(192,192,192,0.03));
+    border: 1px solid rgba(192,192,192,0.1);
+    border-bottom: none;
+    width: 120px;
+  }
+
+  .podium-bar.third {
+    height: 64px;
+    background: linear-gradient(180deg, rgba(205,127,50,0.15), rgba(205,127,50,0.03));
+    border: 1px solid rgba(205,127,50,0.1);
+    border-bottom: none;
+    width: 120px;
+  }
+
+  /* ─── Stats Comparison ─── */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .member-stat-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .member-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .member-stat-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .member-stat-avatar {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .member-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .mini-stat {
+    text-align: center;
+  }
+
+  .mini-stat-value {
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .mini-stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* ─── Activity Feed ─── */
+  .feed-section {
+    margin-bottom: 32px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  .feed-filter {
+    display: flex;
+    gap: 8px;
+  }
+
+  .filter-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: none;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: rgba(255,255,255,0.04);
+    color: var(--text-muted);
+  }
+
+  .filter-chip:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+  .filter-chip.active { background: var(--blue); color: white; }
+
+  .feed {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .feed-item {
+    background: var(--bg-card);
+    border-radius: 18px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: all 0.15s;
+    cursor: default;
+  }
+
+  .feed-item:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(255,255,255,0.08);
+  }
+
+  .feed-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800; color: white;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .feed-avatar-badge {
+    position: absolute;
+    bottom: -4px; right: -4px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    border: 3px solid var(--bg-card);
+    background: var(--bg);
+  }
+
+  .feed-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .feed-main {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .feed-main strong {
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  .feed-main .highlight {
+    font-weight: 800;
+  }
+
+  .feed-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .feed-xp {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .feed-time {
+    font-weight: 600;
+  }
+
+  .feed-detail {
+    margin-top: 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+  }
+
+  .feed-detail-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 4px 0;
+  }
+
+  .feed-detail-row + .feed-detail-row {
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+    padding-top: 8px;
+  }
+
+  .feed-detail-label {
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .feed-detail-value {
+    font-weight: 800;
+  }
+
+  /* Feed item types */
+  .feed-item.lesson .feed-icon { color: var(--green); }
+  .feed-item.badge .feed-icon { color: var(--gold); }
+  .feed-item.streak .feed-icon { color: var(--orange); }
+  .feed-item.review .feed-icon { color: var(--blue); }
+  .feed-item.level .feed-icon { color: var(--purple); }
+
+  .feed-type-icon {
+    font-size: 24px;
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ─── This Week Summary ─── */
+  .week-summary {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .week-day {
+    text-align: center;
+  }
+
+  .week-day-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .week-day-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .week-bar {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .week-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .week-day-check {
+    margin-top: 6px;
+    font-size: 14px;
+  }
+
+  .week-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+    justify-content: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+  }
+
+  /* ─── Motivational Banner ─── */
+  .motivate-banner {
+    background: linear-gradient(135deg, #1a2a10, #0d1a06);
+    border: 1px solid rgba(88,204,2,0.15);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .motivate-icon {
+    font-size: 40px;
+    flex-shrink: 0;
+  }
+
+  .motivate-text {
+    flex: 1;
+  }
+
+  .motivate-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--green);
+    margin-bottom: 2px;
+  }
+
+  .motivate-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .motivate-btn {
+    background: var(--green);
+    color: #1a3300;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #3d9900;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .motivate-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 0 #3d9900; }
+
+  /* ─── Animations ─── */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-in { animation: slideUp 0.4s ease-out both; }
+  .delay-1 { animation-delay: 0.05s; }
+  .delay-2 { animation-delay: 0.1s; }
+  .delay-3 { animation-delay: 0.15s; }
+  .delay-4 { animation-delay: 0.2s; }
+  .delay-5 { animation-delay: 0.25s; }
+  .delay-6 { animation-delay: 0.3s; }
+  .delay-7 { animation-delay: 0.35s; }
+  .delay-8 { animation-delay: 0.4s; }
+  .delay-9 { animation-delay: 0.45s; }
+  .delay-10 { animation-delay: 0.5s; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">ع</div>
+    <div class="sidebar-logo-text">Lebanese<br>Lessons</div>
+  </div>
+  <nav>
+    <div class="nav-section">
+      <div class="nav-section-label">Learn</div>
+      <a class="nav-item" href="#"><div class="nav-icon">🏠</div>Dashboard</a>
+      <a class="nav-item" href="#"><div class="nav-icon">🔄</div>Review</a>
+      <a class="nav-item active" href="#"><div class="nav-icon">🏆</div>Leaderboard</a>
+      <a class="nav-item" href="#"><div class="nav-icon">🌳</div>Root Explorer</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Phases</div>
+      <a class="nav-item" href="#"><div class="phase-number" style="background:#FF4B4B;">1</div>Reactivation</a>
+      <a class="nav-item" href="#"><div class="phase-number" style="background:#1CB0F6;">2</div>Speaking</a>
+      <a class="nav-item" href="#"><div class="phase-number" style="background:#CE82FF;">3</div>Conversation</a>
+      <a class="nav-item" href="#"><div class="phase-number" style="background:#58CC02;">4</div>Vocabulary</a>
+      <a class="nav-item" href="#"><div class="phase-number" style="background:#FF9600;">5</div>Fluency</a>
+      <a class="nav-item" href="#"><div class="phase-number" style="background:#00CD9C;">6</div>Maintenance</a>
+    </div>
+  </nav>
+  <div class="sidebar-user">
+    <div class="user-avatar-sm" style="background: linear-gradient(135deg, var(--blue), var(--purple));">EB</div>
+    <div>
+      <div class="user-name">Elias</div>
+      <div class="user-level">⭐ Level 14 · 2,840 XP</div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main">
+
+  <!-- Page Header -->
+  <div class="page-header animate-in delay-1">
+    <div class="page-title">🏆 Family Leaderboard</div>
+    <div class="page-subtitle">See who's putting in the work — and what they've been learning</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs animate-in delay-2">
+    <button class="tab active">Rankings</button>
+    <button class="tab">Activity Feed</button>
+    <button class="tab">This Week</button>
+  </div>
+
+  <!-- Podium -->
+  <div class="podium-section animate-in delay-3">
+    <!-- 2nd Place -->
+    <div class="podium-card">
+      <div class="podium-avatar second" style="background: linear-gradient(135deg, var(--blue), var(--purple));">
+        EB
+        <div class="podium-rank" style="background: #C0C0C0; color: #333;">2</div>
+      </div>
+      <div class="podium-name">Elias</div>
+      <div class="podium-xp" style="color: #C0C0C0;">2,840 XP</div>
+      <div class="podium-streak">🔥 23 days</div>
+      <div class="podium-bar second"></div>
+    </div>
+
+    <!-- 1st Place -->
+    <div class="podium-card">
+      <div class="podium-avatar first" style="background: linear-gradient(135deg, var(--orange), var(--gold));">
+        M
+        <div class="podium-crown">👑</div>
+        <div class="podium-rank" style="background: var(--gold); color: #333;">1</div>
+      </div>
+      <div class="podium-name">Mom</div>
+      <div class="podium-xp" style="color: var(--gold);">3,120 XP</div>
+      <div class="podium-streak">🔥 31 days</div>
+      <div class="podium-bar first"></div>
+    </div>
+
+    <!-- 3rd Place -->
+    <div class="podium-card">
+      <div class="podium-avatar third" style="background: linear-gradient(135deg, var(--green), var(--teal));">
+        D
+        <div class="podium-rank" style="background: #CD7F32; color: white;">3</div>
+      </div>
+      <div class="podium-name">Dad</div>
+      <div class="podium-xp" style="color: #CD7F32;">1,560 XP</div>
+      <div class="podium-streak">🔥 8 days</div>
+      <div class="podium-bar third"></div>
+    </div>
+  </div>
+
+  <!-- Motivational Banner -->
+  <div class="motivate-banner animate-in delay-4">
+    <div class="motivate-icon">💪</div>
+    <div class="motivate-text">
+      <div class="motivate-title">Mom is 280 XP ahead of you!</div>
+      <div class="motivate-desc">Complete 3 more lessons today to close the gap</div>
+    </div>
+    <button class="motivate-btn">Start Lesson →</button>
+  </div>
+
+  <!-- Member Stats Comparison -->
+  <div class="comparison-grid animate-in delay-5">
+    <!-- Mom -->
+    <div class="member-stat-card" style="border-top: 3px solid var(--gold);">
+      <div class="member-stat-name">
+        <span class="member-stat-avatar" style="background: linear-gradient(135deg, var(--orange), var(--gold));">M</span>
+        Mom · Level 16
+      </div>
+      <div class="member-stats-grid">
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--orange);">31</div>
+          <div class="mini-stat-label">Day Streak</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--green);">94%</div>
+          <div class="mini-stat-label">Accuracy</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--blue);">142</div>
+          <div class="mini-stat-label">Words Learned</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--red);">58%</div>
+          <div class="mini-stat-label">Phase 1</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Elias (You) -->
+    <div class="member-stat-card" style="border-top: 3px solid var(--blue); box-shadow: 0 0 20px rgba(28,176,246,0.08);">
+      <div class="member-stat-name">
+        <span class="member-stat-avatar" style="background: linear-gradient(135deg, var(--blue), var(--purple));">E</span>
+        You · Level 14
+      </div>
+      <div class="member-stats-grid">
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--orange);">23</div>
+          <div class="mini-stat-label">Day Streak</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--green);">88%</div>
+          <div class="mini-stat-label">Accuracy</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--blue);">118</div>
+          <div class="mini-stat-label">Words Learned</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--red);">42%</div>
+          <div class="mini-stat-label">Phase 1</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dad -->
+    <div class="member-stat-card" style="border-top: 3px solid var(--green);">
+      <div class="member-stat-name">
+        <span class="member-stat-avatar" style="background: linear-gradient(135deg, var(--green), var(--teal));">D</span>
+        Dad · Level 9
+      </div>
+      <div class="member-stats-grid">
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--orange);">8</div>
+          <div class="mini-stat-label">Day Streak</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--green);">76%</div>
+          <div class="mini-stat-label">Accuracy</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--blue);">64</div>
+          <div class="mini-stat-label">Words Learned</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-value" style="color: var(--red);">22%</div>
+          <div class="mini-stat-label">Phase 1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- This Week Activity -->
+  <div class="week-summary animate-in delay-6">
+    <div class="section-header" style="margin-bottom: 4px;">
+      <div class="section-title" style="font-size: 17px;">📊 This Week — Who's Putting In Work</div>
+    </div>
+    <div class="week-grid">
+      <div class="week-day">
+        <div class="week-day-label">Mon</div>
+        <div class="week-day-bars">
+          <div class="week-bar"><div class="week-bar-fill" style="width: 80%; background: var(--gold);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 60%; background: var(--blue);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 30%; background: var(--green);"></div></div>
+        </div>
+        <div class="week-day-check">✅</div>
+      </div>
+      <div class="week-day">
+        <div class="week-day-label">Tue</div>
+        <div class="week-day-bars">
+          <div class="week-bar"><div class="week-bar-fill" style="width: 100%; background: var(--gold);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 90%; background: var(--blue);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 0%; background: var(--green);"></div></div>
+        </div>
+        <div class="week-day-check">✅</div>
+      </div>
+      <div class="week-day">
+        <div class="week-day-label">Wed</div>
+        <div class="week-day-bars">
+          <div class="week-bar"><div class="week-bar-fill" style="width: 60%; background: var(--gold);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 70%; background: var(--blue);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 50%; background: var(--green);"></div></div>
+        </div>
+        <div class="week-day-check">✅</div>
+      </div>
+      <div class="week-day">
+        <div class="week-day-label">Thu</div>
+        <div class="week-day-bars">
+          <div class="week-bar"><div class="week-bar-fill" style="width: 40%; background: var(--gold);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 80%; background: var(--blue);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 60%; background: var(--green);"></div></div>
+        </div>
+        <div class="week-day-check">✅</div>
+      </div>
+      <div class="week-day">
+        <div class="week-day-label">Fri</div>
+        <div class="week-day-bars">
+          <div class="week-bar"><div class="week-bar-fill" style="width: 90%; background: var(--gold);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 40%; background: var(--blue);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 20%; background: var(--green);"></div></div>
+        </div>
+        <div class="week-day-check">✅</div>
+      </div>
+      <div class="week-day">
+        <div class="week-day-label">Sat</div>
+        <div class="week-day-bars">
+          <div class="week-bar"><div class="week-bar-fill" style="width: 20%; background: var(--gold);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 50%; background: var(--blue);"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 0%;"></div></div>
+        </div>
+        <div class="week-day-check" style="opacity: 0.3;">⬜</div>
+      </div>
+      <div class="week-day">
+        <div class="week-day-label">Sun</div>
+        <div class="week-day-bars">
+          <div class="week-bar"><div class="week-bar-fill" style="width: 0%;"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 0%;"></div></div>
+          <div class="week-bar"><div class="week-bar-fill" style="width: 0%;"></div></div>
+        </div>
+        <div class="week-day-check" style="opacity: 0.3;">⬜</div>
+      </div>
+    </div>
+    <div class="week-legend">
+      <div class="legend-item"><div class="legend-dot" style="background: var(--gold);"></div>Mom</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--blue);"></div>Elias (You)</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--green);"></div>Dad</div>
+    </div>
+  </div>
+
+  <!-- Activity Feed -->
+  <div class="feed-section animate-in delay-7">
+    <div class="section-header">
+      <div class="section-title">Recent Activity</div>
+      <div class="feed-filter">
+        <button class="filter-chip active">All</button>
+        <button class="filter-chip">Mom</button>
+        <button class="filter-chip">Dad</button>
+        <button class="filter-chip">You</button>
+      </div>
+    </div>
+
+    <div class="feed">
+      <!-- Mom completed a lesson -->
+      <div class="feed-item lesson animate-in delay-8">
+        <div class="feed-avatar" style="background: linear-gradient(135deg, var(--orange), var(--gold));">
+          M
+          <div class="feed-avatar-badge">📖</div>
+        </div>
+        <div class="feed-content">
+          <div class="feed-main">
+            <strong>Mom</strong> completed <span class="highlight" style="color: var(--green);">Unit 3: Family & Home</span> in Phase 1
+          </div>
+          <div class="feed-detail">
+            <div class="feed-detail-row">
+              <span class="feed-detail-label">Accuracy</span>
+              <span class="feed-detail-value" style="color: var(--green);">96%</span>
+            </div>
+            <div class="feed-detail-row">
+              <span class="feed-detail-label">Time</span>
+              <span class="feed-detail-value">4:32</span>
+            </div>
+            <div class="feed-detail-row">
+              <span class="feed-detail-label">New words learned</span>
+              <span class="feed-detail-value" style="color: var(--blue);">12</span>
+            </div>
+          </div>
+          <div class="feed-meta" style="margin-top: 8px;">
+            <span class="feed-xp">⚡ +85 XP</span>
+            <span class="feed-time">2 hours ago</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mom earned a badge -->
+      <div class="feed-item badge animate-in delay-8">
+        <div class="feed-avatar" style="background: linear-gradient(135deg, var(--orange), var(--gold));">
+          M
+          <div class="feed-avatar-badge">🏅</div>
+        </div>
+        <div class="feed-content">
+          <div class="feed-main">
+            <strong>Mom</strong> earned the <span class="highlight" style="color: var(--gold);">🔥 30-Day Streak</span> badge!
+          </div>
+          <div class="feed-meta">
+            <span class="feed-xp">⚡ +50 XP bonus</span>
+            <span class="feed-time">2 hours ago</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- You reviewed cards -->
+      <div class="feed-item review animate-in delay-9">
+        <div class="feed-avatar" style="background: linear-gradient(135deg, var(--blue), var(--purple));">
+          E
+          <div class="feed-avatar-badge">🃏</div>
+        </div>
+        <div class="feed-content">
+          <div class="feed-main">
+            <strong>You</strong> reviewed <span class="highlight" style="color: var(--blue);">18 flashcards</span> in a review session
+          </div>
+          <div class="feed-detail">
+            <div class="feed-detail-row">
+              <span class="feed-detail-label">Again</span>
+              <span class="feed-detail-value" style="color: var(--red);">2</span>
+            </div>
+            <div class="feed-detail-row">
+              <span class="feed-detail-label">Hard</span>
+              <span class="feed-detail-value" style="color: var(--orange);">4</span>
+            </div>
+            <div class="feed-detail-row">
+              <span class="feed-detail-label">Good</span>
+              <span class="feed-detail-value" style="color: var(--blue);">8</span>
+            </div>
+            <div class="feed-detail-row">
+              <span class="feed-detail-label">Easy</span>
+              <span class="feed-detail-value" style="color: var(--green);">4</span>
+            </div>
+          </div>
+          <div class="feed-meta" style="margin-top: 8px;">
+            <span class="feed-xp">⚡ +90 XP</span>
+            <span class="feed-time">5 hours ago</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dad completed a lesson -->
+      <div class="feed-item lesson animate-in delay-9">
+        <div class="feed-avatar" style="background: linear-gradient(135deg, var(--green), var(--teal));">
+          D
+          <div class="feed-avatar-badge">📖</div>
+        </div>
+        <div class="feed-content">
+          <div class="feed-main">
+            <strong>Dad</strong> completed <span class="highlight" style="color: var(--green);">Greetings & Numbers</span> in Phase 1
+          </div>
+          <div class="feed-detail">
+            <div class="feed-detail-row">
+              <span class="feed-detail-label">Accuracy</span>
+              <span class="feed-detail-value" style="color: var(--orange);">72%</span>
+            </div>
+            <div class="feed-detail-row">
+              <span class="feed-detail-label">Time</span>
+              <span class="feed-detail-value">6:15</span>
+            </div>
+          </div>
+          <div class="feed-meta" style="margin-top: 8px;">
+            <span class="feed-xp">⚡ +45 XP</span>
+            <span class="feed-time">Yesterday</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- You leveled up -->
+      <div class="feed-item level animate-in delay-10">
+        <div class="feed-avatar" style="background: linear-gradient(135deg, var(--blue), var(--purple));">
+          E
+          <div class="feed-avatar-badge">⭐</div>
+        </div>
+        <div class="feed-content">
+          <div class="feed-main">
+            <strong>You</strong> reached <span class="highlight" style="color: var(--purple);">⭐ Level 14!</span>
+          </div>
+          <div class="feed-meta">
+            <span class="feed-time">Yesterday</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dad started a new unit -->
+      <div class="feed-item lesson animate-in delay-10">
+        <div class="feed-avatar" style="background: linear-gradient(135deg, var(--green), var(--teal));">
+          D
+          <div class="feed-avatar-badge">🚀</div>
+        </div>
+        <div class="feed-content">
+          <div class="feed-main">
+            <strong>Dad</strong> started <span class="highlight" style="color: var(--red);">Unit 2: Core Vocabulary</span> in Phase 1
+          </div>
+          <div class="feed-meta">
+            <span class="feed-time">2 days ago</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mom reviewed -->
+      <div class="feed-item review animate-in delay-10">
+        <div class="feed-avatar" style="background: linear-gradient(135deg, var(--orange), var(--gold));">
+          M
+          <div class="feed-avatar-badge">🃏</div>
+        </div>
+        <div class="feed-content">
+          <div class="feed-main">
+            <strong>Mom</strong> reviewed <span class="highlight" style="color: var(--blue);">24 flashcards</span> — all marked Good or Easy 🎯
+          </div>
+          <div class="feed-meta">
+            <span class="feed-xp">⚡ +120 XP</span>
+            <span class="feed-time">2 days ago</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

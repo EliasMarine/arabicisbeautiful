@@ -73,23 +73,23 @@ export function SentenceBuilder({
   const sentence = selected.map((i) => words[i]).join(" ");
 
   return (
-    <div className="bg-[var(--card-bg)] rounded-lg p-4 sm:p-6 border border-[var(--sand)] shadow-sm">
-      <p className="text-sm text-[var(--muted)] mb-2">
+    <div className="bg-[var(--bg-card)] rounded-2xl p-4 sm:p-6 border border-[var(--border)] shadow-lg">
+      <p className="text-sm text-[var(--text-secondary)] mb-2">
         Build this sentence in Arabic:
       </p>
-      <p className="text-[var(--dark)] font-semibold mb-4">{english}</p>
+      <p className="text-[var(--text)] font-semibold mb-4">{english}</p>
 
       {/* Output area */}
       <div
         className={cn(
-          "bg-[var(--sand)] rounded-lg p-3 sm:p-4 min-h-[56px] mb-4 flex items-center gap-2 sm:gap-3",
-          showResult && isCorrect && "bg-green-100 border-2 border-green-400",
-          showResult && !isCorrect && "bg-red-100 border-2 border-red-400"
+          "bg-[var(--bg-surface)] rounded-xl p-3 sm:p-4 min-h-[56px] mb-4 flex items-center gap-2 sm:gap-3 border-2 border-[var(--border)] transition-all",
+          showResult && isCorrect && "bg-[var(--success-dim)] border-[var(--success)]",
+          showResult && !isCorrect && "bg-red-500/10 border-[var(--danger)] animate-[shake_0.5s_ease-in-out]"
         )}
       >
         <div dir="rtl" className="flex-1 font-[Noto_Naskh_Arabic,serif] text-lg sm:text-xl text-arabic leading-relaxed">
           {sentence || (
-            <span className="text-[var(--muted)] text-sm sm:text-base">
+            <span className="text-[var(--text-secondary)] text-sm sm:text-base">
               Tap words below to build...
             </span>
           )}
@@ -109,10 +109,10 @@ export function SentenceBuilder({
             onClick={() => handleWordClick(originalIndex)}
             disabled={showResult}
             className={cn(
-              "px-3 sm:px-4 py-1.5 rounded-full text-sm sm:text-base font-[Noto_Naskh_Arabic,serif] transition-all",
+              "px-3 sm:px-4 py-1.5 rounded-xl text-sm sm:text-base font-[Noto_Naskh_Arabic,serif] font-semibold transition-all min-h-[44px] flex items-center",
               selected.includes(originalIndex)
-                ? "bg-[var(--phase-color)] text-white scale-95"
-                : "bg-[var(--sand)] text-[var(--dark)] hover:bg-[#e0d5bf] hover:-translate-y-0.5"
+                ? "bg-[var(--brand)] text-white scale-95 shadow-md"
+                : "bg-[var(--bg-surface)] text-[var(--text)] border border-[var(--border)] hover:border-[var(--brand)] hover:bg-[var(--brand-dim)] hover:-translate-y-0.5"
             )}
           >
             {words[originalIndex]}
@@ -126,7 +126,7 @@ export function SentenceBuilder({
             <span
               className={cn(
                 "text-sm font-semibold",
-                isCorrect ? "text-green-700" : "text-red-700"
+                isCorrect ? "text-[var(--success)]" : "text-[var(--danger)]"
               )}
             >
               {isCorrect
@@ -139,7 +139,7 @@ export function SentenceBuilder({
           </div>
           <button
             onClick={reset}
-            className="bg-[var(--phase-color)] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:opacity-80 w-full sm:w-auto"
+            className="bg-[var(--brand)] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:-translate-y-0.5 hover:shadow-lg transition-all w-full sm:w-auto"
           >
             Try Again
           </button>
@@ -149,21 +149,21 @@ export function SentenceBuilder({
           <button
             onClick={checkAnswer}
             disabled={selected.length === 0}
-            className="bg-[var(--phase-color)] text-white px-4 sm:px-5 py-2 rounded-lg text-sm font-semibold hover:opacity-80 disabled:opacity-40"
+            className="bg-[var(--brand)] text-white px-4 sm:px-5 py-2.5 rounded-xl text-sm font-semibold hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-40 transition-all"
           >
             Check
           </button>
           <button
             onClick={() => setSelected(selected.slice(0, -1))}
             disabled={selected.length === 0}
-            className="bg-[var(--sand)] border border-[var(--gold)] text-[var(--dark)] px-3 sm:px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#e0d5bf] disabled:opacity-40"
+            className="bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text)] px-3 sm:px-4 py-2.5 rounded-xl text-sm font-semibold hover:border-[var(--brand)] hover:-translate-y-0.5 disabled:opacity-40 transition-all"
           >
             Undo
           </button>
           <button
             onClick={reset}
             disabled={selected.length === 0}
-            className="bg-[var(--sand)] border border-[var(--gold)] text-[var(--dark)] px-3 sm:px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#e0d5bf] disabled:opacity-40"
+            className="bg-[var(--bg-surface)] border border-[var(--border)] text-[var(--text)] px-3 sm:px-4 py-2.5 rounded-xl text-sm font-semibold hover:border-[var(--brand)] hover:-translate-y-0.5 disabled:opacity-40 transition-all"
           >
             Clear
           </button>

@@ -97,22 +97,30 @@ export function MatchingExercise({
   }, [allMatched, pairs.length]);
 
   return (
-    <div className="bg-[var(--card-bg)] rounded-lg p-4 sm:p-6 border border-[var(--sand)] shadow-sm">
+    <div className="bg-[var(--bg-card)] rounded-2xl p-4 sm:p-6 border border-[var(--border)] shadow-lg">
       <div className="flex justify-between items-center mb-4">
-        <span className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">
+        <span className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide">
           Match the pairs
         </span>
-        <span className="text-xs text-[var(--muted)]">
+        <span className="text-xs text-[var(--text-secondary)]">
           {matched.size}/{pairs.length} matched
         </span>
       </div>
 
+      {/* Progress bar */}
+      <div className="w-full h-1.5 bg-[var(--bg-surface)] rounded-full mb-4 overflow-hidden">
+        <div
+          className="h-full bg-[var(--brand)] rounded-full transition-all duration-500"
+          style={{ width: `${(matched.size / pairs.length) * 100}%` }}
+        />
+      </div>
+
       {allMatched ? (
         <div className="text-center py-6">
-          <h3 className="font-[var(--font-playfair)] text-xl font-bold text-[var(--phase-color)] mb-2">
+          <h3 className="text-xl font-bold text-[var(--success)] mb-2">
             All Matched!
           </h3>
-          <p className="text-[var(--muted)] text-sm">
+          <p className="text-[var(--text-secondary)] text-sm">
             Completed in {attempts} attempts
           </p>
         </div>
@@ -125,14 +133,14 @@ export function MatchingExercise({
                 onClick={() => handleLeftClick(i)}
                 disabled={matched.has(i)}
                 className={cn(
-                  "rounded-lg p-2 sm:p-3 text-right transition-all font-[Noto_Naskh_Arabic,serif] text-base sm:text-lg",
+                  "rounded-xl p-2 sm:p-3 text-right transition-all font-[Noto_Naskh_Arabic,serif] text-base sm:text-lg font-semibold min-h-[44px]",
                   matched.has(i) &&
-                    "bg-green-100 border-2 border-green-400 opacity-60",
+                    "bg-[var(--success-dim)] border-2 border-[var(--success)] opacity-60",
                   !matched.has(i) && selectedLeft === i &&
-                    "bg-[var(--phase-color)] text-white border-2 border-[var(--phase-color)]",
+                    "bg-[var(--brand-dim)] text-[var(--brand)] border-2 border-[var(--brand)]",
                   !matched.has(i) && selectedLeft !== i &&
-                    "bg-[var(--sand)] border-2 border-transparent hover:bg-[#e0d5bf]",
-                  wrongPair?.left === i && "animate-shake bg-red-100 border-red-400"
+                    "bg-[var(--bg-surface)] border-2 border-[var(--border)] text-[var(--text)] hover:border-[var(--brand)] hover:bg-[var(--brand-dim)] hover:-translate-y-0.5",
+                  wrongPair?.left === i && "animate-[shake_0.5s_ease-in-out] bg-red-500/10 border-[var(--danger)]"
                 )}
                 dir="rtl"
               >
@@ -149,14 +157,14 @@ export function MatchingExercise({
                   onClick={() => handleRightClick(i)}
                   disabled={matched.has(originalIdx)}
                   className={cn(
-                    "rounded-lg p-2 sm:p-3 text-left transition-all text-xs sm:text-sm font-medium",
+                    "rounded-xl p-2 sm:p-3 text-left transition-all text-xs sm:text-sm font-semibold min-h-[44px]",
                     matched.has(originalIdx) &&
-                      "bg-green-100 border-2 border-green-400 opacity-60",
+                      "bg-[var(--success-dim)] border-2 border-[var(--success)] opacity-60",
                     !matched.has(originalIdx) && selectedRight === i &&
-                      "bg-[var(--phase-color)] text-white border-2 border-[var(--phase-color)]",
+                      "bg-[var(--brand-dim)] text-[var(--brand)] border-2 border-[var(--brand)]",
                     !matched.has(originalIdx) && selectedRight !== i &&
-                      "bg-[var(--sand)] border-2 border-transparent hover:bg-[#e0d5bf]",
-                    wrongPair?.right === i && "animate-shake bg-red-100 border-red-400"
+                      "bg-[var(--bg-surface)] border-2 border-[var(--border)] text-[var(--text)] hover:border-[var(--brand)] hover:bg-[var(--brand-dim)] hover:-translate-y-0.5",
+                    wrongPair?.right === i && "animate-[shake_0.5s_ease-in-out] bg-red-500/10 border-[var(--danger)]"
                   )}
                 >
                   {pair.english}

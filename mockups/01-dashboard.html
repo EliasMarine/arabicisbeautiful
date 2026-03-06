@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lebanese Lessons 3.0 — Dashboard Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #131F24;
+    --bg-card: #1B2B33;
+    --bg-card-hover: #223540;
+    --text: #F0F4F5;
+    --text-muted: #7A9BAD;
+    --text-dim: #4A6B7A;
+    --border: rgba(255,255,255,0.06);
+
+    /* Vibrant phase colors */
+    --red: #FF4B4B;
+    --blue: #1CB0F6;
+    --purple: #CE82FF;
+    --green: #58CC02;
+    --orange: #FF9600;
+    --teal: #00CD9C;
+    --gold: #FFC800;
+    --pink: #FF86D0;
+
+    --sidebar-w: 260px;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: #0D171C;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+    padding: 20px 0;
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 24px;
+    margin-bottom: 32px;
+  }
+
+  .sidebar-logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--green), #2EAA00);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 4px 12px rgba(88,204,2,0.3);
+  }
+
+  .sidebar-logo-text {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+  }
+
+  .sidebar-nav { flex: 1; }
+
+  .nav-section {
+    padding: 0 12px;
+    margin-bottom: 24px;
+  }
+
+  .nav-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-dim);
+    padding: 0 12px;
+    margin-bottom: 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .nav-item:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+  }
+
+  .nav-item.active {
+    background: rgba(88,204,2,0.12);
+    color: var(--green);
+  }
+
+  .nav-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .nav-item.active .nav-icon {
+    background: rgba(88,204,2,0.15);
+  }
+
+  .phase-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .nav-item .phase-number {
+    font-size: 12px;
+    font-weight: 800;
+    width: 24px; height: 24px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .sidebar-user {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .user-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .user-name { font-weight: 700; font-size: 14px; }
+  .user-level { font-size: 12px; color: var(--text-muted); }
+
+  /* ─── Main Content ─── */
+  .main {
+    margin-left: var(--sidebar-w);
+    padding: 32px 40px;
+    max-width: 960px;
+  }
+
+  /* ─── Streak & Stats Row ─── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .stat-card.streak::before { background: linear-gradient(90deg, var(--orange), var(--gold)); }
+  .stat-card.xp::before { background: linear-gradient(90deg, var(--gold), var(--orange)); }
+  .stat-card.review::before { background: linear-gradient(90deg, var(--blue), var(--purple)); }
+  .stat-card.goal::before { background: linear-gradient(90deg, var(--green), var(--teal)); }
+
+  .stat-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-card.streak .stat-value { color: var(--orange); }
+  .stat-card.xp .stat-value { color: var(--gold); }
+  .stat-card.review .stat-value { color: var(--blue); }
+  .stat-card.goal .stat-value { color: var(--green); }
+
+  .stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  /* ─── Daily Challenge Banner ─── */
+  .daily-challenge {
+    background: linear-gradient(135deg, #1a1040, #2d1560, #1a1040);
+    border-radius: 24px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgba(206,130,255,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .daily-challenge::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(206,130,255,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .daily-challenge::after {
+    content: '✨';
+    position: absolute;
+    right: 180px; top: 12px;
+    font-size: 20px;
+    opacity: 0.4;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .dc-left { position: relative; z-index: 1; }
+
+  .dc-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(206,130,255,0.2);
+    color: var(--purple);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+
+  .dc-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .dc-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .dc-desc strong {
+    color: var(--gold);
+  }
+
+  .dc-btn {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, var(--purple), #A855F7);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(206,130,255,0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .dc-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(206,130,255,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+
+  /* ─── Next Up / Continue Learning ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  .section-link {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--blue);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .continue-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .continue-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  }
+
+  .continue-icon {
+    width: 64px; height: 64px;
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    flex-shrink: 0;
+  }
+
+  .continue-info { flex: 1; }
+
+  .continue-phase {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+
+  .continue-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  .continue-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .continue-progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s;
+  }
+
+  .continue-progress-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .continue-arrow {
+    font-size: 24px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  /* ─── Phase Grid ─── */
+  .phase-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .phase-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phase-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
+
+  .phase-card::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; right: -20px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .phase-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .phase-badge {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .phase-card-title {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  .phase-card-arabic {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 14px;
+    color: var(--text-muted);
+    direction: rtl;
+  }
+
+  .phase-card-progress {
+    margin-top: 16px;
+  }
+
+  .phase-progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .phase-progress-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .phase-progress-pct {
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .phase-progress-bar {
+    width: 100%;
+    height: 10px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .phase-progress-fill {
+    height: 100%;
+    border-radius: 10px;
+  }
+
+  .phase-units {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+
+  /* ─── Achievements Row ─── */
+  .achievements-row {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 32px;
+  }
+
+  .achievement {
+    flex-shrink: 0;
+    width: 80px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+
+  .achievement:hover { transform: scale(1.08); }
+
+  .achievement-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 6px;
+    position: relative;
+  }
+
+  .achievement-icon.earned {
+    box-shadow: 0 0 20px rgba(255,200,0,0.3);
+  }
+
+  .achievement-icon.locked {
+    opacity: 0.3;
+    filter: grayscale(1);
+  }
+
+  .achievement-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    line-height: 1.2;
+  }
+
+  /* ─── Leaderboard Mini ─── */
+  .leaderboard-mini {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .lb-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+  }
+
+  .lb-row + .lb-row {
+    border-top: 1px solid var(--border);
+  }
+
+  .lb-rank {
+    width: 28px;
+    font-size: 16px;
+    font-weight: 900;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .lb-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .lb-name {
+    flex: 1;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .lb-xp {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--gold);
+  }
+
+  .lb-row.you {
+    background: rgba(88,204,2,0.08);
+    margin: 0 -12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+
+  /* ─── Animations ─── */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-in {
+    animation: slideUp 0.5s ease-out both;
+  }
+
+  .delay-1 { animation-delay: 0.05s; }
+  .delay-2 { animation-delay: 0.1s; }
+  .delay-3 { animation-delay: 0.15s; }
+  .delay-4 { animation-delay: 0.2s; }
+  .delay-5 { animation-delay: 0.25s; }
+  .delay-6 { animation-delay: 0.3s; }
+  .delay-7 { animation-delay: 0.35s; }
+  .delay-8 { animation-delay: 0.4s; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">ع</div>
+    <div class="sidebar-logo-text">Lebanese<br>Lessons</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-label">Learn</div>
+      <a class="nav-item active" href="#">
+        <div class="nav-icon">🏠</div>
+        Dashboard
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon">🔄</div>
+        Review
+        <span style="margin-left:auto; background:var(--red); color:white; font-size:11px; font-weight:800; padding:2px 8px; border-radius:10px;">12</span>
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon">🏆</div>
+        Leaderboard
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon">🌳</div>
+        Root Explorer
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Phases</div>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--red);">1</div>
+        Reactivation
+      </a>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--blue);">2</div>
+        Speaking
+      </a>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--purple);">3</div>
+        Conversation
+      </a>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--green);">4</div>
+        Vocabulary
+      </a>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--orange);">5</div>
+        Fluency
+      </a>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--teal);">6</div>
+        Maintenance
+      </a>
+    </div>
+  </nav>
+
+  <div class="sidebar-user">
+    <div class="user-avatar">EB</div>
+    <div>
+      <div class="user-name">Elias</div>
+      <div class="user-level">⭐ Level 14 · 2,840 XP</div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main">
+
+  <!-- Stats Row -->
+  <div class="stats-row animate-in delay-1">
+    <div class="stat-card streak">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-value">23</div>
+      <div class="stat-label">Day Streak</div>
+    </div>
+    <div class="stat-card xp">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-value">2,840</div>
+      <div class="stat-label">Total XP</div>
+    </div>
+    <div class="stat-card review">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-value">12</div>
+      <div class="stat-label">Cards Due</div>
+    </div>
+    <div class="stat-card goal">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value">75%</div>
+      <div class="stat-label">Daily Goal</div>
+    </div>
+  </div>
+
+  <!-- Daily Challenge -->
+  <div class="daily-challenge animate-in delay-2">
+    <div class="dc-left">
+      <div class="dc-badge">⚡ Daily Challenge</div>
+      <div class="dc-title">Verb Conjugation Blitz</div>
+      <div class="dc-desc">Complete 10 rapid-fire conjugations · <strong>+50 bonus XP</strong></div>
+    </div>
+    <button class="dc-btn">Start Challenge →</button>
+  </div>
+
+  <!-- Continue Learning -->
+  <div class="animate-in delay-3">
+    <div class="section-header">
+      <div class="section-title">Continue Learning</div>
+    </div>
+    <div class="continue-card">
+      <div class="continue-icon" style="background: linear-gradient(135deg, var(--red), #CC3333);">📖</div>
+      <div class="continue-info">
+        <div class="continue-phase" style="color: var(--red);">Phase 1 · Unit 3</div>
+        <div class="continue-title">Core Vocabulary — Family & Home</div>
+        <div class="continue-progress-bar">
+          <div class="continue-progress-fill" style="width: 60%; background: linear-gradient(90deg, var(--red), #FF6B6B);"></div>
+        </div>
+        <div class="continue-progress-text">3 of 5 lessons complete</div>
+      </div>
+      <div class="continue-arrow">→</div>
+    </div>
+  </div>
+
+  <!-- Phase Grid -->
+  <div class="animate-in delay-4">
+    <div class="section-header">
+      <div class="section-title">Your Journey</div>
+      <a class="section-link" href="#">View All →</a>
+    </div>
+    <div class="phase-grid">
+      <!-- Phase 1 -->
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <div class="phase-badge" style="background: linear-gradient(135deg, var(--red), #CC3333);">1</div>
+          <div>
+            <div class="phase-card-title">Reactivation</div>
+            <div class="phase-card-arabic">أهلا من جديد</div>
+          </div>
+        </div>
+        <div class="phase-card-progress">
+          <div class="phase-progress-header">
+            <span class="phase-progress-label">Progress</span>
+            <span class="phase-progress-pct" style="color: var(--red);">42%</span>
+          </div>
+          <div class="phase-progress-bar">
+            <div class="phase-progress-fill" style="width: 42%; background: linear-gradient(90deg, var(--red), #FF6B6B);"></div>
+          </div>
+          <div class="phase-units">8 of 19 units complete</div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <div class="phase-badge" style="background: linear-gradient(135deg, var(--blue), #0099DD);">2</div>
+          <div>
+            <div class="phase-card-title">Speaking in Phrases</div>
+            <div class="phase-card-arabic">عم نحكي</div>
+          </div>
+        </div>
+        <div class="phase-card-progress">
+          <div class="phase-progress-header">
+            <span class="phase-progress-label">Progress</span>
+            <span class="phase-progress-pct" style="color: var(--blue);">15%</span>
+          </div>
+          <div class="phase-progress-bar">
+            <div class="phase-progress-fill" style="width: 15%; background: linear-gradient(90deg, var(--blue), #4DC4FF);"></div>
+          </div>
+          <div class="phase-units">3 of 20 units complete</div>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <div class="phase-badge" style="background: linear-gradient(135deg, var(--purple), #A855F7);">3</div>
+          <div>
+            <div class="phase-card-title">Conversation</div>
+            <div class="phase-card-arabic">محادثة</div>
+          </div>
+        </div>
+        <div class="phase-card-progress">
+          <div class="phase-progress-header">
+            <span class="phase-progress-label">Progress</span>
+            <span class="phase-progress-pct" style="color: var(--text-dim);">0%</span>
+          </div>
+          <div class="phase-progress-bar">
+            <div class="phase-progress-fill" style="width: 0%;"></div>
+          </div>
+          <div class="phase-units">🔒 Complete Phase 2 to unlock</div>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="phase-card">
+        <div class="phase-card-header">
+          <div class="phase-badge" style="background: linear-gradient(135deg, var(--green), #2EAA00);">4</div>
+          <div>
+            <div class="phase-card-title">Expanding Vocabulary</div>
+            <div class="phase-card-arabic">كلمات جديدة</div>
+          </div>
+        </div>
+        <div class="phase-card-progress">
+          <div class="phase-progress-header">
+            <span class="phase-progress-label">Progress</span>
+            <span class="phase-progress-pct" style="color: var(--text-dim);">0%</span>
+          </div>
+          <div class="phase-progress-bar">
+            <div class="phase-progress-fill" style="width: 0%;"></div>
+          </div>
+          <div class="phase-units">🔒 Complete Phase 3 to unlock</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Achievements -->
+  <div class="animate-in delay-5">
+    <div class="section-header">
+      <div class="section-title">Achievements</div>
+      <a class="section-link" href="#">See All →</a>
+    </div>
+    <div class="achievements-row">
+      <div class="achievement">
+        <div class="achievement-icon earned" style="background: linear-gradient(135deg, #FF9600, #FFC800);">🔥</div>
+        <div class="achievement-name">7-Day Streak</div>
+      </div>
+      <div class="achievement">
+        <div class="achievement-icon earned" style="background: linear-gradient(135deg, var(--green), #2EAA00);">📚</div>
+        <div class="achievement-name">First Lesson</div>
+      </div>
+      <div class="achievement">
+        <div class="achievement-icon earned" style="background: linear-gradient(135deg, var(--blue), #0099DD);">🃏</div>
+        <div class="achievement-name">Card Master</div>
+      </div>
+      <div class="achievement">
+        <div class="achievement-icon earned" style="background: linear-gradient(135deg, var(--purple), #A855F7);">🗣️</div>
+        <div class="achievement-name">Chatterbox</div>
+      </div>
+      <div class="achievement">
+        <div class="achievement-icon locked" style="background: #333;">🏅</div>
+        <div class="achievement-name">30-Day Streak</div>
+      </div>
+      <div class="achievement">
+        <div class="achievement-icon locked" style="background: #333;">👑</div>
+        <div class="achievement-name">Phase Master</div>
+      </div>
+      <div class="achievement">
+        <div class="achievement-icon locked" style="background: #333;">💎</div>
+        <div class="achievement-name">1000 XP</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaderboard Mini -->
+  <div class="animate-in delay-6">
+    <div class="section-header">
+      <div class="section-title">Family Leaderboard</div>
+      <a class="section-link" href="#">Full Board →</a>
+    </div>
+    <div class="leaderboard-mini">
+      <div class="lb-row">
+        <div class="lb-rank">🥇</div>
+        <div class="lb-avatar" style="background: linear-gradient(135deg, var(--orange), var(--gold));">M</div>
+        <div class="lb-name">Mom</div>
+        <div class="lb-xp">3,120 XP</div>
+      </div>
+      <div class="lb-row you">
+        <div class="lb-rank">🥈</div>
+        <div class="lb-avatar" style="background: linear-gradient(135deg, var(--blue), var(--purple));">E</div>
+        <div class="lb-name">Elias <span style="font-size:11px; color:var(--green); font-weight:800;">YOU</span></div>
+        <div class="lb-xp">2,840 XP</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">🥉</div>
+        <div class="lb-avatar" style="background: linear-gradient(135deg, var(--green), var(--teal));">D</div>
+        <div class="lb-name">Dad</div>
+        <div class="lb-xp">1,560 XP</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+</body>
+</html>

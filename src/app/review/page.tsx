@@ -8,9 +8,9 @@ export default async function ReviewPage() {
   if (!session?.user) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-[var(--deep)]">
+    <div className="min-h-screen bg-[var(--bg)]">
       <AppShell userName={session.user.name} userEmail={session.user.email}>
-        <div className="max-w-3xl mx-auto px-4 md:px-7 py-8">
+        <div className="max-w-lg mx-auto px-4 md:px-6 py-6">
           <ReviewDashboardClient />
         </div>
       </AppShell>

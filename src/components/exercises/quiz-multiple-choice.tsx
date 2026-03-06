@@ -62,16 +62,16 @@ export function QuizMultipleChoice({
     const finalScore = score;
     const pct = Math.round((finalScore / questions.length) * 100);
     return (
-      <div className="bg-[var(--card-bg)] rounded-lg p-6 sm:p-8 text-center border border-[var(--sand)] shadow-sm">
-        <h3 className="font-[var(--font-playfair)] text-2xl font-bold text-[var(--phase-color)] mb-2">
+      <div className="bg-[var(--bg-card)] rounded-2xl p-6 sm:p-8 text-center border border-[var(--border)] shadow-lg">
+        <h3 className="text-2xl font-bold text-[var(--brand)] mb-2">
           Quiz Complete!
         </h3>
-        <p className="text-4xl font-bold text-[var(--dark)] mb-1">
+        <p className="text-4xl font-bold text-[var(--text)] mb-1">
           {finalScore}/{questions.length}
         </p>
-        <p className="text-[var(--muted)] mb-4">{pct}% correct</p>
+        <p className="text-[var(--text-secondary)] mb-4">{pct}% correct</p>
         {wrongIds.length > 0 && (
-          <p className="text-xs text-[var(--muted)] mb-3">
+          <p className="text-xs text-[var(--text-secondary)] mb-3">
             {wrongIds.length} item{wrongIds.length !== 1 ? "s" : ""} added to your weak areas for extra practice
           </p>
         )}
@@ -85,7 +85,7 @@ export function QuizMultipleChoice({
             setWrongIds([]);
             setCorrectIds([]);
           }}
-          className="bg-[var(--phase-color)] text-white px-6 py-2 rounded-lg text-sm font-semibold hover:opacity-80 transition-opacity"
+          className="bg-[var(--brand)] text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:-translate-y-0.5 hover:shadow-lg transition-all"
         >
           Try Again
         </button>
@@ -94,17 +94,25 @@ export function QuizMultipleChoice({
   }
 
   return (
-    <div className="bg-[var(--card-bg)] rounded-lg p-4 sm:p-6 border border-[var(--sand)] shadow-sm">
+    <div className="bg-[var(--bg-card)] rounded-2xl p-4 sm:p-6 border border-[var(--border)] shadow-lg">
       <div className="flex justify-between items-center mb-4">
-        <span className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">
+        <span className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide">
           Question {currentIndex + 1} of {questions.length}
         </span>
-        <span className="text-xs text-[var(--muted)]">
+        <span className="text-xs text-[var(--text-secondary)]">
           Score: {score}/{currentIndex}
         </span>
       </div>
 
-      <p className="font-semibold text-[var(--dark)] text-lg mb-1">
+      {/* Progress bar */}
+      <div className="w-full h-1.5 bg-[var(--bg-surface)] rounded-full mb-4 overflow-hidden">
+        <div
+          className="h-full bg-[var(--brand)] rounded-full transition-all duration-500"
+          style={{ width: `${((currentIndex) / questions.length) * 100}%` }}
+        />
+      </div>
+
+      <p className="font-semibold text-[var(--text)] text-lg mb-1">
         {question.prompt}
       </p>
       {question.promptArabic && (
@@ -121,16 +129,16 @@ export function QuizMultipleChoice({
 
       <div className="flex flex-col gap-2 mt-4">
         {question.options.map((option, i) => {
-          let optionClass = "bg-[var(--sand)] border-2 border-transparent";
+          let optionClass = "bg-[var(--bg-surface)] border-2 border-[var(--border)] text-[var(--text)]";
           if (showResult) {
             if (i === question.correctIndex) {
               optionClass =
-                "bg-green-100 border-2 border-green-500 text-green-800 font-semibold";
+                "bg-[var(--success-dim)] border-2 border-[var(--success)] text-[var(--success)] font-semibold";
             } else if (i === selectedOption && i !== question.correctIndex) {
               optionClass =
-                "bg-red-100 border-2 border-red-400 text-red-700";
+                "bg-red-500/10 border-2 border-[var(--danger)] text-[var(--danger)] animate-[shake_0.5s_ease-in-out]";
             } else {
-              optionClass = "bg-[var(--sand)] border-2 border-transparent opacity-50";
+              optionClass = "bg-[var(--bg-surface)] border-2 border-[var(--border)] opacity-50 text-[var(--text-secondary)]";
             }
           }
 
@@ -140,9 +148,9 @@ export function QuizMultipleChoice({
               onClick={() => handleSelect(i)}
               disabled={showResult}
               className={cn(
-                "rounded-lg px-4 py-3 text-left text-sm transition-all",
+                "rounded-xl px-4 py-3 text-left text-sm font-semibold transition-all",
                 optionClass,
-                !showResult && "hover:bg-[#e0d5bf] cursor-pointer"
+                !showResult && "hover:border-[var(--brand)] hover:bg-[var(--brand-dim)] hover:-translate-y-0.5 cursor-pointer"
               )}
             >
               {option}
@@ -155,10 +163,10 @@ export function QuizMultipleChoice({
         <div className="mt-4 space-y-3">
           <div
             className={cn(
-              "rounded-lg px-4 py-3 text-sm font-semibold",
+              "rounded-xl px-4 py-3 text-sm font-semibold",
               selectedOption === question.correctIndex
-                ? "bg-green-50 text-green-700 border border-green-200"
-                : "bg-red-50 text-red-700 border border-red-200"
+                ? "bg-[var(--success-dim)] text-[var(--success)] border border-[var(--success)]"
+                : "bg-red-500/10 text-[var(--danger)] border border-[var(--danger)]"
             )}
           >
             {selectedOption === question.correctIndex
@@ -166,14 +174,14 @@ export function QuizMultipleChoice({
               : `Wrong! The correct answer is: ${question.options[question.correctIndex]}`}
           </div>
           {question.explanation && (
-            <p className="text-base text-[var(--dark)]/80 leading-relaxed">
+            <p className="text-base text-[var(--text)]/80 leading-relaxed">
               {question.explanation}
             </p>
           )}
           <div className="flex justify-end">
             <button
               onClick={handleNext}
-              className="bg-[var(--phase-color)] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:opacity-80 transition-opacity"
+              className="bg-[var(--brand)] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:-translate-y-0.5 hover:shadow-lg transition-all"
             >
               {currentIndex < questions.length - 1 ? "Next" : "See Results"}
             </button>

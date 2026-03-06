@@ -23,8 +23,8 @@ export function DailyReviewCard() {
   // Loading state
   if (dueCount === null) {
     return (
-      <div className="bg-[var(--card-bg)] rounded-xl p-4 sm:p-5 border border-[var(--sand)] shadow-sm animate-pulse">
-        <div className="h-12 bg-[var(--sand)] rounded-lg" />
+      <div className="bg-[var(--bg-card)] rounded-2xl p-4 sm:p-5 border border-[var(--border)] animate-pulse">
+        <div className="h-12 bg-[var(--bg-surface)] rounded-lg" />
       </div>
     );
   }
@@ -32,31 +32,30 @@ export function DailyReviewCard() {
   const allCaughtUp = dueCount === 0;
 
   return (
-    <div className="bg-[var(--card-bg)] rounded-xl p-4 sm:p-5 border border-[var(--sand)] shadow-sm">
+    <div className="bg-[var(--bg-card)] rounded-2xl p-4 sm:p-5 border border-[var(--border)] hover:border-[var(--border-strong)] transition-all">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div
-            className={`w-10 h-10 rounded-full flex items-center justify-center ${
-              allCaughtUp
-                ? "bg-[var(--green)]/15 text-[var(--green)]"
-                : "bg-[var(--gold)]/15 text-[var(--gold)]"
-            }`}
+            className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{
+              backgroundColor: allCaughtUp ? "var(--success-dim)" : "var(--info-dim)",
+            }}
           >
             {allCaughtUp ? (
-              <CheckCircle2 size={20} />
+              <CheckCircle2 size={20} style={{ color: "var(--success)" }} />
             ) : (
-              <BookOpen size={20} />
+              <BookOpen size={20} style={{ color: "var(--info)" }} />
             )}
           </div>
           <div>
-            <p className="text-sm font-semibold text-[var(--dark)]">
+            <p className="text-sm font-extrabold text-[var(--text)]">
               {allCaughtUp
                 ? "All Caught Up!"
                 : `${dueCount} card${dueCount !== 1 ? "s" : ""} due for review`}
             </p>
-            <p className="text-xs text-[var(--muted)]">
+            <p className="text-xs font-semibold text-[var(--text-secondary)]">
               {allCaughtUp
-                ? `${reviewedToday} reviewed today — next review tomorrow`
+                ? `${reviewedToday} reviewed today`
                 : `${reviewedToday} reviewed today`}
             </p>
           </div>
@@ -64,7 +63,8 @@ export function DailyReviewCard() {
         {!allCaughtUp && (
           <Link
             href="/review/session"
-            className="inline-flex items-center gap-1.5 bg-[var(--gold)] text-white text-xs font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-1.5 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: "var(--brand)" }}
           >
             Review
             <ArrowRight size={14} />

@@ -1,86 +1,132 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════
+   DESIGN SYSTEM v3.0 — Duolingo-Vibrant Theme
+   ═══════════════════════════════════════════════════ */
+
 :root {
-  --deep: #FAF6EE;
-  --cream: #FAF6EE;
-  --sand: #E8DCC8;
-  --dark: #1C1208;
-  --dark-mid: #ebe3d5;
-  --dark-card: #ffffff;
-  --dark-card-hover: #faf8f4;
-  --muted: #5C4F3D;
-  --gold: #C9973A;
-  --gold-bright: #E8A849;
-  --gold-dim: rgba(201,151,58,0.6);
-  --gold-pale: #f0d69b;
-  --green: #2D6A4F;
-  --green-dim: #2D6A4F;
-  --orange: #f59e0b;
-  --red: #ef4444;
-  --blue: #60a5fa;
-  --sidebar-bg: #16100a;
+  /* ── Core surfaces ── */
+  --bg: #f5f5f7;
+  --bg-card: #ffffff;
+  --bg-surface: #eeeef0;
+  --bg-sidebar: #1a1a2e;
+  --text: #1a1a2e;
+  --text-secondary: #6b7280;
+
+  /* ── Brand colors (shared across themes) ── */
+  --brand: #e94560;
+  --brand-dim: rgba(233,69,96,0.15);
+  --brand-glow: rgba(233,69,96,0.35);
+  --success: #00b894;
+  --success-dim: rgba(0,184,148,0.15);
+  --warning: #fdcb6e;
+  --warning-dim: rgba(253,203,110,0.15);
+  --info: #74b9ff;
+  --info-dim: rgba(116,185,255,0.15);
+  --xp-purple: #a29bfe;
+  --xp-purple-dim: rgba(162,155,254,0.15);
+  --danger: #ff4757;
+  --orange: #fd9644;
+
+  /* ── Phase colors ── */
+  --p1: #e94560;
+  --p2: #74b9ff;
+  --p3: #a29bfe;
+  --p4: #00b894;
+  --p5: #fdcb6e;
+  --p6: #fd79a8;
+  --phase-color: var(--p1);
+
+  /* ── Arabic ── */
+  --arabic-text: #e94560;
+
+  /* ── Cards & Inputs ── */
+  --card-bg: #ffffff;
+  --card-border: rgba(0,0,0,0.06);
+  --card-hover: #f8f8fa;
+  --input-bg: #ffffff;
+  --input-focus: rgba(233,69,96,0.4);
+  --callout-bg: #fef3f5;
+  --callout-bg-alt: #fdf0f2;
+  --hover-row: #faf5f6;
+
+  /* ── Navigation ── */
+  --nav-text: #f5f5f7;
   --sidebar-w: 240px;
 
-  --p1: #c0392b;
-  --p2: #2980b9;
-  --p3: #8e44ad;
-  --p4: #27ae60;
-  --p5: #d35400;
-  --p6: #16a085;
+  /* ── Borders ── */
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.15);
 
-  --phase-color: var(--p1);
-  --arabic-text: #c0392b;
+  /* ── Glass effects ── */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(233, 69, 96, 0.15);
+  --glass-shadow: rgba(0, 0, 0, 0.08);
 
-  --card-bg: #ffffff;
-  --card-border: var(--sand);
-  --card-hover: #faf8f4;
-  --input-bg: #ffffff;
-  --input-focus: rgba(201,151,58,0.5);
-  --nav-text: #FAF6EE;
-  --callout-bg: #fdf8ee;
-  --callout-bg-alt: #faf3e4;
-  --hover-row: #fdf9f3;
-
-  --border: rgba(201,151,58,0.12);
-  --border-strong: rgba(201,151,58,0.22);
-
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(201, 151, 58, 0.2);
-  --glass-shadow: rgba(160, 140, 100, 0.15);
+  /* ── Legacy aliases (gradual migration) ── */
+  --deep: var(--bg);
+  --cream: var(--bg);
+  --sand: var(--bg-surface);
+  --dark: var(--text);
+  --dark-mid: var(--bg-surface);
+  --dark-card: var(--card-bg);
+  --dark-card-hover: var(--card-hover);
+  --muted: var(--text-secondary);
+  --gold: #fdcb6e;
+  --gold-bright: #ffeaa7;
+  --gold-dim: rgba(253,203,110,0.6);
+  --gold-pale: #fff3cd;
+  --green: #00b894;
+  --green-dim: rgba(0,184,148,0.6);
+  --red: #e94560;
+  --blue: #74b9ff;
+  --sidebar-bg: #1a1a2e;
 }
 
 .dark {
-  --deep: #0d0905;
-  --cream: #1C1208;
-  --sand: #2a2015;
-  --dark: #FAF6EE;
-  --dark-mid: #241c10;
-  --dark-card: #1e1710;
-  --dark-card-hover: #272012;
-  --muted: #8a7d6a;
-  --gold: #C9973A;
-  --gold-bright: #E8A849;
-  --green: #4ade80;
-  --green-dim: #2D6A4F;
-  --sidebar-bg: #0d0905;
+  /* ── Core surfaces ── */
+  --bg: #1a1a2e;
+  --bg-card: #16213e;
+  --bg-surface: #0f3460;
+  --bg-sidebar: #0d0b1e;
+  --text: #ffffff;
+  --text-secondary: #a0a0b8;
 
-  --card-bg: #1e1710;
-  --card-border: #3a2f20;
-  --card-hover: #272012;
-  --input-bg: #2a2015;
-  --input-focus: rgba(201,151,58,0.4);
-  --nav-text: #FAF6EE;
-  --arabic-text: #F6C547;
-  --callout-bg: #2a2218;
-  --callout-bg-alt: #2a2015;
-  --hover-row: #2a2218;
+  /* ── Arabic ── */
+  --arabic-text: #fdcb6e;
 
-  --border: rgba(201,151,58,0.1);
-  --border-strong: rgba(201,151,58,0.18);
+  /* ── Cards & Inputs ── */
+  --card-bg: #16213e;
+  --card-border: rgba(255,255,255,0.08);
+  --card-hover: #1c2a4a;
+  --input-bg: #0f3460;
+  --input-focus: rgba(233,69,96,0.4);
+  --callout-bg: rgba(233,69,96,0.08);
+  --callout-bg-alt: rgba(233,69,96,0.05);
+  --hover-row: rgba(255,255,255,0.04);
 
-  --glass-bg: rgba(28, 18, 8, 0.55);
-  --glass-border: rgba(201, 151, 58, 0.18);
-  --glass-shadow: rgba(12, 8, 2, 0.6);
+  /* ── Navigation ── */
+  --nav-text: #f5f5f7;
+
+  /* ── Borders ── */
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.15);
+
+  /* ── Glass effects ── */
+  --glass-bg: rgba(22, 33, 62, 0.7);
+  --glass-border: rgba(233, 69, 96, 0.2);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+
+  /* ── Legacy aliases ── */
+  --deep: var(--bg);
+  --cream: var(--bg);
+  --sand: var(--bg-surface);
+  --dark: var(--text);
+  --dark-mid: #1c2a4a;
+  --dark-card: var(--card-bg);
+  --dark-card-hover: var(--card-hover);
+  --muted: var(--text-secondary);
+  --sidebar-bg: #0d0b1e;
 }
 
 @theme inline {
@@ -106,6 +152,16 @@
   --color-phase-4: var(--p4);
   --color-phase-5: var(--p5);
   --color-phase-6: var(--p6);
+
+  --color-brand: var(--brand);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-xp-purple: var(--xp-purple);
+  --color-danger: var(--danger);
+  --color-bg-card: var(--bg-card);
+  --color-bg-surface: var(--bg-surface);
+  --color-text-secondary: var(--text-secondary);
 }
 
 html {
@@ -113,9 +169,9 @@ html {
 }
 
 body {
-  background: var(--deep);
-  color: var(--dark);
-  font-family: "Source Sans 3", "Inter", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Nunito", system-ui, sans-serif;
   -webkit-text-size-adjust: 100%;
 }
 

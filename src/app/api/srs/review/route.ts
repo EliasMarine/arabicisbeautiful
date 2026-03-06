@@ -6,6 +6,8 @@ import { srsCards, srsReviewLog, userXP } from "@/lib/db/schema";
 import { logActivity } from "@/lib/db/log-activity";
 import { eq } from "drizzle-orm";
 import { sm2, getNextReviewDate } from "@/lib/srs/algorithm";
+import { calculateReviewXP } from "@/lib/gamification/xp";
+import { checkAndAwardBadges } from "@/lib/gamification/badge-engine";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -43,6 +45,7 @@ export async function POST(request: Request) {
     const now = new Date();
     const nextReview = getNextReviewDate(result.interval);
     const tz = session.user.timezone;
+    const reviewXP = calculateReviewXP(rating as 0 | 1 | 2 | 3);
 
     // Wrap all mutations in a transaction for atomicity
     const txn = sqlite.transaction(() => {
@@ -70,11 +73,11 @@ export async function POST(request: Request) {
         })
         .run();
 
-      // Award XP for review (5 XP per card reviewed)
+      // Award XP for review (5 base + 2 for Easy, +1 for Good)
       db.insert(userXP)
         .values({
           userId: session.user.id,
-          amount: 5,
+          amount: reviewXP,
           source: "review",
           sourceId: String(cardId),
           earnedAt: now,
@@ -86,13 +89,17 @@ export async function POST(request: Request) {
     });
     txn();
 
+    // Check for newly earned badges
+    const newBadges = await checkAndAwardBadges(session.user.id, tz);
+
     return NextResponse.json({
       success: true,
       nextReview: nextReview.toISOString(),
       interval: result.interval,
       easeFactor: result.easeFactor,
       repetitions: result.repetitions,
-      xpEarned: 5,
+      xpEarned: reviewXP,
+      newBadges,
     });
   } catch (error) {
     console.error("SRS review error:", error);

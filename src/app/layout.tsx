@@ -1,16 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Source_Sans_3, Playfair_Display } from "next/font/google";
+import { Nunito } from "next/font/google";
 import { Providers } from "@/components/layout/providers";
 import "./globals.css";
 
-const sourceSans = Source_Sans_3({
-  variable: "--font-source-sans",
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -23,7 +19,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#16100a",
+  themeColor: "#1a1a2e",
 };
 
 // Static inline script to prevent flash of wrong theme (FOUC).
@@ -54,11 +50,11 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
       <body
-        className={`${sourceSans.variable} ${playfair.variable} font-[var(--font-source-sans)] antialiased`}
+        className={`${nunito.variable} ${nunito.className} antialiased`}
       >
         <Providers>{children}</Providers>
-        <span className="fixed bottom-2 right-2 text-[0.6rem] text-[var(--muted)]/40 pointer-events-none select-none">
-          v2.6.0
+        <span className="fixed bottom-2 right-2 text-[0.6rem] text-[var(--text-secondary)]/40 pointer-events-none select-none">
+          v3.0.0
         </span>
       </body>
     </html>

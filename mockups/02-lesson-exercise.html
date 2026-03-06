@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lebanese Lessons 3.0 — Lesson Exercise Screens</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #131F24;
+    --bg-card: #1B2B33;
+    --bg-card-hover: #223540;
+    --text: #F0F4F5;
+    --text-muted: #7A9BAD;
+    --text-dim: #4A6B7A;
+    --border: rgba(255,255,255,0.06);
+    --red: #FF4B4B;
+    --blue: #1CB0F6;
+    --purple: #CE82FF;
+    --green: #58CC02;
+    --orange: #FF9600;
+    --teal: #00CD9C;
+    --gold: #FFC800;
+    --pink: #FF86D0;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    gap: 24px;
+    padding: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .screen-label {
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-top: 16px;
+  }
+
+  /* ─── Phone Frame ─── */
+  .phone {
+    width: 375px;
+    min-height: 700px;
+    background: var(--bg);
+    border-radius: 32px;
+    border: 3px solid #2a3a42;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── Exercise Header ─── */
+  .exercise-header {
+    padding: 16px 20px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .close-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: none;
+    color: var(--text-muted);
+    font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  .progress-bar-container {
+    flex: 1;
+    height: 14px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 2px; right: 2px; bottom: 2px; left: 2px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent);
+    border-radius: 8px;
+  }
+
+  .xp-badge {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* ─── Exercise Body ─── */
+  .exercise-body {
+    flex: 1;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .exercise-instruction {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .exercise-prompt {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 24px;
+    line-height: 1.3;
+  }
+
+  .exercise-prompt .arabic {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 36px;
+    color: var(--gold);
+    direction: rtl;
+    display: block;
+    text-align: center;
+    margin: 12px 0;
+    line-height: 1.6;
+  }
+
+  .audio-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(28,176,246,0.12);
+    color: var(--blue);
+    border: 2px solid rgba(28,176,246,0.2);
+    padding: 10px 20px;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 24px;
+    align-self: center;
+    transition: all 0.15s;
+  }
+
+  .audio-btn:hover {
+    background: rgba(28,176,246,0.2);
+  }
+
+  /* ─── Multiple Choice ─── */
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .choice {
+    background: var(--bg-card);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 16px 20px;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.15s;
+    text-align: left;
+  }
+
+  .choice:hover {
+    border-color: rgba(255,255,255,0.2);
+    background: var(--bg-card-hover);
+    transform: scale(1.02);
+  }
+
+  .choice.selected {
+    border-color: var(--blue);
+    background: rgba(28,176,246,0.08);
+  }
+
+  .choice.correct {
+    border-color: var(--green);
+    background: rgba(88,204,2,0.1);
+  }
+
+  .choice.wrong {
+    border-color: var(--red);
+    background: rgba(255,75,75,0.1);
+  }
+
+  .choice-letter {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .choice.correct .choice-letter {
+    background: var(--green);
+    color: white;
+  }
+
+  .choice.wrong .choice-letter {
+    background: var(--red);
+    color: white;
+  }
+
+  .choice-arabic {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 20px;
+  }
+
+  /* ─── Tap to Build ─── */
+  .sentence-area {
+    min-height: 80px;
+    background: rgba(255,255,255,0.03);
+    border: 2px dashed rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-content: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .word-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .word-tile {
+    background: var(--bg-card);
+    border: 2px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 10px 18px;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.3);
+  }
+
+  .word-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0 rgba(0,0,0,0.3);
+  }
+
+  .word-tile.placed {
+    background: rgba(28,176,246,0.1);
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+
+  .word-tile.arabic-tile {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 18px;
+  }
+
+  /* ─── Match Pairs ─── */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .match-card {
+    background: var(--bg-card);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px;
+    font-weight: 700;
+    min-height: 64px;
+  }
+
+  .match-card:hover {
+    border-color: rgba(255,255,255,0.2);
+    transform: scale(1.03);
+  }
+
+  .match-card.active {
+    border-color: var(--blue);
+    background: rgba(28,176,246,0.08);
+    box-shadow: 0 0 20px rgba(28,176,246,0.15);
+  }
+
+  .match-card.matched {
+    border-color: var(--green);
+    background: rgba(88,204,2,0.08);
+    opacity: 0.6;
+  }
+
+  .match-card .arabic-text {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 22px;
+    direction: rtl;
+  }
+
+  /* ─── Fill in Blank ─── */
+  .fill-sentence {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.8;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .blank-slot {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 3px solid var(--blue);
+    padding: 2px 8px;
+    margin: 0 4px;
+    color: var(--blue);
+    font-weight: 800;
+  }
+
+  .fill-input {
+    width: 100%;
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    outline: none;
+    text-align: center;
+    margin-bottom: 16px;
+    transition: border-color 0.15s;
+  }
+
+  .fill-input:focus {
+    border-color: var(--blue);
+  }
+
+  .fill-input::placeholder {
+    color: var(--text-dim);
+  }
+
+  /* ─── Bottom Actions ─── */
+  .exercise-footer {
+    padding: 16px 24px 28px;
+  }
+
+  .check-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    border: none;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .check-btn.primary {
+    background: var(--green);
+    color: #1a3300;
+    box-shadow: 0 5px 0 #3d9900, 0 8px 20px rgba(88,204,2,0.2);
+  }
+
+  .check-btn.primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 0 #3d9900, 0 10px 24px rgba(88,204,2,0.3);
+  }
+
+  .check-btn.disabled {
+    background: rgba(255,255,255,0.06);
+    color: var(--text-dim);
+    box-shadow: none;
+    cursor: default;
+  }
+
+  .check-btn.continue {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 5px 0 #0090CC, 0 8px 20px rgba(28,176,246,0.2);
+  }
+
+  /* ─── Feedback Banner ─── */
+  .feedback {
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .feedback.correct {
+    background: rgba(88,204,2,0.1);
+    border-top: 2px solid var(--green);
+  }
+
+  .feedback.wrong {
+    background: rgba(255,75,75,0.1);
+    border-top: 2px solid var(--red);
+  }
+
+  .feedback-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .feedback-text {
+    font-size: 15px;
+    font-weight: 700;
+    flex: 1;
+  }
+
+  .feedback.correct .feedback-text { color: var(--green); }
+  .feedback.wrong .feedback-text { color: var(--red); }
+
+  .feedback-answer {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ─── Completion Screen ─── */
+  .completion {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 32px;
+  }
+
+  .completion-star {
+    font-size: 80px;
+    margin-bottom: 16px;
+    animation: bounce 0.6s ease-out;
+  }
+
+  @keyframes bounce {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  .completion-title {
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+
+  .completion-subtitle {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+
+  .completion-stats {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+
+  .comp-stat {
+    text-align: center;
+  }
+
+  .comp-stat-value {
+    font-size: 32px;
+    font-weight: 900;
+  }
+
+  .comp-stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .comp-stat-value.xp { color: var(--gold); }
+  .comp-stat-value.acc { color: var(--green); }
+  .comp-stat-value.time { color: var(--blue); }
+
+  /* ─── Conversation Sim ─── */
+  .conv-messages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 16px;
+  }
+
+  .conv-bubble {
+    max-width: 80%;
+    padding: 14px 18px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .conv-bubble.npc {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    align-self: flex-start;
+    border-bottom-left-radius: 6px;
+  }
+
+  .conv-bubble.user {
+    background: linear-gradient(135deg, var(--blue), #0099DD);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 6px;
+  }
+
+  .conv-bubble .arabic-text {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 18px;
+    direction: rtl;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .conv-bubble .transliteration {
+    font-size: 12px;
+    opacity: 0.7;
+    font-style: italic;
+  }
+
+  .conv-speaker {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  .conv-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .conv-choice {
+    background: var(--bg-card);
+    border: 2px solid rgba(28,176,246,0.3);
+    border-radius: 16px;
+    padding: 12px 16px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--blue);
+    cursor: pointer;
+    text-align: right;
+    direction: rtl;
+    transition: all 0.15s;
+  }
+
+  .conv-choice:hover {
+    background: rgba(28,176,246,0.08);
+    border-color: var(--blue);
+    transform: scale(1.02);
+  }
+
+  .conv-choice .eng {
+    display: block;
+    direction: ltr;
+    text-align: left;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCREEN 1: Multiple Choice Translation  -->
+<!-- ═══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">Multiple Choice — Translation</div>
+  <div class="phone">
+    <div class="exercise-header">
+      <button class="close-btn">✕</button>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" style="width: 40%; background: linear-gradient(90deg, var(--red), #FF6B6B);"></div>
+      </div>
+      <div class="xp-badge">⚡ 35</div>
+    </div>
+
+    <div class="exercise-body">
+      <div class="exercise-instruction">Translate this word</div>
+      <div class="exercise-prompt">
+        <span class="arabic">بيت</span>
+        <button class="audio-btn">🔊 Listen</button>
+      </div>
+
+      <div class="choices">
+        <button class="choice">
+          <span class="choice-letter">A</span>
+          Car
+        </button>
+        <button class="choice selected">
+          <span class="choice-letter">B</span>
+          House
+        </button>
+        <button class="choice">
+          <span class="choice-letter">C</span>
+          School
+        </button>
+        <button class="choice">
+          <span class="choice-letter">D</span>
+          Garden
+        </button>
+      </div>
+    </div>
+
+    <div class="exercise-footer">
+      <button class="check-btn primary">Check Answer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCREEN 2: Correct Answer Feedback      -->
+<!-- ═══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">Correct Answer Feedback</div>
+  <div class="phone">
+    <div class="exercise-header">
+      <button class="close-btn">✕</button>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" style="width: 50%; background: linear-gradient(90deg, var(--red), #FF6B6B);"></div>
+      </div>
+      <div class="xp-badge">⚡ 45</div>
+    </div>
+
+    <div class="exercise-body">
+      <div class="exercise-instruction">Translate this word</div>
+      <div class="exercise-prompt">
+        <span class="arabic">بيت</span>
+      </div>
+
+      <div class="choices">
+        <button class="choice" style="opacity: 0.5;">
+          <span class="choice-letter">A</span>
+          Car
+        </button>
+        <button class="choice correct">
+          <span class="choice-letter">B</span>
+          House ✓
+        </button>
+        <button class="choice" style="opacity: 0.5;">
+          <span class="choice-letter">C</span>
+          School
+        </button>
+        <button class="choice" style="opacity: 0.5;">
+          <span class="choice-letter">D</span>
+          Garden
+        </button>
+      </div>
+    </div>
+
+    <div class="feedback correct">
+      <div class="feedback-icon">🎉</div>
+      <div>
+        <div class="feedback-text">Correct! +10 XP</div>
+        <div class="feedback-answer">beit — house, home</div>
+      </div>
+    </div>
+
+    <div class="exercise-footer">
+      <button class="check-btn continue">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCREEN 3: Tap to Build Sentence        -->
+<!-- ═══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">Tap-to-Build — Sentence Construction</div>
+  <div class="phone">
+    <div class="exercise-header">
+      <button class="close-btn">✕</button>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" style="width: 60%; background: linear-gradient(90deg, var(--red), #FF6B6B);"></div>
+      </div>
+      <div class="xp-badge">⚡ 55</div>
+    </div>
+
+    <div class="exercise-body">
+      <div class="exercise-instruction">Build this sentence in Arabic</div>
+      <div class="exercise-prompt">"I want to go to the house"</div>
+
+      <div class="sentence-area">
+        <div class="word-tile arabic-tile placed">بدّي</div>
+        <div class="word-tile arabic-tile placed">روح</div>
+      </div>
+
+      <div class="word-tiles">
+        <div class="word-tile arabic-tile">البيت</div>
+        <div class="word-tile arabic-tile" style="opacity:0.3;">بدّي</div>
+        <div class="word-tile arabic-tile">عَ</div>
+        <div class="word-tile arabic-tile" style="opacity:0.3;">روح</div>
+        <div class="word-tile arabic-tile">مِن</div>
+        <div class="word-tile arabic-tile">هون</div>
+      </div>
+    </div>
+
+    <div class="exercise-footer">
+      <button class="check-btn disabled">Check Answer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCREEN 4: Match Pairs                  -->
+<!-- ═══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">Match Pairs — Connect Words</div>
+  <div class="phone">
+    <div class="exercise-header">
+      <button class="close-btn">✕</button>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" style="width: 70%; background: linear-gradient(90deg, var(--red), #FF6B6B);"></div>
+      </div>
+      <div class="xp-badge">⚡ 60</div>
+    </div>
+
+    <div class="exercise-body">
+      <div class="exercise-instruction">Match the Arabic with its meaning</div>
+
+      <div class="match-grid" style="margin-top: 16px;">
+        <div class="match-card matched"><span class="arabic-text">ماء</span></div>
+        <div class="match-card matched">Water</div>
+
+        <div class="match-card active"><span class="arabic-text">خبز</span></div>
+        <div class="match-card">Milk</div>
+
+        <div class="match-card"><span class="arabic-text">حليب</span></div>
+        <div class="match-card">Bread</div>
+
+        <div class="match-card"><span class="arabic-text">سكّر</span></div>
+        <div class="match-card">Sugar</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCREEN 5: Conversation Simulator       -->
+<!-- ═══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">Conversation Simulator</div>
+  <div class="phone">
+    <div class="exercise-header">
+      <button class="close-btn">✕</button>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" style="width: 80%; background: linear-gradient(90deg, var(--purple), #A855F7);"></div>
+      </div>
+      <div class="xp-badge">⚡ 70</div>
+    </div>
+
+    <div class="exercise-body">
+      <div class="exercise-instruction" style="margin-bottom: 16px;">🎭 At the bakery — Order bread</div>
+
+      <div class="conv-messages">
+        <div>
+          <div class="conv-speaker">🧑‍🍳 Baker</div>
+          <div class="conv-bubble npc">
+            <span class="arabic-text">أهلين! شو بتحب؟</span>
+            <span class="transliteration">ahleen! shu bthebb?</span>
+          </div>
+        </div>
+
+        <div style="align-self: flex-end;">
+          <div class="conv-bubble user">
+            <span class="arabic-text">بدّي خبز لو سمحت</span>
+            <span class="transliteration">beddi khebz law samaht</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="conv-speaker">🧑‍🍳 Baker</div>
+          <div class="conv-bubble npc">
+            <span class="arabic-text">عربي ولّا فرنجي؟</span>
+            <span class="transliteration">arabi walla franji?</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;">Choose your response:</div>
+      <div class="conv-choices">
+        <button class="conv-choice">
+          عربي لو سمحت
+          <span class="eng">Arabic bread please</span>
+        </button>
+        <button class="conv-choice">
+          فرنجي، و بدّي كمان كعك
+          <span class="eng">French, and I also want ka'ak</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SCREEN 6: Lesson Complete              -->
+<!-- ═══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">Lesson Complete — Celebration</div>
+  <div class="phone">
+    <div class="completion">
+      <div class="completion-star">⭐</div>
+      <div class="completion-title" style="color: var(--gold);">Lesson Complete!</div>
+      <div class="completion-subtitle">Core Vocabulary — Family & Home</div>
+
+      <div class="completion-stats">
+        <div class="comp-stat">
+          <div class="comp-stat-value xp">+85</div>
+          <div class="comp-stat-label">XP Earned</div>
+        </div>
+        <div class="comp-stat">
+          <div class="comp-stat-value acc">92%</div>
+          <div class="comp-stat-label">Accuracy</div>
+        </div>
+        <div class="comp-stat">
+          <div class="comp-stat-value time">3:42</div>
+          <div class="comp-stat-label">Time</div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px; background: rgba(255,150,0,0.1); padding: 12px 20px; border-radius: 14px; margin-bottom: 24px;">
+        <span style="font-size: 24px;">🔥</span>
+        <span style="font-weight: 800; color: var(--orange);">23 day streak! Keep it going!</span>
+      </div>
+    </div>
+
+    <div class="exercise-footer">
+      <button class="check-btn continue" style="margin-bottom: 8px;">Continue Learning →</button>
+      <button class="check-btn" style="background: rgba(255,255,255,0.06); color: var(--text-muted);">Back to Dashboard</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

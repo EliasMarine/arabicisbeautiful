@@ -8,9 +8,9 @@ export default async function LeaderboardPage() {
   if (!session?.user) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-[var(--deep)]">
+    <div className="min-h-screen bg-[var(--bg)]">
       <AppShell userName={session.user.name} userEmail={session.user.email}>
-        <div className="max-w-3xl mx-auto px-4 md:px-7 py-8">
+        <div className="max-w-3xl mx-auto px-4 md:px-7 py-6">
           <LeaderboardClient />
         </div>
       </AppShell>

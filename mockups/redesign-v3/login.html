@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lebanese Arabic | من البداية للطلاقة — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+  /* ─── DARK MODE (default) ─── */
+  :root {
+    --deep: #0d0905;
+    --dark: #1C1208;
+    --dark-mid: #2a1d0e;
+    --gold: #C9973A;
+    --gold-bright: #E8A849;
+    --gold-pale: #f0d69b;
+    --cream: #FAF6EE;
+    --cream-dim: #e8dcc8;
+    --muted: #8a7d6a;
+    --red-glass: rgba(180, 40, 40, 0.15);
+    --red-border: rgba(220, 80, 80, 0.35);
+    --red-text: #f0a0a0;
+    --glass-bg: rgba(28, 18, 8, 0.55);
+    --glass-border: rgba(201, 151, 58, 0.18);
+    --glass-shadow: rgba(12, 8, 2, 0.6);
+    --input-bg: rgba(42, 29, 14, 0.6);
+    --input-border: rgba(201, 151, 58, 0.12);
+    --input-focus: rgba(201, 151, 58, 0.4);
+    --bg-gradient: linear-gradient(165deg, #0d0905 0%, #1C1208 35%, #1a1408 55%, #120d06 100%);
+    --aurora-opacity: 1;
+    --pattern-opacity: 0.035;
+    --particle-color: var(--gold);
+  }
+
+  /* ─── LIGHT MODE ─── */
+  .light {
+    --deep: #FAF6EE;
+    --dark: #f5efe5;
+    --dark-mid: #ebe3d5;
+    --cream: #1C1208;
+    --cream-dim: #5C4F3D;
+    --muted: #8a7d6a;
+    --red-glass: rgba(220, 50, 50, 0.08);
+    --red-border: rgba(220, 80, 80, 0.25);
+    --red-text: #b91c1c;
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(201, 151, 58, 0.2);
+    --glass-shadow: rgba(160, 140, 100, 0.15);
+    --input-bg: rgba(255, 255, 255, 0.7);
+    --input-border: rgba(201, 151, 58, 0.2);
+    --input-focus: rgba(201, 151, 58, 0.5);
+    --bg-gradient: linear-gradient(165deg, #FAF6EE 0%, #f5efe5 35%, #efe7d8 55%, #f8f2e8 100%);
+    --aurora-opacity: 0.5;
+    --pattern-opacity: 0.05;
+    --particle-color: rgba(180, 130, 40, 0.7);
+  }
+
+  html { height: 100%; }
+
+  body {
+    min-height: 100vh;
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    color: var(--cream);
+    overflow-x: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* ─── LAYERED BACKGROUND ─── */
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,151,58,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 80% at 80% 20%, rgba(232,168,73,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 20% 80%, rgba(201,151,58,0.04) 0%, transparent 60%),
+      var(--bg-gradient);
+    z-index: 0;
+  }
+
+  /* Geometric overlay: Islamic-inspired repeating diamond lattice */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: var(--pattern-opacity);
+    background-image:
+      linear-gradient(45deg, var(--gold) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--gold) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, var(--gold) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--gold) 75%);
+    background-size: 60px 60px;
+    background-position: 0 0, 0 30px, 30px -30px, 30px 0;
+    z-index: 0;
+    pointer-events: none;
+    animation: patternDrift 90s linear infinite;
+  }
+
+  @keyframes patternDrift {
+    0%   { transform: translate(0, 0); }
+    100% { transform: translate(60px, 60px); }
+  }
+
+  /* Animated golden aurora blobs */
+  .aurora {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none;
+    animation: auroraFade 12s ease-in-out infinite alternate;
+  }
+  .aurora--1 {
+    width: 500px; height: 500px;
+    top: -10%; left: 30%;
+    background: radial-gradient(circle, rgba(201,151,58,0.18), transparent 70%);
+    animation-duration: 14s;
+  }
+  .aurora--2 {
+    width: 400px; height: 400px;
+    bottom: -5%; right: 10%;
+    background: radial-gradient(circle, rgba(232,168,73,0.12), transparent 70%);
+    animation-duration: 18s;
+    animation-delay: -6s;
+  }
+  .aurora--3 {
+    width: 300px; height: 300px;
+    top: 50%; left: -5%;
+    background: radial-gradient(circle, rgba(201,151,58,0.1), transparent 70%);
+    animation-duration: 16s;
+    animation-delay: -3s;
+  }
+
+  @keyframes auroraFade {
+    0%   { opacity: 0.3; transform: scale(1) translate(0,0); }
+    50%  { opacity: 0.7; transform: scale(1.15) translate(20px, -10px); }
+    100% { opacity: 0.4; transform: scale(0.95) translate(-10px, 15px); }
+  }
+
+  /* ─── FLOATING PARTICLES (gold dust) ─── */
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--particle-color);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFloat linear infinite;
+  }
+  @keyframes particleFloat {
+    0%   { opacity: 0; transform: translateY(100vh) scale(0); }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+  }
+
+  /* ─── MAIN CONTAINER ─── */
+  .login-scene {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 460px;
+    padding: 24px;
+    animation: sceneEnter 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes sceneEnter {
+    from { opacity: 0; transform: translateY(30px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ─── BRANDING ABOVE CARD ─── */
+  .brand {
+    text-align: center;
+    margin-bottom: 28px;
+    animation: brandEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  }
+
+  @keyframes brandEnter {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .brand__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow:
+      0 4px 20px rgba(201,151,58,0.35),
+      0 0 60px rgba(201,151,58,0.1);
+    position: relative;
+  }
+
+  /* Lebanese flag: red-white-red horizontal stripes with cedar */
+  .brand__flag {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .brand__flag-red-top,
+  .brand__flag-red-bot {
+    flex: 1;
+    background: #EE161F;
+  }
+  .brand__flag-white {
+    flex: 2;
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Simplified cedar tree */
+  .brand__cedar {
+    width: 20px;
+    height: 24px;
+    position: relative;
+  }
+  .brand__cedar svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .brand__title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+
+  .brand__arabic {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--gold);
+    direction: rtl;
+    margin-top: 4px;
+    opacity: 0.85;
+  }
+
+  /* ─── GLASS CARD ─── */
+  .card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 40px 36px 36px;
+    box-shadow:
+      0 8px 40px var(--glass-shadow),
+      0 0 0 1px rgba(201,151,58,0.06) inset,
+      0 1px 0 rgba(250,246,238,0.04) inset;
+    animation: cardEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  }
+
+  @keyframes cardEnter {
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ─── WELCOME TEXT ─── */
+  .welcome {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .welcome__heading {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.65rem;
+    color: var(--cream);
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  .welcome__arabic {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-weight: 500;
+    font-size: 1.15rem;
+    color: var(--gold);
+    direction: rtl;
+    opacity: 0.9;
+  }
+
+  /* ─── ERROR ALERT ─── */
+  .error-alert {
+    display: none;
+    background: var(--red-glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--red-border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+    color: var(--red-text);
+    text-align: center;
+    animation: shake 0.4s ease-in-out;
+  }
+  .error-alert.visible { display: block; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%  { transform: translateX(-6px); }
+    40%  { transform: translateX(6px); }
+    60%  { transform: translateX(-4px); }
+    80%  { transform: translateX(4px); }
+  }
+
+  /* ─── FORM FIELDS ─── */
+  .field {
+    margin-bottom: 18px;
+  }
+
+  .field__label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--cream-dim);
+    margin-bottom: 7px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .field__input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .field__icon {
+    position: absolute;
+    left: 14px;
+    width: 18px;
+    height: 18px;
+    color: rgba(201,151,58,0.5);
+    pointer-events: none;
+    transition: color 0.25s;
+  }
+
+  .field__input {
+    width: 100%;
+    padding: 13px 14px 13px 44px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--cream);
+    background: var(--input-bg);
+    border: 1.5px solid var(--input-border);
+    border-radius: 14px;
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+  }
+
+  .field__input::placeholder {
+    color: rgba(250,246,238,0.3);
+  }
+
+  .field__input:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px rgba(201,151,58,0.1);
+    background: rgba(42, 29, 14, 0.75);
+  }
+
+  .field__toggle {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(250,246,238,0.35);
+    padding: 4px;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+  }
+  .field__toggle:hover { color: var(--gold); }
+  .field__toggle svg { width: 18px; height: 18px; }
+
+  /* ─── SUBMIT BUTTON ─── */
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 6px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--deep);
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 60%, #f0c060 100%);
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow:
+      0 4px 16px rgba(201,151,58,0.3),
+      0 1px 2px rgba(201,151,58,0.2);
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 6px 24px rgba(201,151,58,0.4),
+      0 2px 4px rgba(201,151,58,0.25);
+  }
+
+  .submit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(201,151,58,0.3);
+  }
+
+  /* Shimmer sweep on button */
+  .submit-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; bottom: 0;
+    width: 60%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: skewX(-20deg);
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { left: -100%; }
+    50%      { left: 140%; }
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 26px 0 22px;
+  }
+  .divider__line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,151,58,0.15), transparent);
+  }
+  .divider__text {
+    font-size: 0.75rem;
+    color: rgba(250,246,238,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+
+  /* ─── BOTTOM LINK ─── */
+  .bottom-link {
+    text-align: center;
+    font-size: 0.9rem;
+    color: rgba(250,246,238,0.55);
+  }
+  .bottom-link a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .bottom-link a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.25s;
+  }
+  .bottom-link a:hover { color: var(--gold-bright); }
+  .bottom-link a:hover::after { transform: scaleX(1); }
+
+  /* ─── FOOTER WATERMARK ─── */
+  .watermark {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 0.7rem;
+    color: rgba(250,246,238,0.15);
+    letter-spacing: 0.06em;
+    animation: brandEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 520px) {
+    .login-scene { padding: 16px; }
+    .card { padding: 32px 24px 28px; border-radius: 20px; }
+    .brand__title { font-size: 1.35rem; }
+    .welcome__heading { font-size: 1.4rem; }
+    .aurora--1 { width: 300px; height: 300px; }
+    .aurora--2 { width: 250px; height: 250px; }
+    .aurora--3 { display: none; }
+  }
+
+  /* ─── LIGHT MODE OVERRIDES ─── */
+  .light .aurora { animation-name: auroraFadeLight; }
+  .light .aurora--1 { background: radial-gradient(circle, rgba(201,151,58,0.07), transparent 70%); }
+  .light .aurora--2 { background: radial-gradient(circle, rgba(232,168,73,0.05), transparent 70%); }
+  .light .aurora--3 { background: radial-gradient(circle, rgba(201,151,58,0.04), transparent 70%); }
+
+  @keyframes auroraFadeLight {
+    0%   { opacity: 0.15; transform: scale(1) translate(0,0); }
+    50%  { opacity: 0.35; transform: scale(1.15) translate(20px, -10px); }
+    100% { opacity: 0.2; transform: scale(0.95) translate(-10px, 15px); }
+  }
+
+  .light .field__input::placeholder { color: rgba(92,79,61,0.4); }
+  .light .field__input:focus { background: rgba(255,255,255,0.85); }
+  .light .field__toggle { color: rgba(92,79,61,0.4); }
+  .light .divider__text { color: rgba(92,79,61,0.5); }
+  .light .bottom-link { color: rgba(92,79,61,0.7); }
+  .light .watermark { color: rgba(28,18,8,0.15); }
+
+  /* ─── THEME TOGGLE ─── */
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    color: var(--gold);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s, transform 0.2s, color 0.25s;
+    box-shadow: 0 4px 16px var(--glass-shadow);
+  }
+  .theme-toggle:hover {
+    transform: scale(1.08);
+    background: rgba(201,151,58,0.15);
+  }
+  .theme-toggle svg { width: 20px; height: 20px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Theme toggle -->
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+  <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+  </svg>
+  <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+  </svg>
+</button>
+
+<!-- Aurora glow blobs -->
+<div class="aurora aurora--1"></div>
+<div class="aurora aurora--2"></div>
+<div class="aurora aurora--3"></div>
+
+<!-- Gold dust particles -->
+<div class="particles" id="particles"></div>
+
+<main class="login-scene">
+
+  <!-- Brand header -->
+  <div class="brand">
+    <div class="brand__icon">
+      <div class="brand__flag">
+        <div class="brand__flag-red-top"></div>
+        <div class="brand__flag-white">
+          <div class="brand__cedar">
+            <svg viewBox="0 0 60 72" fill="#00A651" xmlns="http://www.w3.org/2000/svg">
+              <!-- Cedar tree of Lebanon -->
+              <rect x="27" y="58" width="6" height="14" fill="#5D4037"/>
+              <!-- Tree layers (bottom to top) -->
+              <polygon points="30,0 10,22 18,20 6,36 16,34 0,52 24,46 24,58 36,58 36,46 60,52 44,34 54,36 42,20 50,22"/>
+            </svg>
+          </div>
+        </div>
+        <div class="brand__flag-red-bot"></div>
+      </div>
+    </div>
+    <div class="brand__title">Lebanese Arabic</div>
+    <div class="brand__arabic">من البداية للطلاقة</div>
+  </div>
+
+  <!-- Glass login card -->
+  <div class="card">
+
+    <div class="welcome">
+      <h1 class="welcome__heading">Welcome back</h1>
+      <p class="welcome__arabic">أهلا وسهلا</p>
+    </div>
+
+    <!-- Error alert (toggle .visible to show) -->
+    <div class="error-alert" id="errorAlert">
+      Invalid email or password. Please try again.
+    </div>
+
+    <form id="loginForm">
+
+      <!-- Email -->
+      <div class="field">
+        <label class="field__label" for="email">Email</label>
+        <div class="field__input-wrap">
+          <input class="field__input" id="email" name="email" type="email"
+                 placeholder="you@example.com" autocomplete="email" required>
+          <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M22 7l-10 6L2 7"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="field">
+        <label class="field__label" for="password">Password</label>
+        <div class="field__input-wrap">
+          <input class="field__input" id="password" name="password" type="password"
+                 placeholder="Enter your password" autocomplete="current-password"
+                 style="padding-right: 44px;" required>
+          <svg class="field__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0110 0v4"/>
+          </svg>
+          <button type="button" class="field__toggle" id="togglePw" aria-label="Toggle password visibility">
+            <!-- Eye open icon (default) -->
+            <svg id="eyeOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <!-- Eye closed icon (hidden) -->
+            <svg id="eyeClosed" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                 style="display:none">
+              <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+              <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="submit-btn" id="submitBtn">
+        Sign In
+      </button>
+
+    </form>
+
+    <div class="divider">
+      <span class="divider__line"></span>
+      <span class="divider__text">or</span>
+      <span class="divider__line"></span>
+    </div>
+
+    <p class="bottom-link">
+      Don't have an account? <a href="/register">Create one</a>
+    </p>
+
+  </div>
+
+  <p class="watermark">arabicisbeautiful.com</p>
+
+</main>
+
+<script>
+  // Theme toggle
+  (function() {
+    var toggle = document.getElementById('themeToggle');
+    var sunIcon = document.getElementById('sunIcon');
+    var moonIcon = document.getElementById('moonIcon');
+    var saved = localStorage.getItem('mockup-theme');
+    if (saved === 'light') {
+      document.documentElement.classList.add('light');
+      sunIcon.style.display = 'none';
+      moonIcon.style.display = '';
+    }
+    toggle.addEventListener('click', function() {
+      var isLight = document.documentElement.classList.toggle('light');
+      sunIcon.style.display = isLight ? 'none' : '';
+      moonIcon.style.display = isLight ? '' : 'none';
+      localStorage.setItem('mockup-theme', isLight ? 'light' : 'dark');
+    });
+  })();
+
+  // Password toggle — uses safe DOM visibility toggling (no innerHTML)
+  const toggleBtn = document.getElementById('togglePw');
+  const pwInput = document.getElementById('password');
+  const eyeOpen = document.getElementById('eyeOpen');
+  const eyeClosed = document.getElementById('eyeClosed');
+  let visible = false;
+
+  toggleBtn.addEventListener('click', function() {
+    visible = !visible;
+    pwInput.type = visible ? 'text' : 'password';
+    eyeOpen.style.display = visible ? 'none' : '';
+    eyeClosed.style.display = visible ? '' : 'none';
+  });
+
+  // Particle generator
+  (function generateParticles() {
+    var container = document.getElementById('particles');
+    for (var i = 0; i < 25; i++) {
+      var p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      var size = (1 + Math.random() * 2) + 'px';
+      p.style.width = size;
+      p.style.height = size;
+      p.style.animationDuration = (12 + Math.random() * 18) + 's';
+      p.style.animationDelay = (Math.random() * 15) + 's';
+      container.appendChild(p);
+    }
+  })();
+
+  // Demo: show error on submit (for mockup preview)
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var btn = document.getElementById('submitBtn');
+    btn.textContent = 'Signing in\u2026';
+    btn.disabled = true;
+    setTimeout(function() {
+      document.getElementById('errorAlert').classList.add('visible');
+      btn.textContent = 'Sign In';
+      btn.disabled = false;
+    }, 1500);
+  });
+</script>
+
+</body>
+</html>

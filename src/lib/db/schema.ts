@@ -230,3 +230,37 @@ export const userBadges = sqliteTable("user_badges", {
     .references(() => badges.id),
   earnedAt: integer("earned_at", { mode: "timestamp" }).notNull(),
 });
+
+// ── Activity Feed ─────────────────────────────────
+export const activityFeed = sqliteTable("activity_feed", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  type: text("type").notNull(), // "lesson_complete" | "badge_earned" | "review_session" | "level_up" | "unit_started"
+  data: text("data").notNull(), // JSON
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+});
+
+// ── Daily Challenges ──────────────────────────────
+export const dailyChallenges = sqliteTable("daily_challenges", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  date: text("date").notNull(), // YYYY-MM-DD
+  type: text("type").notNull(), // "review_cards" | "complete_lesson" | "earn_xp" | "perfect_score"
+  description: text("description").notNull(),
+  requirement: text("requirement").notNull(), // JSON
+  xpReward: integer("xp_reward").notNull(),
+});
+
+export const userDailyChallenges = sqliteTable("user_daily_challenges", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  challengeId: integer("challenge_id")
+    .notNull()
+    .references(() => dailyChallenges.id),
+  progress: integer("progress").default(0),
+  completed: integer("completed").default(0),
+  completedAt: integer("completed_at", { mode: "timestamp" }),
+});

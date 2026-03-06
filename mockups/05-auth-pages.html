@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arabic is Beautiful — Login & Register Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #131F24;
+    --bg-card: #1B2B33;
+    --bg-card-hover: #223540;
+    --bg-input: #162029;
+    --text: #F0F4F5;
+    --text-muted: #7A9BAD;
+    --text-dim: #4A6B7A;
+    --border: rgba(255,255,255,0.08);
+    --border-focus: rgba(255,75,75,0.5);
+
+    --red: #FF4B4B;
+    --red-glow: rgba(255,75,75,0.25);
+    --blue: #1CB0F6;
+    --purple: #CE82FF;
+    --green: #58CC02;
+    --orange: #FF9600;
+    --teal: #00CD9C;
+    --gold: #FFC800;
+    --pink: #FF86D0;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* ═══════════════════════════════════════════
+     ANIMATED BACKGROUND
+     ═══════════════════════════════════════════ */
+  .bg-scene {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Large decorative Arabic calligraphy watermarks */
+  .bg-arabic-watermark {
+    position: absolute;
+    font-family: 'Noto Naskh Arabic', serif;
+    color: rgba(255,255,255,0.02);
+    font-weight: 700;
+    user-select: none;
+    pointer-events: none;
+  }
+  .bg-arabic-watermark.w1 {
+    top: 5%; left: -5%;
+    font-size: 280px;
+    transform: rotate(-15deg);
+    animation: watermarkDrift1 30s ease-in-out infinite;
+  }
+  .bg-arabic-watermark.w2 {
+    bottom: -5%; right: -8%;
+    font-size: 320px;
+    transform: rotate(12deg);
+    animation: watermarkDrift2 35s ease-in-out infinite;
+  }
+  .bg-arabic-watermark.w3 {
+    top: 40%; left: 60%;
+    font-size: 200px;
+    transform: rotate(-8deg);
+    animation: watermarkDrift3 25s ease-in-out infinite;
+  }
+
+  @keyframes watermarkDrift1 {
+    0%, 100% { transform: rotate(-15deg) translateY(0); }
+    50% { transform: rotate(-12deg) translateY(-30px); }
+  }
+  @keyframes watermarkDrift2 {
+    0%, 100% { transform: rotate(12deg) translateX(0); }
+    50% { transform: rotate(15deg) translateX(-25px); }
+  }
+  @keyframes watermarkDrift3 {
+    0%, 100% { transform: rotate(-8deg) translate(0, 0); }
+    50% { transform: rotate(-5deg) translate(20px, -20px); }
+  }
+
+  /* Floating Arabic letters */
+  .floating-letter {
+    position: absolute;
+    font-family: 'Noto Naskh Arabic', serif;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateY(100vh) rotate(0deg) scale(0.5);
+      opacity: 0;
+    }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% {
+      transform: translateY(-100vh) rotate(360deg) scale(1);
+      opacity: 0;
+    }
+  }
+
+  /* Glowing orbs */
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.12;
+    animation: orbPulse 8s ease-in-out infinite;
+  }
+  .glow-orb.orb1 {
+    width: 400px; height: 400px;
+    background: var(--red);
+    top: -100px; left: -100px;
+    animation-delay: 0s;
+  }
+  .glow-orb.orb2 {
+    width: 350px; height: 350px;
+    background: var(--blue);
+    bottom: -80px; right: -80px;
+    animation-delay: 3s;
+  }
+  .glow-orb.orb3 {
+    width: 250px; height: 250px;
+    background: var(--purple);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: 5s;
+  }
+  .glow-orb.orb4 {
+    width: 200px; height: 200px;
+    background: var(--green);
+    top: 20%; right: 15%;
+    animation-delay: 2s;
+  }
+
+  @keyframes orbPulse {
+    0%, 100% { opacity: 0.08; transform: scale(1); }
+    50% { opacity: 0.18; transform: scale(1.2); }
+  }
+
+  /* Floating geometric shapes */
+  .geo-shape {
+    position: absolute;
+    border: 2px solid rgba(255,255,255,0.04);
+    pointer-events: none;
+    animation: geoFloat 20s ease-in-out infinite;
+  }
+  .geo-shape.diamond {
+    width: 40px; height: 40px;
+    transform: rotate(45deg);
+    top: 15%; left: 10%;
+    animation-delay: 0s;
+    border-color: rgba(255,75,75,0.08);
+  }
+  .geo-shape.circle {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    bottom: 20%; left: 20%;
+    animation-delay: 4s;
+    border-color: rgba(28,176,246,0.08);
+  }
+  .geo-shape.triangle {
+    width: 0; height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 43px solid rgba(206,130,255,0.06);
+    border-top: none;
+    top: 30%; right: 8%;
+    animation-delay: 7s;
+  }
+  .geo-shape.hexagon {
+    width: 50px; height: 50px;
+    border-radius: 12px;
+    bottom: 30%; right: 15%;
+    animation-delay: 10s;
+    border-color: rgba(88,204,2,0.06);
+    transform: rotate(30deg);
+  }
+
+  @keyframes geoFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-20px) rotate(5deg); }
+    50% { transform: translateY(-10px) rotate(-3deg); }
+    75% { transform: translateY(-25px) rotate(2deg); }
+  }
+
+  /* ═══════════════════════════════════════════
+     MAIN CONTAINER
+     ═══════════════════════════════════════════ */
+  .auth-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    margin: 40px 20px;
+    animation: containerEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  @keyframes containerEnter {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ═══════════════════════════════════════════
+     LOGO / HEADER
+     ═══════════════════════════════════════════ */
+  .auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: headerEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  @keyframes headerEnter {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--red) 0%, #FF6B6B 50%, var(--orange) 100%);
+    border-radius: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 32px var(--red-glow), 0 0 0 4px rgba(255,75,75,0.1);
+    position: relative;
+    animation: logoPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes logoPulse {
+    0%, 100% { box-shadow: 0 8px 32px var(--red-glow), 0 0 0 4px rgba(255,75,75,0.1); }
+    50% { box-shadow: 0 8px 40px rgba(255,75,75,0.35), 0 0 0 8px rgba(255,75,75,0.06); }
+  }
+
+  .logo-mark .arabic-letter {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .logo-mark .sparkle {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+  .logo-mark .sparkle:nth-child(2) { top: -4px; right: 8px; animation-delay: 0s; }
+  .logo-mark .sparkle:nth-child(3) { bottom: 4px; left: -3px; animation-delay: 0.6s; }
+  .logo-mark .sparkle:nth-child(4) { top: 10px; right: -5px; animation-delay: 1.2s; }
+
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+
+  .app-title {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+    background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .app-title-arabic {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--red);
+    margin-bottom: 10px;
+    direction: rtl;
+    text-shadow: 0 0 30px var(--red-glow);
+  }
+
+  .app-tagline {
+    font-size: 15px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  /* ═══════════════════════════════════════════
+     CARD
+     ═══════════════════════════════════════════ */
+  .auth-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.03) inset;
+    animation: cardEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  @keyframes cardEnter {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ═══════════════════════════════════════════
+     TAB TOGGLE
+     ═══════════════════════════════════════════ */
+  .tab-bar {
+    display: flex;
+    background: var(--bg-input);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 16px 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-dim);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s, background 0.3s;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tab-btn:hover {
+    color: var(--text-muted);
+  }
+
+  .tab-btn.active {
+    color: var(--text);
+  }
+
+  .tab-indicator {
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    width: 50%;
+    background: linear-gradient(90deg, var(--red), #FF6B6B);
+    border-radius: 3px 3px 0 0;
+    transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 12px var(--red-glow);
+  }
+
+  .tab-indicator.login { left: 0; }
+  .tab-indicator.register { left: 50%; }
+
+  /* ═══════════════════════════════════════════
+     FORM PANELS
+     ═══════════════════════════════════════════ */
+  .form-panels {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-panel {
+    padding: 32px 28px;
+    display: none;
+  }
+
+  .form-panel.active {
+    display: block;
+    animation: panelSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes panelSlideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ═══════════════════════════════════════════
+     FORM FIELDS
+     ═══════════════════════════════════════════ */
+  .form-group {
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fieldEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .form-panel.active .form-group:nth-child(1) { animation-delay: 0.1s; }
+  .form-panel.active .form-group:nth-child(2) { animation-delay: 0.18s; }
+  .form-panel.active .form-group:nth-child(3) { animation-delay: 0.26s; }
+  .form-panel.active .form-group:nth-child(4) { animation-delay: 0.34s; }
+  .form-panel.active .form-group:nth-child(5) { animation-delay: 0.42s; }
+  .form-panel.active .form-group:nth-child(6) { animation-delay: 0.50s; }
+
+  @keyframes fieldEnter {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+  }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 16px;
+    color: var(--text-dim);
+    font-size: 18px;
+    transition: color 0.3s;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+  }
+
+  .form-input::placeholder {
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+
+  .form-input:hover {
+    border-color: rgba(255,255,255,0.12);
+    background: rgba(22,32,41,0.8);
+  }
+
+  .form-input:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 4px var(--red-glow), 0 0 20px rgba(255,75,75,0.1);
+    background: rgba(22,32,41,0.9);
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: 14px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+  }
+
+  .toggle-password:hover {
+    color: var(--text-muted);
+  }
+
+  /* ═══════════════════════════════════════════
+     PASSWORD STRENGTH METER
+     ═══════════════════════════════════════════ */
+  .strength-meter {
+    margin-top: 10px;
+  }
+
+  .strength-bar-track {
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    overflow: hidden;
+    display: flex;
+    gap: 3px;
+  }
+
+  .strength-segment {
+    flex: 1;
+    height: 100%;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.04);
+    transition: background 0.4s;
+  }
+
+  .strength-segment.active.weak { background: var(--red); }
+  .strength-segment.active.fair { background: var(--orange); }
+  .strength-segment.active.good { background: var(--gold); }
+  .strength-segment.active.strong { background: var(--green); }
+
+  .strength-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .strength-label .label-text { color: var(--text-dim); }
+  .strength-label .label-value { text-transform: uppercase; letter-spacing: 0.5px; }
+  .strength-label .label-value.weak { color: var(--red); }
+  .strength-label .label-value.fair { color: var(--orange); }
+  .strength-label .label-value.good { color: var(--gold); }
+  .strength-label .label-value.strong { color: var(--green); }
+
+  /* ═══════════════════════════════════════════
+     FORM EXTRAS
+     ═══════════════════════════════════════════ */
+  .form-extras {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+
+  .remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .custom-checkbox {
+    width: 20px; height: 20px;
+    border: 2px solid var(--text-dim);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+
+  .custom-checkbox.checked {
+    background: var(--red);
+    border-color: var(--red);
+    box-shadow: 0 0 12px var(--red-glow);
+  }
+
+  .custom-checkbox.checked svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .custom-checkbox svg {
+    width: 12px; height: 12px;
+    color: white;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s;
+  }
+
+  .forgot-link {
+    color: var(--red);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s;
+  }
+
+  .forgot-link:hover {
+    color: #FF6B6B;
+  }
+
+  /* ═══════════════════════════════════════════
+     SUBMIT BUTTON
+     ═══════════════════════════════════════════ */
+  .submit-btn {
+    width: 100%;
+    padding: 16px 24px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: linear-gradient(135deg, var(--red) 0%, #FF6B6B 50%, var(--orange) 100%);
+    background-size: 200% 200%;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 4px 20px var(--red-glow), 0 0 0 0 rgba(255,75,75,0);
+    animation: gradientShift 4s ease-in-out infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s;
+  }
+
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255,75,75,0.4), 0 0 0 4px rgba(255,75,75,0.1);
+  }
+
+  .submit-btn:hover::before {
+    left: 100%;
+  }
+
+  .submit-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px var(--red-glow);
+  }
+
+  .submit-btn .btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  /* ═══════════════════════════════════════════
+     DIVIDER
+     ═══════════════════════════════════════════ */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .divider-text {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ═══════════════════════════════════════════
+     SWITCH LINK
+     ═══════════════════════════════════════════ */
+  .switch-text {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .switch-link {
+    color: var(--red);
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .switch-link:hover {
+    color: #FF6B6B;
+    text-decoration: underline;
+  }
+
+  /* ═══════════════════════════════════════════
+     ACHIEVEMENTS PREVIEW
+     ═══════════════════════════════════════════ */
+  .achievements-tease {
+    margin-top: 28px;
+    text-align: center;
+    animation: achieveEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  @keyframes achieveEnter {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .achievements-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+  }
+
+  .badge-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .badge-preview {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+    animation: badgePop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  .badge-preview:nth-child(1) { animation-delay: 0.7s; }
+  .badge-preview:nth-child(2) { animation-delay: 0.8s; }
+  .badge-preview:nth-child(3) { animation-delay: 0.9s; }
+  .badge-preview:nth-child(4) { animation-delay: 1.0s; }
+  .badge-preview:nth-child(5) { animation-delay: 1.1s; }
+
+  @keyframes badgePop {
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .badge-preview:hover {
+    transform: scale(1.15) translateY(-4px);
+  }
+
+  .badge-preview.b1 {
+    background: linear-gradient(135deg, #FF4B4B22, #FF4B4B44);
+    border: 2px solid #FF4B4B33;
+    box-shadow: 0 4px 16px rgba(255,75,75,0.15);
+  }
+  .badge-preview.b2 {
+    background: linear-gradient(135deg, #58CC0222, #58CC0244);
+    border: 2px solid #58CC0233;
+    box-shadow: 0 4px 16px rgba(88,204,2,0.15);
+  }
+  .badge-preview.b3 {
+    background: linear-gradient(135deg, #1CB0F622, #1CB0F644);
+    border: 2px solid #1CB0F633;
+    box-shadow: 0 4px 16px rgba(28,176,246,0.15);
+  }
+  .badge-preview.b4 {
+    background: linear-gradient(135deg, #FFC80022, #FFC80044);
+    border: 2px solid #FFC80033;
+    box-shadow: 0 4px 16px rgba(255,200,0,0.15);
+  }
+  .badge-preview.b5 {
+    background: linear-gradient(135deg, #CE82FF22, #CE82FF44);
+    border: 2px solid #CE82FF33;
+    box-shadow: 0 4px 16px rgba(206,130,255,0.15);
+  }
+
+  .badge-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: #0D171C;
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    z-index: 10;
+  }
+
+  .badge-preview:hover .badge-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ═══════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════ */
+  .auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-weight: 600;
+    animation: footerEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+    opacity: 0;
+  }
+
+  @keyframes footerEnter {
+    to { opacity: 0.6; }
+  }
+
+  /* ═══════════════════════════════════════════
+     PASSWORD MATCH INDICATOR
+     ═══════════════════════════════════════════ */
+  .match-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .match-indicator.visible { opacity: 1; }
+  .match-indicator.match { color: var(--green); }
+  .match-indicator.no-match { color: var(--red); }
+
+  .match-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    transition: background 0.3s;
+  }
+
+  .match-indicator.match .match-dot { background: var(--green); }
+  .match-indicator.no-match .match-dot { background: var(--red); }
+
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════ */
+  @media (max-width: 520px) {
+    .auth-container {
+      margin: 20px 12px;
+    }
+    .form-panel {
+      padding: 24px 20px;
+    }
+    .app-title { font-size: 24px; }
+    .app-title-arabic { font-size: 18px; }
+    .badge-preview { width: 44px; height: 44px; font-size: 20px; }
+  }
+
+  /* ═══════════════════════════════════════════
+     MOCKUP LABEL
+     ═══════════════════════════════════════════ */
+  .mockup-label {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+</style>
+</head>
+<body>
+
+<!-- MOCKUP BADGE -->
+<div class="mockup-label">Mockup 05 -- Auth Pages</div>
+
+<!-- ═══════════════════════════════════════════
+     ANIMATED BACKGROUND
+     ═══════════════════════════════════════════ -->
+<div class="bg-scene">
+  <!-- Glowing orbs -->
+  <div class="glow-orb orb1"></div>
+  <div class="glow-orb orb2"></div>
+  <div class="glow-orb orb3"></div>
+  <div class="glow-orb orb4"></div>
+
+  <!-- Large Arabic calligraphy watermarks -->
+  <div class="bg-arabic-watermark w1">بسم</div>
+  <div class="bg-arabic-watermark w2">جمال</div>
+  <div class="bg-arabic-watermark w3">عربي</div>
+
+  <!-- Geometric shapes -->
+  <div class="geo-shape diamond"></div>
+  <div class="geo-shape circle"></div>
+  <div class="geo-shape triangle"></div>
+  <div class="geo-shape hexagon"></div>
+
+  <!-- Floating Arabic letters (generated by JS) -->
+  <div id="floatingLetters"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MAIN AUTH CONTAINER
+     ═══════════════════════════════════════════ -->
+<div class="auth-container">
+
+  <!-- HEADER -->
+  <div class="auth-header">
+    <div class="logo-mark">
+      <span class="arabic-letter">&#1593;</span>
+      <span class="sparkle"></span>
+      <span class="sparkle"></span>
+      <span class="sparkle"></span>
+    </div>
+    <div class="app-title">Arabic is Beautiful</div>
+    <div class="app-title-arabic">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577; &#1580;&#1605;&#1610;&#1604;&#1577;</div>
+    <div class="app-tagline">Start your Lebanese Arabic journey today</div>
+  </div>
+
+  <!-- AUTH CARD -->
+  <div class="auth-card">
+    <!-- TABS -->
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tabLogin" onclick="switchTab('login')">
+        <!-- lock icon -->
+        <svg style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:inline" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Sign In
+      </button>
+      <button class="tab-btn" id="tabRegister" onclick="switchTab('register')">
+        <!-- user-plus icon -->
+        <svg style="width:14px;height:14px;vertical-align:-2px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:inline" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+        Register
+      </button>
+      <div class="tab-indicator login" id="tabIndicator"></div>
+    </div>
+
+    <!-- FORM PANELS -->
+    <div class="form-panels">
+
+      <!-- ── LOGIN PANEL ── -->
+      <div class="form-panel active" id="panelLogin">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </span>
+            <input type="email" class="form-input" placeholder="your@email.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input type="password" class="form-input" placeholder="Enter your password" id="loginPassword">
+            <button class="toggle-password" onclick="togglePw('loginPassword', this)" type="button" title="Show password">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" class="eye-open"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:none" class="eye-closed"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-extras">
+          <label class="remember-me" onclick="toggleCheck(this)">
+            <div class="custom-checkbox checked">
+              <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:white;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            Remember me
+          </label>
+          <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <button class="submit-btn" type="button">
+            <span class="btn-content">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              Sign In
+            </span>
+          </button>
+        </div>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <span class="divider-text">or</span>
+          <div class="divider-line"></div>
+        </div>
+
+        <div class="switch-text">
+          Don't have an account? <a class="switch-link" onclick="switchTab('register')">Create one</a>
+        </div>
+      </div>
+
+      <!-- ── REGISTER PANEL ── -->
+      <div class="form-panel" id="panelRegister">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <div class="input-wrapper">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <input type="text" class="form-input" placeholder="What should we call you?">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </span>
+            <input type="email" class="form-input" placeholder="your@email.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input type="password" class="form-input" placeholder="Choose a strong password" id="regPassword" oninput="checkStrength(this.value)">
+            <button class="toggle-password" onclick="togglePw('regPassword', this)" type="button" title="Show password">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" class="eye-open"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:none" class="eye-closed"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+          <!-- Strength meter -->
+          <div class="strength-meter" id="strengthMeter">
+            <div class="strength-bar-track">
+              <div class="strength-segment" id="seg1"></div>
+              <div class="strength-segment" id="seg2"></div>
+              <div class="strength-segment" id="seg3"></div>
+              <div class="strength-segment" id="seg4"></div>
+            </div>
+            <div class="strength-label">
+              <span class="label-text">Password strength</span>
+              <span class="label-value" id="strengthText">--</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </span>
+            <input type="password" class="form-input" placeholder="Re-enter your password" id="regConfirm" oninput="checkMatch()">
+          </div>
+          <div class="match-indicator" id="matchIndicator">
+            <div class="match-dot"></div>
+            <span class="match-text">Passwords match</span>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <button class="submit-btn" type="button">
+            <span class="btn-content">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              Create Account
+            </span>
+          </button>
+        </div>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <span class="divider-text">or</span>
+          <div class="divider-line"></div>
+        </div>
+
+        <div class="switch-text">
+          Already have an account? <a class="switch-link" onclick="switchTab('login')">Sign in</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS TEASE -->
+  <div class="achievements-tease">
+    <div class="achievements-label">Unlock achievements as you learn</div>
+    <div class="badge-row">
+      <div class="badge-preview b1">
+        <span>&#127942;</span>
+        <div class="badge-tooltip">First Steps</div>
+      </div>
+      <div class="badge-preview b2">
+        <span>&#127793;</span>
+        <div class="badge-tooltip">7-Day Streak</div>
+      </div>
+      <div class="badge-preview b3">
+        <span>&#128483;</span>
+        <div class="badge-tooltip">Conversation Pro</div>
+      </div>
+      <div class="badge-preview b4">
+        <span>&#11088;</span>
+        <div class="badge-tooltip">1000 XP Club</div>
+      </div>
+      <div class="badge-preview b5">
+        <span>&#129351;</span>
+        <div class="badge-tooltip">Phase Master</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="auth-footer">
+    arabicisbeautiful.com &mdash; Learn Lebanese Arabic the fun way
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════════
+function switchTab(tab) {
+  var loginBtn = document.getElementById('tabLogin');
+  var registerBtn = document.getElementById('tabRegister');
+  var indicator = document.getElementById('tabIndicator');
+  var panelLogin = document.getElementById('panelLogin');
+  var panelRegister = document.getElementById('panelRegister');
+
+  if (tab === 'login') {
+    loginBtn.classList.add('active');
+    registerBtn.classList.remove('active');
+    indicator.className = 'tab-indicator login';
+    panelLogin.classList.add('active');
+    panelRegister.classList.remove('active');
+  } else {
+    registerBtn.classList.add('active');
+    loginBtn.classList.remove('active');
+    indicator.className = 'tab-indicator register';
+    panelRegister.classList.add('active');
+    panelLogin.classList.remove('active');
+  }
+
+  // Re-trigger stagger animation
+  var activePanel = document.querySelector('.form-panel.active');
+  var groups = activePanel.querySelectorAll('.form-group');
+  groups.forEach(function(g) {
+    g.style.animation = 'none';
+    g.offsetHeight; // force reflow
+    g.style.animation = '';
+  });
+}
+
+// ═══════════════════════════════════════════
+// PASSWORD SHOW/HIDE
+// ═══════════════════════════════════════════
+function togglePw(inputId, btn) {
+  var input = document.getElementById(inputId);
+  var isPassword = input.type === 'password';
+  input.type = isPassword ? 'text' : 'password';
+
+  var eyeOpen = btn.querySelector('.eye-open');
+  var eyeClosed = btn.querySelector('.eye-closed');
+
+  if (isPassword) {
+    eyeOpen.style.display = 'none';
+    eyeClosed.style.display = '';
+  } else {
+    eyeOpen.style.display = '';
+    eyeClosed.style.display = 'none';
+  }
+}
+
+// ═══════════════════════════════════════════
+// CHECKBOX TOGGLE
+// ═══════════════════════════════════════════
+function toggleCheck(label) {
+  var cb = label.querySelector('.custom-checkbox');
+  cb.classList.toggle('checked');
+}
+
+// ═══════════════════════════════════════════
+// PASSWORD STRENGTH
+// ═══════════════════════════════════════════
+function checkStrength(val) {
+  var segments = [
+    document.getElementById('seg1'),
+    document.getElementById('seg2'),
+    document.getElementById('seg3'),
+    document.getElementById('seg4')
+  ];
+  var textEl = document.getElementById('strengthText');
+
+  var score = 0;
+  if (val.length >= 6) score++;
+  if (val.length >= 10) score++;
+  if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  score = Math.min(score, 4);
+
+  var levels = ['', 'weak', 'fair', 'good', 'strong'];
+  var labels = ['--', 'Weak', 'Fair', 'Good', 'Strong'];
+  var level = val.length === 0 ? 0 : Math.max(score, 1);
+
+  segments.forEach(function(seg, i) {
+    seg.className = 'strength-segment';
+    if (i < level) {
+      seg.classList.add('active', levels[level]);
+    }
+  });
+
+  textEl.textContent = labels[level];
+  textEl.className = 'label-value ' + levels[level];
+
+  // Also check match if confirm has value
+  checkMatch();
+}
+
+// ═══════════════════════════════════════════
+// PASSWORD MATCH
+// ═══════════════════════════════════════════
+function checkMatch() {
+  var pw = document.getElementById('regPassword').value;
+  var confirm = document.getElementById('regConfirm').value;
+  var indicator = document.getElementById('matchIndicator');
+  var matchText = indicator.querySelector('.match-text');
+
+  if (confirm.length === 0) {
+    indicator.classList.remove('visible');
+    return;
+  }
+
+  indicator.classList.add('visible');
+
+  if (pw === confirm) {
+    indicator.className = 'match-indicator visible match';
+    matchText.textContent = 'Passwords match';
+  } else {
+    indicator.className = 'match-indicator visible no-match';
+    matchText.textContent = 'Passwords do not match';
+  }
+}
+
+// ═══════════════════════════════════════════
+// FLOATING ARABIC LETTERS
+// ═══════════════════════════════════════════
+(function() {
+  var letters = [
+    '\u0627','\u0628','\u062A','\u062B','\u062C','\u062D','\u062E',
+    '\u062F','\u0630','\u0631','\u0632','\u0633','\u0634','\u0635',
+    '\u0636','\u0637','\u0638','\u0639','\u063A','\u0641','\u0642',
+    '\u0643','\u0644','\u0645','\u0646','\u0647','\u0648','\u064A'
+  ];
+  var colors = [
+    'rgba(255,75,75,0.12)',
+    'rgba(28,176,246,0.12)',
+    'rgba(206,130,255,0.12)',
+    'rgba(88,204,2,0.10)',
+    'rgba(255,150,0,0.10)',
+    'rgba(255,200,0,0.10)',
+    'rgba(255,134,208,0.10)',
+    'rgba(0,205,156,0.10)'
+  ];
+  var container = document.getElementById('floatingLetters');
+
+  function spawnLetter() {
+    var el = document.createElement('div');
+    el.className = 'floating-letter';
+    el.textContent = letters[Math.floor(Math.random() * letters.length)];
+    el.style.left = (Math.random() * 100) + '%';
+    el.style.fontSize = (18 + Math.random() * 28) + 'px';
+    el.style.color = colors[Math.floor(Math.random() * colors.length)];
+    var duration = 12 + Math.random() * 18;
+    el.style.animationDuration = duration + 's';
+    el.style.animationDelay = '0s';
+    container.appendChild(el);
+
+    setTimeout(function() {
+      if (el.parentNode) el.parentNode.removeChild(el);
+    }, duration * 1000);
+  }
+
+  // Initial burst
+  for (var i = 0; i < 12; i++) {
+    (function(idx) {
+      setTimeout(function() { spawnLetter(); }, idx * 400);
+    })(i);
+  }
+
+  // Steady stream
+  setInterval(spawnLetter, 2000);
+})();
+
+// ═══════════════════════════════════════════
+// FOCUS GLOW ON INPUT ICONS
+// ═══════════════════════════════════════════
+document.querySelectorAll('.form-input').forEach(function(input) {
+  var wrapper = input.closest('.input-wrapper');
+  var icon = wrapper ? wrapper.querySelector('.input-icon') : null;
+  if (!icon) return;
+
+  input.addEventListener('focus', function() { icon.style.color = 'var(--red)'; });
+  input.addEventListener('blur', function() { icon.style.color = 'var(--text-dim)'; });
+});
+</script>
+
+</body>
+</html>

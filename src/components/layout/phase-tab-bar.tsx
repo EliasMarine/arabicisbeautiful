@@ -24,7 +24,7 @@ export function PhaseTabBar({ slug, tabs, color }: PhaseTabBarProps) {
   }, [pathname]);
 
   return (
-    <div className="bg-[var(--cream)] border-b border-[var(--border)]">
+    <div className="bg-[var(--bg-card)] border-b border-[var(--border)]">
       <div
         className="flex overflow-x-auto px-7"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
@@ -43,8 +43,8 @@ export function PhaseTabBar({ slug, tabs, color }: PhaseTabBarProps) {
                 ref={isActive ? activeRef : undefined}
                 className={`px-4 py-3.5 text-[0.82rem] font-semibold whitespace-nowrap border-b-2 transition-colors ${
                   isActive
-                    ? "text-[var(--dark)]"
-                    : "text-[var(--muted)] border-transparent hover:text-[var(--dark)]"
+                    ? "text-[var(--text)]"
+                    : "text-[var(--text-secondary)] border-transparent hover:text-[var(--text)]"
                 }`}
                 style={
                   isActive ? { borderBottomColor: color } : undefined

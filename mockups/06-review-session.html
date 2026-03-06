@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lebanese Lessons 3.0 — SRS Review Session</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #131F24;
+    --bg-card: #1B2B33;
+    --bg-card-hover: #223540;
+    --text: #F0F4F5;
+    --text-muted: #7A9BAD;
+    --text-dim: #4A6B7A;
+    --border: rgba(255,255,255,0.06);
+    --red: #FF4B4B;
+    --blue: #1CB0F6;
+    --purple: #CE82FF;
+    --green: #58CC02;
+    --orange: #FF9600;
+    --teal: #00CD9C;
+    --gold: #FFC800;
+    --pink: #FF86D0;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    gap: 32px;
+    padding: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .screen-label {
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-top: 16px;
+    margin-bottom: -16px;
+  }
+
+  /* ─── Phone Frame ─── */
+  .phone {
+    width: 390px;
+    min-height: 780px;
+    background: var(--bg);
+    border-radius: 32px;
+    border: 3px solid #2a3a42;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    animation: frameSlideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .phone:nth-child(3) { animation-delay: 0.1s; }
+  .phone:nth-child(4) { animation-delay: 0.2s; }
+  .phone:nth-child(5) { animation-delay: 0.3s; }
+
+  @keyframes frameSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── Shared Header ─── */
+  .screen-header {
+    padding: 20px 24px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .screen-header .back-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: none;
+    color: var(--text-muted);
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  .screen-header .title {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .screen-header .header-icon {
+    font-size: 20px;
+  }
+
+  /* ─── Screen 1: Review Dashboard ─── */
+
+  .dashboard-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Due Card */
+  .due-card {
+    background: linear-gradient(135deg, #1B2B33, #223540);
+    border: 2px solid rgba(28,176,246,0.2);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .due-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at center, rgba(28,176,246,0.06) 0%, transparent 60%);
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.5; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  .due-card-icon {
+    font-size: 48px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+    animation: floatBounce 2.5s ease-in-out infinite;
+  }
+
+  @keyframes floatBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .due-card-number {
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--blue);
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .due-card-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 4px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .stat-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 8px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .stat-box:hover {
+    border-color: rgba(255,255,255,0.12);
+    transform: translateY(-2px);
+  }
+
+  .stat-box-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+
+  .stat-box-value {
+    font-size: 20px;
+    font-weight: 900;
+  }
+
+  .stat-box-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Streak Row */
+  .streak-row {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .streak-flame {
+    font-size: 32px;
+    animation: flamePulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes flamePulse {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.15); filter: brightness(1.2); }
+  }
+
+  .streak-info { flex: 1; }
+
+  .streak-count {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--orange);
+  }
+
+  .streak-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .streak-badge {
+    background: rgba(255,150,0,0.12);
+    color: var(--orange);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  /* Accuracy Donut */
+  .accuracy-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .accuracy-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .accuracy-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .donut-container {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;
+  }
+
+  .donut-svg {
+    width: 110px;
+    height: 110px;
+    transform: rotate(-90deg);
+  }
+
+  .donut-svg circle {
+    fill: none;
+    stroke-width: 14;
+    stroke-linecap: round;
+  }
+
+  .donut-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .donut-center-value {
+    font-size: 22px;
+    font-weight: 900;
+  }
+
+  .donut-center-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .accuracy-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-count {
+    margin-left: auto;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  /* Quick Stats Row */
+  .quick-stats {
+    display: flex;
+    gap: 10px;
+  }
+
+  .quick-stat {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .quick-stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .quick-stat-value {
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  /* Last Review */
+  .last-review {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 600;
+    padding: 0 4px;
+  }
+
+  /* Start Review Button */
+  .start-review-btn {
+    width: 100%;
+    padding: 18px;
+    border: none;
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--green), #2EAA00);
+    box-shadow: 0 6px 0 #1E8800, 0 8px 24px rgba(88,204,2,0.3);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .start-review-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0 #1E8800, 0 12px 32px rgba(88,204,2,0.4);
+  }
+
+  .start-review-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #1E8800;
+  }
+
+  .start-review-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    animation: shimmer 3s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 200%; }
+  }
+
+
+  /* ═══════════════════════════════════════════════
+     Screen 2: Active Review Session
+     ═══════════════════════════════════════════════ */
+
+  .review-header {
+    padding: 16px 20px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .close-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: none;
+    color: var(--text-muted);
+    font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+
+  .progress-bar-container {
+    flex: 1;
+    height: 14px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    background: linear-gradient(90deg, var(--blue), #0099E5);
+  }
+
+  .progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 2px; right: 2px; bottom: 2px; left: 2px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent);
+    border-radius: 8px;
+  }
+
+  .progress-count {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .review-body {
+    flex: 1;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Session Mini Stats */
+  .session-mini-stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .session-mini-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .session-mini-stat .value {
+    color: var(--text);
+    font-weight: 800;
+  }
+
+  /* Flashcard */
+  .flashcard-wrapper {
+    perspective: 1200px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+  }
+
+  .flashcard {
+    width: 100%;
+    max-width: 340px;
+    min-height: 280px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+
+  .flashcard.flipped {
+    transform: rotateY(180deg);
+  }
+
+  .flashcard-face {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 24px;
+    border: 2px solid rgba(255,255,255,0.1);
+  }
+
+  .flashcard-front {
+    background: linear-gradient(145deg, #1B2B33, #223540);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  .flashcard-back {
+    background: linear-gradient(145deg, #1B2B33, #223540);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    transform: rotateY(180deg);
+  }
+
+  .card-category {
+    background: rgba(28,176,246,0.12);
+    color: var(--blue);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  .card-arabic {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--gold);
+    direction: rtl;
+    text-align: center;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    animation: arabicGlow 3s ease-in-out infinite;
+  }
+
+  @keyframes arabicGlow {
+    0%, 100% { text-shadow: 0 0 0 transparent; }
+    50% { text-shadow: 0 0 20px rgba(255,200,0,0.15); }
+  }
+
+  .card-audio-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(28,176,246,0.1);
+    color: var(--blue);
+    border: 2px solid rgba(28,176,246,0.2);
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 16px;
+  }
+
+  .card-audio-btn:hover {
+    background: rgba(28,176,246,0.18);
+    transform: scale(1.05);
+  }
+
+  .card-tap-hint {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    animation: hintPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes hintPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* Card Back Content */
+  .card-back-transliteration {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+
+  .card-back-english {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .card-back-divider {
+    width: 50px;
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+
+  .card-back-example {
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 14px 18px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .card-back-example-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .card-back-example-arabic {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 20px;
+    color: var(--gold);
+    direction: rtl;
+    line-height: 1.6;
+    margin-bottom: 4px;
+  }
+
+  .card-back-example-eng {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  /* Rating Buttons */
+  .rating-section {
+    padding: 0 0 4px;
+  }
+
+  .rating-label {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .rating-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .rating-btn {
+    border: none;
+    border-radius: 14px;
+    padding: 14px 6px 12px;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .rating-btn:hover {
+    transform: translateY(-3px);
+  }
+
+  .rating-btn:active {
+    transform: translateY(2px);
+  }
+
+  .rating-btn .emoji {
+    font-size: 22px;
+  }
+
+  .rating-btn .label {
+    font-size: 13px;
+    font-weight: 800;
+    color: white;
+  }
+
+  .rating-btn .time {
+    font-size: 11px;
+    font-weight: 700;
+    opacity: 0.7;
+    color: white;
+  }
+
+  .rating-again {
+    background: var(--red);
+    box-shadow: 0 4px 0 #CC3333, 0 4px 12px rgba(255,75,75,0.3);
+  }
+
+  .rating-hard {
+    background: var(--orange);
+    box-shadow: 0 4px 0 #CC7700, 0 4px 12px rgba(255,150,0,0.3);
+  }
+
+  .rating-good {
+    background: var(--blue);
+    box-shadow: 0 4px 0 #0099CC, 0 4px 12px rgba(28,176,246,0.3);
+  }
+
+  .rating-easy {
+    background: var(--green);
+    box-shadow: 0 4px 0 #2EAA00, 0 4px 12px rgba(88,204,2,0.3);
+  }
+
+
+  /* ═══════════════════════════════════════════════
+     Screen 3: Session Complete
+     ═══════════════════════════════════════════════ */
+
+  .complete-body {
+    flex: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Confetti */
+  .confetti-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -20px;
+    animation: confettiFall linear infinite;
+  }
+
+  .confetti:nth-child(1) { left: 5%; animation-duration: 3.2s; animation-delay: 0s; background: var(--red); transform: rotate(45deg); }
+  .confetti:nth-child(2) { left: 15%; animation-duration: 2.8s; animation-delay: 0.3s; background: var(--blue); border-radius: 50%; width: 8px; height: 8px; }
+  .confetti:nth-child(3) { left: 25%; animation-duration: 3.5s; animation-delay: 0.6s; background: var(--gold); transform: rotate(20deg); }
+  .confetti:nth-child(4) { left: 35%; animation-duration: 2.5s; animation-delay: 0.1s; background: var(--green); width: 6px; height: 14px; }
+  .confetti:nth-child(5) { left: 45%; animation-duration: 3.0s; animation-delay: 0.5s; background: var(--purple); border-radius: 50%; }
+  .confetti:nth-child(6) { left: 55%; animation-duration: 2.7s; animation-delay: 0.2s; background: var(--orange); transform: rotate(60deg); }
+  .confetti:nth-child(7) { left: 65%; animation-duration: 3.3s; animation-delay: 0.4s; background: var(--pink); width: 8px; height: 8px; border-radius: 50%; }
+  .confetti:nth-child(8) { left: 75%; animation-duration: 2.9s; animation-delay: 0.7s; background: var(--teal); transform: rotate(30deg); }
+  .confetti:nth-child(9) { left: 85%; animation-duration: 3.1s; animation-delay: 0.15s; background: var(--blue); width: 6px; height: 12px; }
+  .confetti:nth-child(10) { left: 92%; animation-duration: 2.6s; animation-delay: 0.55s; background: var(--red); border-radius: 50%; width: 7px; height: 7px; }
+  .confetti:nth-child(11) { left: 10%; animation-duration: 3.4s; animation-delay: 0.8s; background: var(--gold); width: 12px; height: 6px; }
+  .confetti:nth-child(12) { left: 50%; animation-duration: 2.4s; animation-delay: 0.35s; background: var(--green); border-radius: 50%; width: 9px; height: 9px; }
+  .confetti:nth-child(13) { left: 70%; animation-duration: 3.6s; animation-delay: 0.65s; background: var(--purple); transform: rotate(70deg); width: 6px; height: 14px; }
+  .confetti:nth-child(14) { left: 30%; animation-duration: 2.3s; animation-delay: 0.45s; background: var(--pink); border-radius: 50%; width: 8px; height: 8px; }
+  .confetti:nth-child(15) { left: 40%; animation-duration: 3.7s; animation-delay: 0.25s; background: var(--orange); transform: rotate(50deg); }
+  .confetti:nth-child(16) { left: 60%; animation-duration: 2.1s; animation-delay: 0.9s; background: var(--teal); width: 5px; height: 12px; }
+
+  @keyframes confettiFall {
+    0% {
+      transform: translateY(0) rotate(0deg) scale(1);
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(800px) rotate(720deg) scale(0.3);
+      opacity: 0;
+    }
+  }
+
+  /* Trophy */
+  .trophy-container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .trophy-icon {
+    font-size: 72px;
+    animation: trophyBounce 1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  @keyframes trophyBounce {
+    0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .trophy-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(255,200,0,0.2), transparent);
+    border-radius: 50%;
+    animation: trophyGlow 2s ease-in-out infinite;
+  }
+
+  @keyframes trophyGlow {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
+  }
+
+  .complete-title {
+    font-size: 28px;
+    font-weight: 900;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleAppear 0.6s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes titleAppear {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .complete-subtitle {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    animation: titleAppear 0.6s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Complete Stats */
+  .complete-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    animation: titleAppear 0.6s 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .complete-stat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 10px;
+    text-align: center;
+  }
+
+  .complete-stat-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+
+  .complete-stat-value {
+    font-size: 22px;
+    font-weight: 900;
+  }
+
+  .complete-stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* XP Earned */
+  .xp-earned {
+    background: linear-gradient(135deg, rgba(206,130,255,0.12), rgba(206,130,255,0.06));
+    border: 2px solid rgba(206,130,255,0.2);
+    border-radius: 20px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    animation: titleAppear 0.6s 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .xp-earned-icon {
+    font-size: 36px;
+    animation: floatBounce 2.5s ease-in-out infinite;
+  }
+
+  .xp-earned-info { flex: 1; }
+
+  .xp-earned-value {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--purple);
+  }
+
+  .xp-earned-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .xp-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+
+  .xp-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), #B68AFF);
+    border-radius: 4px;
+    width: 0%;
+    animation: xpFill 1.5s 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes xpFill {
+    to { width: 72%; }
+  }
+
+  /* Streak Celebration */
+  .streak-celebration {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,150,0,0.08);
+    border: 1px solid rgba(255,150,0,0.15);
+    border-radius: 16px;
+    padding: 14px 20px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    animation: titleAppear 0.6s 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .streak-celebration-flame {
+    font-size: 28px;
+    animation: flamePulse 1.5s ease-in-out infinite;
+  }
+
+  .streak-celebration-text {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--orange);
+  }
+
+  .streak-celebration-sub {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  /* Complete Action Buttons */
+  .complete-actions {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    animation: titleAppear 0.6s 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .complete-btn {
+    flex: 1;
+    padding: 16px;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .complete-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .complete-btn:active {
+    transform: translateY(2px);
+  }
+
+  .complete-btn-primary {
+    background: linear-gradient(135deg, var(--green), #2EAA00);
+    color: white;
+    box-shadow: 0 4px 0 #1E8800, 0 4px 16px rgba(88,204,2,0.3);
+  }
+
+  .complete-btn-secondary {
+    background: var(--bg-card);
+    color: var(--text);
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+  }
+
+  /* ─── Sparkle Animation (used on due card) ─── */
+  .sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  .sparkle:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+  .sparkle:nth-child(2) { top: 25%; right: 15%; animation-delay: 0.4s; }
+  .sparkle:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 0.8s; }
+  .sparkle:nth-child(4) { bottom: 30%; right: 10%; animation-delay: 1.2s; }
+
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  /* ─── Animated Counter ─── */
+  .counter {
+    display: inline-block;
+    animation: counterPop 0.4s 1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  @keyframes counterPop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* ─── Star Particles on Complete ─── */
+  .star-burst {
+    position: absolute;
+    font-size: 16px;
+    animation: starBurst 1.5s ease-out forwards;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .star-burst:nth-child(1) { top: 30%; left: 20%; animation-delay: 0.1s; }
+  .star-burst:nth-child(2) { top: 20%; right: 25%; animation-delay: 0.3s; }
+  .star-burst:nth-child(3) { top: 50%; left: 10%; animation-delay: 0.5s; }
+  .star-burst:nth-child(4) { top: 40%; right: 15%; animation-delay: 0.2s; }
+  .star-burst:nth-child(5) { top: 60%; left: 25%; animation-delay: 0.4s; }
+  .star-burst:nth-child(6) { top: 55%; right: 20%; animation-delay: 0.6s; }
+
+  @keyframes starBurst {
+    0% { transform: scale(0) rotate(0deg); opacity: 0; }
+    40% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+    100% { transform: scale(0) rotate(360deg); opacity: 0; }
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 900px) {
+    body { padding: 16px; gap: 20px; }
+    .phone { width: 100%; max-width: 400px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     SCREEN LABEL
+     ═══════════════════════════════════════════════════ -->
+<div class="screen-label">Screen 1 &mdash; Review Dashboard</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCREEN 1: Review Dashboard
+     ═══════════════════════════════════════════════════ -->
+<div class="phone">
+  <!-- Header -->
+  <div class="screen-header">
+    <button class="back-btn">&larr;</button>
+    <div class="title">&#x1F9E0; Flashcard Review</div>
+    <div class="header-icon">&#x2699;&#xFE0F;</div>
+  </div>
+
+  <div class="dashboard-body">
+    <!-- Due Card -->
+    <div class="due-card">
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="due-card-icon">&#x1F0CF;</div>
+      <div class="due-card-number">24</div>
+      <div class="due-card-label">Cards Due for Review</div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-box-icon">&#x1F4DA;</div>
+        <div class="stat-box-value" style="color: var(--blue);">142</div>
+        <div class="stat-box-label">Total</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-icon">&#x2B50;</div>
+        <div class="stat-box-value" style="color: var(--green);">87</div>
+        <div class="stat-box-label">Mastered</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-icon">&#x1F4A1;</div>
+        <div class="stat-box-value" style="color: var(--orange);">38</div>
+        <div class="stat-box-label">Learning</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-icon">&#x2728;</div>
+        <div class="stat-box-value" style="color: var(--purple);">17</div>
+        <div class="stat-box-label">New</div>
+      </div>
+    </div>
+
+    <!-- Streak Row -->
+    <div class="streak-row">
+      <div class="streak-flame">&#x1F525;</div>
+      <div class="streak-info">
+        <div class="streak-count">5 Day Streak</div>
+        <div class="streak-label">Keep reviewing to grow your streak!</div>
+      </div>
+      <div class="streak-badge">&#x1F4AA; Best: 12</div>
+    </div>
+
+    <!-- Accuracy Donut -->
+    <div class="accuracy-section">
+      <div class="accuracy-title">Rating Distribution</div>
+      <div class="accuracy-content">
+        <div class="donut-container">
+          <!-- SVG Donut Chart: Easy 40%, Good 32%, Hard 18%, Again 10% -->
+          <svg class="donut-svg" viewBox="0 0 120 120">
+            <!-- Background circle -->
+            <circle cx="60" cy="60" r="48" stroke="rgba(255,255,255,0.05)" />
+            <!-- Again: 10% => 10% of 301.6 = 30.16 -->
+            <circle cx="60" cy="60" r="48" stroke="#FF4B4B" stroke-dasharray="30.16 271.44" stroke-dashoffset="0" style="animation: drawDonut 1s 0.2s ease-out both;" />
+            <!-- Hard: 18% => 54.29 -->
+            <circle cx="60" cy="60" r="48" stroke="#FF9600" stroke-dasharray="54.29 247.31" stroke-dashoffset="-30.16" style="animation: drawDonut 1s 0.4s ease-out both;" />
+            <!-- Good: 32% => 96.51 -->
+            <circle cx="60" cy="60" r="48" stroke="#1CB0F6" stroke-dasharray="96.51 205.09" stroke-dashoffset="-84.45" style="animation: drawDonut 1s 0.6s ease-out both;" />
+            <!-- Easy: 40% => 120.64 -->
+            <circle cx="60" cy="60" r="48" stroke="#58CC02" stroke-dasharray="120.64 180.96" stroke-dashoffset="-180.96" style="animation: drawDonut 1s 0.8s ease-out both;" />
+          </svg>
+          <div class="donut-center">
+            <div class="donut-center-value">87%</div>
+            <div class="donut-center-label">Retention</div>
+          </div>
+        </div>
+        <div class="accuracy-legend">
+          <div class="legend-item">
+            <div class="legend-dot" style="background: var(--green);"></div>
+            Easy
+            <span class="legend-count">40%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: var(--blue);"></div>
+            Good
+            <span class="legend-count">32%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: var(--orange);"></div>
+            Hard
+            <span class="legend-count">18%</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: var(--red);"></div>
+            Again
+            <span class="legend-count">10%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="quick-stats">
+      <div class="quick-stat">
+        <div class="quick-stat-label">Avg. Ease</div>
+        <div class="quick-stat-value" style="color: var(--teal);">2.6</div>
+      </div>
+      <div class="quick-stat">
+        <div class="quick-stat-label">Retention</div>
+        <div class="quick-stat-value" style="color: var(--green);">87%</div>
+      </div>
+      <div class="quick-stat">
+        <div class="quick-stat-label">Last Review</div>
+        <div class="quick-stat-value" style="color: var(--text-muted); font-size: 14px;">2h ago</div>
+      </div>
+    </div>
+
+    <!-- Start Button -->
+    <button class="start-review-btn">
+      &#x1F680; Start Review
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCREEN LABEL
+     ═══════════════════════════════════════════════════ -->
+<div class="screen-label">Screen 2 &mdash; Active Review (Front &amp; Back)</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCREEN 2: Active Review Session — Card FRONT
+     ═══════════════════════════════════════════════════ -->
+<div class="phone">
+  <!-- Header with progress -->
+  <div class="review-header">
+    <button class="close-btn">&times;</button>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" style="width: 33%;"></div>
+    </div>
+    <div class="progress-count">8 / 24</div>
+  </div>
+
+  <div class="review-body">
+    <!-- Session Mini Stats -->
+    <div class="session-mini-stats">
+      <div class="session-mini-stat">&#x1F4A5; Streak: <span class="value">5</span></div>
+      <div class="session-mini-stat">&#x23F1;&#xFE0F; <span class="value">3:47</span></div>
+      <div class="session-mini-stat">&#x2705; <span class="value">7/7</span></div>
+    </div>
+
+    <!-- Flashcard FRONT -->
+    <div class="flashcard-wrapper">
+      <div class="flashcard" id="card1">
+        <!-- Front -->
+        <div class="flashcard-face flashcard-front">
+          <div class="card-category">Greetings</div>
+          <div class="card-arabic">&#x0643;&#x064A;&#x0641; &#x062D;&#x0627;&#x0644;&#x0643;</div>
+          <button class="card-audio-btn">
+            &#x1F50A; Play Audio
+          </button>
+          <div class="card-tap-hint">&#x1F446; Tap to reveal answer</div>
+        </div>
+        <!-- Back -->
+        <div class="flashcard-face flashcard-back">
+          <div class="card-category">Greetings</div>
+          <div class="card-back-transliteration">kifak / kifik</div>
+          <div class="card-back-english">How are you?</div>
+          <div class="card-back-divider"></div>
+          <div class="card-back-example">
+            <div class="card-back-example-label">Example</div>
+            <div class="card-back-example-arabic">&#x0643;&#x064A;&#x0641;&#x0643; &#x0627;&#x0644;&#x064A;&#x0648;&#x0645;&#x061F;</div>
+            <div class="card-back-example-eng">"How are you today?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rating Section (dimmed until card is flipped) -->
+    <div class="rating-section" style="opacity: 0.35;">
+      <div class="rating-label">How well did you know it?</div>
+      <div class="rating-buttons">
+        <button class="rating-btn rating-again">
+          <span class="emoji">&#x1F62C;</span>
+          <span class="label">Again</span>
+          <span class="time">1m</span>
+        </button>
+        <button class="rating-btn rating-hard">
+          <span class="emoji">&#x1F914;</span>
+          <span class="label">Hard</span>
+          <span class="time">10m</span>
+        </button>
+        <button class="rating-btn rating-good">
+          <span class="emoji">&#x1F60A;</span>
+          <span class="label">Good</span>
+          <span class="time">1d</span>
+        </button>
+        <button class="rating-btn rating-easy">
+          <span class="emoji">&#x1F929;</span>
+          <span class="label">Easy</span>
+          <span class="time">4d</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCREEN 2b: Active Review — Card BACK (Flipped)
+     ═══════════════════════════════════════════════════ -->
+<div class="phone">
+  <!-- Header with progress -->
+  <div class="review-header">
+    <button class="close-btn">&times;</button>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" style="width: 33%;"></div>
+    </div>
+    <div class="progress-count">8 / 24</div>
+  </div>
+
+  <div class="review-body">
+    <!-- Session Mini Stats -->
+    <div class="session-mini-stats">
+      <div class="session-mini-stat">&#x1F4A5; Streak: <span class="value">5</span></div>
+      <div class="session-mini-stat">&#x23F1;&#xFE0F; <span class="value">3:52</span></div>
+      <div class="session-mini-stat">&#x2705; <span class="value">7/7</span></div>
+    </div>
+
+    <!-- Flashcard BACK (shown flipped) -->
+    <div class="flashcard-wrapper">
+      <div class="flashcard flipped" id="card2">
+        <!-- Front -->
+        <div class="flashcard-face flashcard-front">
+          <div class="card-category">Greetings</div>
+          <div class="card-arabic">&#x0643;&#x064A;&#x0641; &#x062D;&#x0627;&#x0644;&#x0643;</div>
+          <button class="card-audio-btn">
+            &#x1F50A; Play Audio
+          </button>
+          <div class="card-tap-hint">&#x1F446; Tap to reveal answer</div>
+        </div>
+        <!-- Back -->
+        <div class="flashcard-face flashcard-back">
+          <div class="card-category">Greetings</div>
+          <div class="card-back-transliteration">kifak / kifik</div>
+          <div class="card-back-english">How are you?</div>
+          <div class="card-back-divider"></div>
+          <div class="card-back-example">
+            <div class="card-back-example-label">Example</div>
+            <div class="card-back-example-arabic">&#x0643;&#x064A;&#x0641;&#x0643; &#x0627;&#x0644;&#x064A;&#x0648;&#x0645;&#x061F;</div>
+            <div class="card-back-example-eng">"How are you today?"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rating Buttons (active) -->
+    <div class="rating-section">
+      <div class="rating-label">How well did you know it?</div>
+      <div class="rating-buttons">
+        <button class="rating-btn rating-again">
+          <span class="emoji">&#x1F62C;</span>
+          <span class="label">Again</span>
+          <span class="time">1m</span>
+        </button>
+        <button class="rating-btn rating-hard">
+          <span class="emoji">&#x1F914;</span>
+          <span class="label">Hard</span>
+          <span class="time">10m</span>
+        </button>
+        <button class="rating-btn rating-good">
+          <span class="emoji">&#x1F60A;</span>
+          <span class="label">Good</span>
+          <span class="time">1d</span>
+        </button>
+        <button class="rating-btn rating-easy">
+          <span class="emoji">&#x1F929;</span>
+          <span class="label">Easy</span>
+          <span class="time">4d</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCREEN LABEL
+     ═══════════════════════════════════════════════════ -->
+<div class="screen-label">Screen 3 &mdash; Session Complete</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SCREEN 3: Session Complete
+     ═══════════════════════════════════════════════════ -->
+<div class="phone" style="min-height: 740px;">
+  <!-- Header -->
+  <div class="screen-header" style="border-bottom: none;">
+    <button class="back-btn" style="visibility: hidden;">&larr;</button>
+    <div class="title" style="text-align: center;">Session Complete</div>
+    <div style="width: 36px;"></div>
+  </div>
+
+  <div class="complete-body">
+    <!-- Confetti -->
+    <div class="confetti-container">
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+    </div>
+
+    <!-- Star Bursts -->
+    <div class="star-burst">&#x2B50;</div>
+    <div class="star-burst">&#x1F31F;</div>
+    <div class="star-burst">&#x2728;</div>
+    <div class="star-burst">&#x2B50;</div>
+    <div class="star-burst">&#x1F31F;</div>
+    <div class="star-burst">&#x2728;</div>
+
+    <!-- Trophy -->
+    <div class="trophy-container">
+      <div class="trophy-glow"></div>
+      <div class="trophy-icon">&#x1F3C6;</div>
+    </div>
+
+    <!-- Title -->
+    <div class="complete-title">Review Complete!</div>
+    <div class="complete-subtitle">Amazing work! You're building strong recall.</div>
+
+    <!-- Stats Grid -->
+    <div class="complete-stats">
+      <div class="complete-stat">
+        <div class="complete-stat-icon">&#x1F0CF;</div>
+        <div class="complete-stat-value counter" style="color: var(--blue);">24</div>
+        <div class="complete-stat-label">Reviewed</div>
+      </div>
+      <div class="complete-stat">
+        <div class="complete-stat-icon">&#x1F3AF;</div>
+        <div class="complete-stat-value counter" style="color: var(--green);">87%</div>
+        <div class="complete-stat-label">Accuracy</div>
+      </div>
+      <div class="complete-stat">
+        <div class="complete-stat-icon">&#x23F1;&#xFE0F;</div>
+        <div class="complete-stat-value counter" style="color: var(--teal);">8:32</div>
+        <div class="complete-stat-label">Time</div>
+      </div>
+    </div>
+
+    <!-- XP Earned -->
+    <div class="xp-earned">
+      <div class="xp-earned-icon">&#x1F48E;</div>
+      <div class="xp-earned-info">
+        <div class="xp-earned-value">+120 XP</div>
+        <div class="xp-earned-label">720 / 1,000 XP to next level</div>
+        <div class="xp-progress-bar">
+          <div class="xp-progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Streak Celebration -->
+    <div class="streak-celebration">
+      <div class="streak-celebration-flame">&#x1F525;</div>
+      <div>
+        <div class="streak-celebration-text">5 Day Review Streak!</div>
+        <div class="streak-celebration-sub">7 more days to earn the Streak Master badge</div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="complete-actions">
+      <button class="complete-btn complete-btn-primary">&#x1F504; Review More</button>
+      <button class="complete-btn complete-btn-secondary">&#x1F3E0; Dashboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     Interactive Card Flip Script
+     ═══════════════════════════════════════════════════ -->
+<script>
+  // Click to flip cards
+  document.getElementById('card1').addEventListener('click', function() {
+    this.classList.toggle('flipped');
+    // Also toggle rating button visibility
+    const ratingSection = this.closest('.review-body').querySelector('.rating-section');
+    if (this.classList.contains('flipped')) {
+      ratingSection.style.opacity = '1';
+      ratingSection.style.transition = 'opacity 0.3s 0.4s';
+    } else {
+      ratingSection.style.opacity = '0.35';
+      ratingSection.style.transition = 'opacity 0.2s';
+    }
+  });
+
+  // Donut animation helper
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes drawDonut {
+      from { stroke-dasharray: 0 301.6; }
+    }
+  `;
+  document.head.appendChild(style);
+</script>
+
+</body>
+</html>

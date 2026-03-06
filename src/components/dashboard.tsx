@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { PHASE_SLUGS, PHASE_TITLES, PHASE_COLORS } from "@/lib/constants";
-import { BookOpen, GraduationCap, Trophy, Target, Compass, LayoutGrid, Flame, Sparkles } from "lucide-react";
-import { StatCardSkeleton, PhaseCardSkeleton } from "@/components/ui/skeleton";
+import { BookOpen, Compass, LayoutGrid, Sparkles } from "lucide-react";
 import { LauncherModal } from "@/components/launcher/launcher-modal";
-import { DailyGoal } from "@/components/dashboard/daily-goal";
+import { HeroStats } from "@/components/dashboard/hero-stats";
+import { DailyChallenge } from "@/components/dashboard/daily-challenge";
+import { ContinueLearning } from "@/components/dashboard/continue-learning";
+import { PhaseGrid } from "@/components/dashboard/phase-grid";
+import { LeaderboardMini } from "@/components/dashboard/leaderboard-mini";
 import { DailyReviewCard } from "@/components/dashboard/daily-review-card";
 import { CalendarHeatmap } from "@/components/dashboard/calendar-heatmap";
 import { NotificationPrompt } from "@/components/dashboard/notification-prompt";
@@ -32,6 +34,49 @@ function getGreeting(): string {
   return "Good evening";
 }
 
+function HeroStatsSkeleton() {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div
+          key={i}
+          className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-4 animate-pulse"
+        >
+          <div className="w-10 h-10 rounded-xl bg-[var(--bg-surface)] mb-3" />
+          <div className="h-6 w-16 bg-[var(--bg-surface)] rounded mb-2" />
+          <div className="h-3 w-20 bg-[var(--bg-surface)] rounded" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function PhaseGridSkeleton() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div
+          key={i}
+          className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl overflow-hidden animate-pulse"
+        >
+          <div className="h-1.5 bg-[var(--bg-surface)]" />
+          <div className="p-4">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-9 h-9 rounded-xl bg-[var(--bg-surface)]" />
+              <div className="flex-1">
+                <div className="h-4 w-24 bg-[var(--bg-surface)] rounded mb-1" />
+                <div className="h-3 w-16 bg-[var(--bg-surface)] rounded" />
+              </div>
+            </div>
+            <div className="h-2 bg-[var(--bg-surface)] rounded-full mb-2" />
+            <div className="h-2 w-16 bg-[var(--bg-surface)] rounded" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function Dashboard({ userName }: DashboardProps) {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -49,201 +94,157 @@ export function Dashboard({ userName }: DashboardProps) {
       .finally(() => setLoading(false));
   }, []);
 
-  const streak = stats?.streak ?? 0;
   const totalXP = stats?.totalXP ?? 0;
-  const cardsToReview = stats?.cardsDue ?? 0;
-  const goalPercent = stats ? Math.min(100, Math.round((stats.minutesStudied / Math.max(1, stats.studyGoalMinutes)) * 100)) : 0;
 
   return (
-    <div className="space-y-6 pt-2">
-      {/* Hero */}
-      <div style={{ animation: 'fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both' }}>
-        <p className="text-[0.9rem] text-[var(--muted)] font-medium mb-1">{getGreeting()}</p>
-        <h1 className="font-[var(--font-playfair)] text-[1.75rem] font-bold text-[var(--dark)] tracking-tight">
+    <div className="space-y-5 pt-2">
+      {/* ── Welcome Header ── */}
+      <div style={{ animation: "fadeUp 0.4s ease-out both" }}>
+        <p className="text-sm text-[var(--text-secondary)] font-semibold mb-0.5">
+          {getGreeting()}
+        </p>
+        <h1 className="text-2xl font-extrabold text-[var(--text)] tracking-tight">
           Welcome back, {userName}{" "}
-          <span dir="rtl" className="font-[Noto_Naskh_Arabic,serif] font-semibold text-[var(--gold)] text-[1.3rem] ml-2">
-            أهلا وسهلا
+          <span
+            dir="rtl"
+            className="font-semibold text-lg ml-2"
+            style={{ fontFamily: "'Noto Naskh Arabic', serif", color: "var(--brand)" }}
+          >
+            &#1571;&#1607;&#1604;&#1575; &#1608;&#1587;&#1607;&#1604;&#1575;
           </span>
         </h1>
       </div>
 
-      {/* Stats Row */}
+      {/* ── 1. Hero Stats Bar ── */}
       {loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <StatCardSkeleton key={i} />
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5" style={{ animation: 'fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.08s both' }}>
-          {/* Streak */}
-          <div className="bg-[var(--card-bg)] border border-[var(--border)] rounded-2xl p-[18px] relative overflow-hidden hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)] hover:-translate-y-0.5 transition-all">
-            <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: 'linear-gradient(90deg, #f59e0b, #ef4444)' }} />
-            <div className="w-8 h-8 rounded-lg bg-[#f59e0b]/15 flex items-center justify-center mb-2.5">
-              <Flame size={18} className="text-[#f59e0b]" />
-            </div>
-            <p className="text-[1.5rem] font-bold text-[var(--dark)] leading-none">{streak}</p>
-            <p className="text-[0.78rem] text-[var(--muted)] mt-1">Day Streak</p>
-          </div>
+        <HeroStatsSkeleton />
+      ) : stats ? (
+        <HeroStats
+          totalXP={stats.totalXP}
+          streak={stats.streak}
+          minutesStudied={stats.minutesStudied}
+          goalMinutes={stats.studyGoalMinutes}
+        />
+      ) : null}
 
-          {/* XP */}
-          <div className="bg-[var(--card-bg)] border border-[var(--border)] rounded-2xl p-[18px] relative overflow-hidden hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)] hover:-translate-y-0.5 transition-all">
-            <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: 'linear-gradient(90deg, var(--gold), var(--gold-bright))' }} />
-            <div className="w-8 h-8 rounded-lg bg-[var(--gold)]/15 flex items-center justify-center mb-2.5">
-              <Trophy size={18} className="text-[var(--gold)]" />
-            </div>
-            <p className="text-[1.5rem] font-bold text-[var(--dark)] leading-none">{totalXP.toLocaleString()}</p>
-            <p className="text-[0.78rem] text-[var(--muted)] mt-1">Total XP</p>
-          </div>
-
-          {/* Cards Due */}
-          <div className="bg-[var(--card-bg)] border border-[var(--border)] rounded-2xl p-[18px] relative overflow-hidden hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)] hover:-translate-y-0.5 transition-all">
-            <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: 'linear-gradient(90deg, var(--blue), #8e44ad)' }} />
-            <div className="w-8 h-8 rounded-lg bg-[var(--blue)]/15 flex items-center justify-center mb-2.5">
-              <GraduationCap size={18} className="text-[var(--blue)]" />
-            </div>
-            <p className="text-[1.5rem] font-bold text-[var(--dark)] leading-none">{cardsToReview}</p>
-            <p className="text-[0.78rem] text-[var(--muted)] mt-1">Cards Due</p>
-          </div>
-
-          {/* Daily Goal */}
-          <div className="bg-[var(--card-bg)] border border-[var(--border)] rounded-2xl p-[18px] relative overflow-hidden hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)] hover:-translate-y-0.5 transition-all">
-            <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: 'linear-gradient(90deg, #4ade80, #2D6A4F)' }} />
-            <div className="w-8 h-8 rounded-lg bg-[#4ade80]/15 flex items-center justify-center mb-2.5">
-              <Target size={18} className="text-[var(--green)]" />
-            </div>
-            <p className="text-[1.5rem] font-bold text-[var(--dark)] leading-none">{goalPercent}%</p>
-            <p className="text-[0.78rem] text-[var(--muted)] mt-1">Daily Goal</p>
-          </div>
-        </div>
+      {/* ── 2. Daily Challenge Banner ── */}
+      {!loading && stats && (
+        <DailyChallenge
+          cardsDue={stats.cardsDue}
+          minutesStudied={stats.minutesStudied}
+          goalMinutes={stats.studyGoalMinutes}
+          streak={stats.streak}
+        />
       )}
 
-      {/* CTA Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5" style={{ animation: 'fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.16s both' }}>
+      {/* ── Quick Actions Row ── */}
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+        style={{ animation: "fadeUp 0.4s ease-out 0.22s both" }}
+      >
         {/* Start Review Session */}
         <Link
           href="/review"
-          className="group bg-[var(--card-bg)] border border-[var(--border)] rounded-2xl p-[18px] relative overflow-hidden hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)] hover:-translate-y-0.5 transition-all flex items-center gap-3.5"
+          className="group bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-4 relative overflow-hidden hover:border-[var(--border-strong)] hover:-translate-y-0.5 transition-all flex items-center gap-3.5"
         >
-          <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: 'linear-gradient(90deg, var(--gold), var(--gold-bright))' }} />
-          <div className="w-10 h-10 rounded-xl bg-[var(--gold)]/15 flex items-center justify-center flex-shrink-0">
-            <Sparkles size={20} className="text-[var(--gold)]" />
+          <div
+            className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ backgroundColor: "var(--warning-dim)" }}
+          >
+            <Sparkles size={20} style={{ color: "var(--warning)" }} />
           </div>
           <div>
-            <p className="text-[0.92rem] font-bold text-[var(--dark)]">Start Review Session</p>
-            <p className="text-[0.78rem] text-[var(--muted)]">Practice your flashcards and earn XP</p>
+            <p className="text-sm font-extrabold text-[var(--text)]">Start Review Session</p>
+            <p className="text-xs font-semibold text-[var(--text-secondary)]">
+              Practice flashcards and earn XP
+            </p>
           </div>
         </Link>
 
         {/* Explore Lessons */}
         <button
           onClick={() => setShowLauncher(true)}
-          className="group bg-[var(--card-bg)] border border-[var(--border)] rounded-2xl p-[18px] relative overflow-hidden hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)] hover:-translate-y-0.5 transition-all flex items-center gap-3.5 text-left"
+          className="group bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-4 relative overflow-hidden hover:border-[var(--border-strong)] hover:-translate-y-0.5 transition-all flex items-center gap-3.5 text-left"
         >
-          <div className="absolute top-0 left-0 right-0 h-[3px]" style={{ background: 'linear-gradient(90deg, var(--blue), #8e44ad)' }} />
-          <div className="w-10 h-10 rounded-xl bg-[var(--blue)]/15 flex items-center justify-center flex-shrink-0">
-            <LayoutGrid size={20} className="text-[var(--blue)]" />
+          <div
+            className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ backgroundColor: "var(--info-dim)" }}
+          >
+            <LayoutGrid size={20} style={{ color: "var(--info)" }} />
           </div>
           <div>
-            <p className="text-[0.92rem] font-bold text-[var(--dark)]">Explore Lessons</p>
-            <p className="text-[0.78rem] text-[var(--muted)]">Jump to any activity across all phases</p>
+            <p className="text-sm font-extrabold text-[var(--text)]">Explore Lessons</p>
+            <p className="text-xs font-semibold text-[var(--text-secondary)]">
+              Jump to any activity across all phases
+            </p>
           </div>
         </button>
       </div>
       {showLauncher && <LauncherModal onClose={() => setShowLauncher(false)} />}
 
-      {/* Placement Test CTA */}
+      {/* ── Placement Test CTA (for new users) ── */}
       {!loading && totalXP === 0 && (
         <Link
           href="/placement-test"
-          className="block bg-gradient-to-r from-[var(--gold)] to-[var(--gold-bright)] rounded-2xl p-5 text-white shadow-sm hover:shadow-md transition-shadow"
+          className="block rounded-2xl p-5 text-white hover:opacity-95 transition-opacity"
+          style={{
+            background: "linear-gradient(135deg, var(--brand), var(--xp-purple))",
+            animation: "fadeUp 0.4s ease-out 0.28s both",
+          }}
         >
           <div className="flex items-center gap-3">
             <Compass size={24} className="flex-shrink-0" />
             <div>
-              <p className="font-semibold text-sm">Not sure where to start?</p>
-              <p className="text-xs opacity-90">Take a 2-minute placement test to find your level</p>
+              <p className="font-extrabold text-sm">Not sure where to start?</p>
+              <p className="text-xs opacity-90 font-medium">
+                Take a 2-minute placement test to find your level
+              </p>
             </div>
           </div>
         </Link>
       )}
 
-      {/* Daily Goal + Daily Review */}
+      {/* ── 3. Continue Learning Card ── */}
       {!loading && stats && (
-        <div className="space-y-3.5">
-          <DailyGoal
-            minutesStudied={stats.minutesStudied}
-            goalMinutes={stats.studyGoalMinutes}
-          />
+        <ContinueLearning phaseProgress={stats.phaseProgress} />
+      )}
+
+      {/* ── Daily Review Card ── */}
+      {!loading && stats && (
+        <div style={{ animation: "fadeUp 0.4s ease-out 0.3s both" }}>
           <DailyReviewCard />
         </div>
       )}
 
-      {/* Phase Grid */}
+      {/* ── 4. Phase Grid ── */}
       <div>
-        <h2 className="font-[var(--font-playfair)] text-xl font-bold text-[var(--dark)] mb-4 flex items-center gap-2">
-          <BookOpen size={20} className="text-[var(--gold)]" />
-          Your Phases
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          {loading
-            ? Array.from({ length: 6 }).map((_, i) => (
-                <PhaseCardSkeleton key={i} />
-              ))
-            : null}
-          {!loading && PHASE_SLUGS.map((slug, i) => {
-            const phase = PHASE_TITLES[slug];
-            const color = PHASE_COLORS[slug];
-            const progress = stats?.phaseProgress?.[slug] ?? 0;
-
-            return (
-              <Link
-                key={slug}
-                href={`/phases/${slug}`}
-                className="group bg-[var(--card-bg)] border border-[var(--border)] rounded-2xl overflow-hidden hover:bg-[var(--card-hover)] hover:border-[var(--border-strong)] hover:-translate-y-0.5 transition-all"
-              >
-                <div className="h-[3px]" style={{ backgroundColor: color }} />
-                <div className="p-5">
-                  <div className="flex items-center gap-2.5 mb-3">
-                    <span
-                      className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white"
-                      style={{ backgroundColor: color }}
-                    >
-                      {i + 1}
-                    </span>
-                    <h3 className="font-[var(--font-playfair)] text-[0.95rem] font-bold text-[var(--dark)] group-hover:text-[var(--gold)] transition-colors">
-                      {phase.en}
-                    </h3>
-                  </div>
-                  <p
-                    dir="rtl"
-                    className="text-[0.78rem] font-[Noto_Naskh_Arabic,serif] text-[var(--gold-dim)] mb-3"
-                  >
-                    {phase.ar}
-                  </p>
-                  {/* Linear progress bar */}
-                  <div className="w-full h-1 rounded-full bg-[var(--border)] overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{ width: `${progress}%`, backgroundColor: color }}
-                    />
-                  </div>
-                  <p className="text-[0.72rem] text-[var(--muted)] mt-1.5">{progress}% complete</p>
-                </div>
-              </Link>
-            );
-          })}
+        <div className="flex items-center gap-2 mb-3" style={{ animation: "fadeUp 0.4s ease-out 0.33s both" }}>
+          <BookOpen size={18} style={{ color: "var(--brand)" }} />
+          <h2 className="text-base font-extrabold text-[var(--text)] uppercase tracking-wide">
+            Your Phases
+          </h2>
         </div>
+        {loading ? (
+          <PhaseGridSkeleton />
+        ) : stats ? (
+          <PhaseGrid phaseProgress={stats.phaseProgress} />
+        ) : null}
       </div>
 
-      {/* Activity Heatmap */}
+      {/* ── 5. Leaderboard Mini ── */}
+      {!loading && <LeaderboardMini />}
+
+      {/* ── Activity Heatmap ── */}
       {!loading && (
-        <div className="bg-[var(--card-bg)] border border-[var(--border)] rounded-2xl p-5">
+        <div
+          className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-5"
+          style={{ animation: "fadeUp 0.4s ease-out 0.5s both" }}
+        >
           <CalendarHeatmap />
         </div>
       )}
 
-      {/* Notification opt-in */}
+      {/* ── Notification opt-in ── */}
       {!loading && <NotificationPrompt />}
     </div>
   );

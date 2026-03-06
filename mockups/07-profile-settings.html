@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lebanese Lessons 3.0 — Profile & Settings</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #131F24;
+    --bg-card: #1B2B33;
+    --bg-card-hover: #223540;
+    --text: #F0F4F5;
+    --text-muted: #7A9BAD;
+    --text-dim: #4A6B7A;
+    --border: rgba(255,255,255,0.06);
+    --red: #FF4B4B;
+    --blue: #1CB0F6;
+    --purple: #CE82FF;
+    --green: #58CC02;
+    --orange: #FF9600;
+    --teal: #00CD9C;
+    --gold: #FFC800;
+    --pink: #FF86D0;
+    --sidebar-w: 260px;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: #0D171C;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+    padding: 20px 0;
+  }
+
+  .sidebar-logo {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 24px; margin-bottom: 32px;
+  }
+
+  .sidebar-logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--green), #2EAA00);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 22px; font-weight: 700; color: white;
+    box-shadow: 0 4px 12px rgba(88,204,2,0.3);
+  }
+
+  .sidebar-logo-text { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
+
+  .nav-section { padding: 0 12px; margin-bottom: 24px; }
+  .nav-section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.2px; color: var(--text-dim); padding: 0 12px; margin-bottom: 8px;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+    border-radius: 12px; cursor: pointer; transition: all 0.15s;
+    font-size: 15px; font-weight: 600; color: var(--text-muted); text-decoration: none;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+  .nav-item.active { background: rgba(206,130,255,0.1); color: var(--purple); }
+  .nav-item.active .nav-icon { background: rgba(206,130,255,0.15); }
+  .nav-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .phase-number {
+    font-size: 12px; font-weight: 800; width: 24px; height: 24px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0;
+  }
+
+  .sidebar-user {
+    padding: 16px 20px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px; margin-top: auto;
+  }
+
+  .user-avatar-sm {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: white;
+  }
+
+  .user-name { font-weight: 700; font-size: 14px; }
+  .user-level { font-size: 12px; color: var(--text-muted); }
+
+  /* ─── Main ─── */
+  .main {
+    margin-left: var(--sidebar-w);
+    padding: 32px 40px;
+    max-width: 900px;
+  }
+
+  /* ─── Profile Hero ─── */
+  .profile-hero {
+    background: var(--bg-card);
+    border-radius: 24px;
+    padding: 40px;
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .profile-hero::before {
+    content: '';
+    position: absolute;
+    top: -60%; right: -15%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(206,130,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .profile-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40%; left: 10%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(28,176,246,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .avatar-wrapper {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .avatar-ring {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--purple) 0deg,
+      var(--purple) 294deg,
+      rgba(255,255,255,0.08) 294deg,
+      rgba(255,255,255,0.08) 360deg
+    );
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    animation: ringPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes ringPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(206,130,255,0.2); }
+    50% { box-shadow: 0 0 0 8px rgba(206,130,255,0); }
+  }
+
+  .avatar-inner {
+    width: 108px; height: 108px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 44px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .avatar-level-badge {
+    position: absolute;
+    bottom: -4px; right: -4px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--orange));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 900;
+    color: #1a1a2e;
+    border: 3px solid var(--bg-card);
+    box-shadow: 0 2px 8px rgba(255,200,0,0.4);
+  }
+
+  .profile-info {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+  }
+
+  .profile-name {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+  }
+
+  .profile-level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,200,0,0.12);
+    color: var(--gold);
+    font-size: 14px;
+    font-weight: 800;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+
+  .profile-member-since {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .xp-progress {
+    max-width: 360px;
+  }
+
+  .xp-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .xp-progress-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .xp-progress-value {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--purple);
+  }
+
+  .xp-bar {
+    width: 100%;
+    height: 14px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .xp-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--purple), #A855F7, var(--pink));
+    position: relative;
+    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .xp-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255,255,255,0.3) 50%,
+      transparent 100%
+    );
+    animation: xpShimmer 2s ease-in-out infinite;
+  }
+
+  @keyframes xpShimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .xp-next-level {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  /* ─── Section Headers ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  .section-link {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--blue);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+
+  .section-link:hover {
+    color: #4DC4FF;
+  }
+
+  /* ─── Stats Grid ─── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .stat-card.purple::before { background: linear-gradient(90deg, var(--purple), var(--pink)); }
+  .stat-card.orange::before { background: linear-gradient(90deg, var(--orange), var(--gold)); }
+  .stat-card.blue::before { background: linear-gradient(90deg, var(--blue), var(--teal)); }
+  .stat-card.green::before { background: linear-gradient(90deg, var(--green), var(--teal)); }
+  .stat-card.red::before { background: linear-gradient(90deg, var(--red), var(--orange)); }
+  .stat-card.teal::before { background: linear-gradient(90deg, var(--teal), var(--blue)); }
+
+  .stat-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-card.purple .stat-value { color: var(--purple); }
+  .stat-card.orange .stat-value { color: var(--orange); }
+  .stat-card.blue .stat-value { color: var(--blue); }
+  .stat-card.green .stat-value { color: var(--green); }
+  .stat-card.red .stat-value { color: var(--red); }
+  .stat-card.teal .stat-value { color: var(--teal); }
+
+  .stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  /* ─── Achievements ─── */
+  .achievements-scroll {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    margin-bottom: 32px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .achievements-scroll::-webkit-scrollbar { height: 4px; }
+  .achievements-scroll::-webkit-scrollbar-track { background: transparent; }
+  .achievements-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+  .badge-card {
+    flex-shrink: 0;
+    width: 140px;
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 20px 16px;
+    border: 1px solid var(--border);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    scroll-snap-align: start;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .badge-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+
+  .badge-card.earned::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .badge-card.earned.b-orange::before { background: linear-gradient(90deg, var(--orange), var(--gold)); }
+  .badge-card.earned.b-green::before { background: linear-gradient(90deg, var(--green), var(--teal)); }
+  .badge-card.earned.b-blue::before { background: linear-gradient(90deg, var(--blue), #4DC4FF); }
+  .badge-card.earned.b-gold::before { background: linear-gradient(90deg, var(--gold), var(--orange)); }
+  .badge-card.earned.b-purple::before { background: linear-gradient(90deg, var(--purple), var(--pink)); }
+
+  .badge-icon {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 12px;
+    position: relative;
+  }
+
+  .badge-icon.earned {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  .badge-icon.locked {
+    background: rgba(255,255,255,0.04) !important;
+    filter: grayscale(1);
+    opacity: 0.4;
+  }
+
+  .badge-name {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text);
+  }
+
+  .badge-card.locked .badge-name {
+    color: var(--text-dim);
+  }
+
+  .badge-date {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .badge-card.locked {
+    opacity: 0.5;
+  }
+
+  .badge-lock-icon {
+    position: absolute;
+    bottom: -2px; right: -2px;
+    font-size: 14px;
+    filter: none;
+    opacity: 1;
+  }
+
+  /* ─── Phase Progress ─── */
+  .phase-progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .phase-row {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 18px 24px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .phase-row:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+
+  .phase-row.locked {
+    opacity: 0.45;
+  }
+
+  .phase-row.locked:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .phase-badge {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 900; color: white;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  .phase-row-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .phase-row-title {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+
+  .phase-row-arabic {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .phase-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .phase-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .phase-pct {
+    font-size: 14px;
+    font-weight: 900;
+    flex-shrink: 0;
+    min-width: 48px;
+    text-align: right;
+  }
+
+  .phase-lock {
+    font-size: 20px;
+    flex-shrink: 0;
+    min-width: 48px;
+    text-align: right;
+  }
+
+  /* ─── Settings Section ─── */
+  .settings-section {
+    background: var(--bg-card);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .settings-section-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .setting-row {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .setting-row:last-child {
+    border-bottom: none;
+  }
+
+  .setting-row:hover {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .setting-icon {
+    font-size: 20px;
+    margin-right: 14px;
+    flex-shrink: 0;
+  }
+
+  .setting-info {
+    flex: 1;
+  }
+
+  .setting-label {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .setting-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* Toggle Switch */
+  .toggle-switch {
+    position: relative;
+    width: 52px; height: 28px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .toggle-switch input {
+    opacity: 0;
+    width: 0; height: 0;
+    position: absolute;
+  }
+
+  .toggle-slider {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 14px;
+    transition: background 0.3s;
+  }
+
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 22px; height: 22px;
+    left: 3px; bottom: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .toggle-switch input:checked + .toggle-slider {
+    background: var(--green);
+  }
+
+  .toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(24px);
+    box-shadow: 0 2px 8px rgba(88,204,2,0.4);
+  }
+
+  /* Study Goal Selector */
+  .goal-options {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .goal-option {
+    padding: 6px 14px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.08);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .goal-option:hover {
+    border-color: rgba(255,255,255,0.15);
+    color: var(--text);
+  }
+
+  .goal-option.active {
+    border-color: var(--green);
+    background: rgba(88,204,2,0.1);
+    color: var(--green);
+  }
+
+  /* ─── Danger Zone ─── */
+  .danger-zone {
+    margin-bottom: 64px;
+  }
+
+  .sign-out-btn {
+    background: transparent;
+    border: 2px solid rgba(255,75,75,0.3);
+    color: var(--red);
+    padding: 14px 32px;
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sign-out-btn:hover {
+    background: rgba(255,75,75,0.08);
+    border-color: var(--red);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255,75,75,0.2);
+  }
+
+  /* ─── Animations ─── */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideRight {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.5); }
+    70% { transform: scale(1.05); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .animate-in {
+    animation: slideUp 0.5s ease-out both;
+  }
+
+  .animate-scale {
+    animation: scaleIn 0.5s ease-out both;
+  }
+
+  .animate-pop {
+    animation: popIn 0.4s ease-out both;
+  }
+
+  .animate-slide-right {
+    animation: slideRight 0.5s ease-out both;
+  }
+
+  .delay-1 { animation-delay: 0.05s; }
+  .delay-2 { animation-delay: 0.1s; }
+  .delay-3 { animation-delay: 0.15s; }
+  .delay-4 { animation-delay: 0.2s; }
+  .delay-5 { animation-delay: 0.25s; }
+  .delay-6 { animation-delay: 0.3s; }
+  .delay-7 { animation-delay: 0.35s; }
+  .delay-8 { animation-delay: 0.4s; }
+  .delay-9 { animation-delay: 0.45s; }
+  .delay-10 { animation-delay: 0.5s; }
+  .delay-11 { animation-delay: 0.55s; }
+  .delay-12 { animation-delay: 0.6s; }
+
+  /* Badge stagger animations */
+  .badge-delay-1 { animation-delay: 0.2s; }
+  .badge-delay-2 { animation-delay: 0.28s; }
+  .badge-delay-3 { animation-delay: 0.36s; }
+  .badge-delay-4 { animation-delay: 0.44s; }
+  .badge-delay-5 { animation-delay: 0.52s; }
+  .badge-delay-6 { animation-delay: 0.6s; }
+  .badge-delay-7 { animation-delay: 0.68s; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 20px 16px; }
+    .profile-hero { flex-direction: column; text-align: center; padding: 28px 20px; }
+    .xp-progress { max-width: 100%; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .goal-options { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-icon">ع</div>
+    <div class="sidebar-logo-text">Lebanese<br>Lessons</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-label">Learn</div>
+      <a class="nav-item" href="#">
+        <div class="nav-icon">🏠</div>
+        Dashboard
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon">🔄</div>
+        Review
+        <span style="margin-left:auto; background:var(--red); color:white; font-size:11px; font-weight:800; padding:2px 8px; border-radius:10px;">12</span>
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon">🏆</div>
+        Leaderboard
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon">🌳</div>
+        Root Explorer
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Phases</div>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--red);">1</div>
+        Reactivation
+      </a>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--blue);">2</div>
+        Speaking
+      </a>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--purple);">3</div>
+        Conversation
+      </a>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--green);">4</div>
+        Vocabulary
+      </a>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--orange);">5</div>
+        Fluency
+      </a>
+      <a class="nav-item" href="#">
+        <div class="phase-number" style="background:var(--teal);">6</div>
+        Maintenance
+      </a>
+    </div>
+  </nav>
+
+  <div class="sidebar-user">
+    <div class="user-avatar-sm" style="background: linear-gradient(135deg, var(--blue), var(--purple));">E</div>
+    <div>
+      <div class="user-name">Elias</div>
+      <div class="user-level">⭐ Level 12 · 2,450 XP</div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main">
+
+  <!-- Profile Hero Card -->
+  <div class="profile-hero animate-scale delay-1">
+    <div class="avatar-wrapper">
+      <div class="avatar-ring">
+        <div class="avatar-inner">E</div>
+      </div>
+      <div class="avatar-level-badge">12</div>
+    </div>
+    <div class="profile-info">
+      <div class="profile-name">Elias</div>
+      <div class="profile-level-badge">
+        ⭐ Level 12 — Phrase Builder
+      </div>
+      <div class="profile-member-since">Member since March 2026</div>
+      <div class="xp-progress">
+        <div class="xp-progress-header">
+          <span class="xp-progress-label">Progress to Level 13</span>
+          <span class="xp-progress-value">2,450 / 3,000 XP</span>
+        </div>
+        <div class="xp-bar">
+          <div class="xp-bar-fill" style="width: 81.7%;"></div>
+        </div>
+        <div class="xp-next-level">550 XP to next level — keep going!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="animate-in delay-2">
+    <div class="section-header">
+      <div class="section-title">Your Stats</div>
+    </div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card purple animate-pop delay-3">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-value">2,450</div>
+      <div class="stat-label">Total XP</div>
+    </div>
+    <div class="stat-card orange animate-pop delay-4">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-value">14</div>
+      <div class="stat-label">Day Streak</div>
+    </div>
+    <div class="stat-card blue animate-pop delay-5">
+      <div class="stat-icon">📚</div>
+      <div class="stat-value">342</div>
+      <div class="stat-label">Words Learned</div>
+    </div>
+    <div class="stat-card green animate-pop delay-6">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value">87</div>
+      <div class="stat-label">Lessons Completed</div>
+    </div>
+    <div class="stat-card red animate-pop delay-7">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-value">91%</div>
+      <div class="stat-label">Review Accuracy</div>
+    </div>
+    <div class="stat-card teal animate-pop delay-8">
+      <div class="stat-icon">🕐</div>
+      <div class="stat-value">24h 15m</div>
+      <div class="stat-label">Time Studied</div>
+    </div>
+  </div>
+
+  <!-- Achievement Showcase -->
+  <div class="animate-in delay-5">
+    <div class="section-header">
+      <div class="section-title">Achievements</div>
+      <a class="section-link" href="#">View All Badges →</a>
+    </div>
+  </div>
+  <div class="achievements-scroll">
+    <div class="badge-card earned b-green animate-pop badge-delay-1">
+      <div class="badge-icon earned" style="background: linear-gradient(135deg, var(--green), #2EAA00);">🌱</div>
+      <div class="badge-name">First Steps</div>
+      <div class="badge-date">Mar 1, 2026</div>
+    </div>
+    <div class="badge-card earned b-orange animate-pop badge-delay-2">
+      <div class="badge-icon earned" style="background: linear-gradient(135deg, var(--orange), var(--gold));">🔥</div>
+      <div class="badge-name">Week Warrior</div>
+      <div class="badge-date">Mar 7, 2026</div>
+    </div>
+    <div class="badge-card earned b-blue animate-pop badge-delay-3">
+      <div class="badge-icon earned" style="background: linear-gradient(135deg, var(--blue), #0099DD);">📖</div>
+      <div class="badge-name">Vocab Master</div>
+      <div class="badge-date">Mar 3, 2026</div>
+    </div>
+    <div class="badge-card earned b-gold animate-pop badge-delay-4">
+      <div class="badge-icon earned" style="background: linear-gradient(135deg, var(--gold), var(--orange));">💯</div>
+      <div class="badge-name">Perfect Score</div>
+      <div class="badge-date">Mar 4, 2026</div>
+    </div>
+    <div class="badge-card earned b-purple animate-pop badge-delay-5">
+      <div class="badge-icon earned" style="background: linear-gradient(135deg, var(--purple), #A855F7);">🗣️</div>
+      <div class="badge-name">Chatterbox</div>
+      <div class="badge-date">Mar 5, 2026</div>
+    </div>
+    <div class="badge-card locked animate-pop badge-delay-6">
+      <div class="badge-icon locked" style="background: rgba(255,255,255,0.04);">
+        🏅
+        <span class="badge-lock-icon">🔒</span>
+      </div>
+      <div class="badge-name">30-Day Streak</div>
+    </div>
+    <div class="badge-card locked animate-pop badge-delay-7">
+      <div class="badge-icon locked" style="background: rgba(255,255,255,0.04);">
+        👑
+        <span class="badge-lock-icon">🔒</span>
+      </div>
+      <div class="badge-name">Phase Master</div>
+    </div>
+  </div>
+
+  <!-- Phase Progress -->
+  <div class="animate-in delay-7">
+    <div class="section-header">
+      <div class="section-title">Phase Progress</div>
+    </div>
+  </div>
+  <div class="phase-progress-list">
+    <!-- Phase 1 -->
+    <div class="phase-row animate-slide-right delay-8">
+      <div class="phase-badge" style="background: linear-gradient(135deg, var(--red), #CC3333);">1</div>
+      <div class="phase-row-info">
+        <div class="phase-row-title">Reactivation</div>
+        <div class="phase-row-arabic">أهلا من جديد</div>
+        <div class="phase-bar">
+          <div class="phase-bar-fill" style="width: 85%; background: linear-gradient(90deg, var(--red), #FF6B6B);"></div>
+        </div>
+      </div>
+      <div class="phase-pct" style="color: var(--red);">85%</div>
+    </div>
+    <!-- Phase 2 -->
+    <div class="phase-row animate-slide-right delay-9">
+      <div class="phase-badge" style="background: linear-gradient(135deg, var(--blue), #0099DD);">2</div>
+      <div class="phase-row-info">
+        <div class="phase-row-title">Speaking in Phrases</div>
+        <div class="phase-row-arabic">عم نحكي</div>
+        <div class="phase-bar">
+          <div class="phase-bar-fill" style="width: 42%; background: linear-gradient(90deg, var(--blue), #4DC4FF);"></div>
+        </div>
+      </div>
+      <div class="phase-pct" style="color: var(--blue);">42%</div>
+    </div>
+    <!-- Phase 3 -->
+    <div class="phase-row animate-slide-right delay-10">
+      <div class="phase-badge" style="background: linear-gradient(135deg, var(--purple), #A855F7);">3</div>
+      <div class="phase-row-info">
+        <div class="phase-row-title">Structured Conversation</div>
+        <div class="phase-row-arabic">محادثة</div>
+        <div class="phase-bar">
+          <div class="phase-bar-fill" style="width: 10%; background: linear-gradient(90deg, var(--purple), var(--pink));"></div>
+        </div>
+      </div>
+      <div class="phase-pct" style="color: var(--purple);">10%</div>
+    </div>
+    <!-- Phase 4 (Locked) -->
+    <div class="phase-row locked animate-slide-right delay-11">
+      <div class="phase-badge" style="background: rgba(255,255,255,0.08);">4</div>
+      <div class="phase-row-info">
+        <div class="phase-row-title">Expanding Vocabulary</div>
+        <div class="phase-row-arabic">كلمات جديدة</div>
+        <div class="phase-bar">
+          <div class="phase-bar-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+      <div class="phase-lock">🔒</div>
+    </div>
+    <!-- Phase 5 (Locked) -->
+    <div class="phase-row locked animate-slide-right delay-11">
+      <div class="phase-badge" style="background: rgba(255,255,255,0.08);">5</div>
+      <div class="phase-row-info">
+        <div class="phase-row-title">Fluency & Flow</div>
+        <div class="phase-row-arabic">طلاقة</div>
+        <div class="phase-bar">
+          <div class="phase-bar-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+      <div class="phase-lock">🔒</div>
+    </div>
+    <!-- Phase 6 (Locked) -->
+    <div class="phase-row locked animate-slide-right delay-12">
+      <div class="phase-badge" style="background: rgba(255,255,255,0.08);">6</div>
+      <div class="phase-row-info">
+        <div class="phase-row-title">Maintenance & Mastery</div>
+        <div class="phase-row-arabic">إتقان</div>
+        <div class="phase-bar">
+          <div class="phase-bar-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+      <div class="phase-lock">🔒</div>
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div class="animate-in delay-9">
+    <div class="section-header" style="margin-top: 8px;">
+      <div class="section-title">Settings</div>
+    </div>
+  </div>
+
+  <!-- Study Preferences -->
+  <div class="settings-section animate-in delay-10">
+    <div class="settings-section-header">
+      📖 Study Preferences
+    </div>
+    <div class="setting-row">
+      <span class="setting-icon">⏱️</span>
+      <div class="setting-info">
+        <div class="setting-label">Daily Study Goal</div>
+        <div class="setting-desc">Set your target practice time per day</div>
+      </div>
+      <div class="goal-options">
+        <button class="goal-option" onclick="selectGoal(this)">5m</button>
+        <button class="goal-option" onclick="selectGoal(this)">10m</button>
+        <button class="goal-option active" onclick="selectGoal(this)">15m</button>
+        <button class="goal-option" onclick="selectGoal(this)">20m</button>
+        <button class="goal-option" onclick="selectGoal(this)">30m</button>
+      </div>
+    </div>
+    <div class="setting-row">
+      <span class="setting-icon">🔤</span>
+      <div class="setting-info">
+        <div class="setting-label">Arabic Diacritics (Harakat)</div>
+        <div class="setting-desc">Show vowel marks on Arabic text</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="setting-row">
+      <span class="setting-icon">🔡</span>
+      <div class="setting-info">
+        <div class="setting-label">Transliteration</div>
+        <div class="setting-desc">Show Latin alphabet pronunciation guides</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- App Settings -->
+  <div class="settings-section animate-in delay-11">
+    <div class="settings-section-header">
+      ⚙️ App Settings
+    </div>
+    <div class="setting-row">
+      <span class="setting-icon">🌙</span>
+      <div class="setting-info">
+        <div class="setting-label">Dark Mode</div>
+        <div class="setting-desc">Toggle between dark and light themes</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="setting-row">
+      <span class="setting-icon">🔔</span>
+      <div class="setting-info">
+        <div class="setting-label">Push Notifications</div>
+        <div class="setting-desc">Daily reminders and streak alerts</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="setting-row">
+      <span class="setting-icon">🔊</span>
+      <div class="setting-info">
+        <div class="setting-label">Sound Effects</div>
+        <div class="setting-desc">Play sounds for correct answers and XP gains</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Danger Zone -->
+  <div class="danger-zone animate-in delay-12">
+    <div class="section-header" style="margin-top: 8px;">
+      <div class="section-title" style="color: var(--red);">Danger Zone</div>
+    </div>
+    <button class="sign-out-btn" id="signOutBtn">
+      🚪 Sign Out
+    </button>
+  </div>
+
+</main>
+
+<script>
+  // Goal selector
+  function selectGoal(btn) {
+    document.querySelectorAll('.goal-option').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+  }
+
+  // Sign out handler (mockup only)
+  document.getElementById('signOutBtn').addEventListener('click', function() {
+    var btn = this;
+    btn.textContent = 'Signing out...';
+    btn.style.opacity = '0.6';
+    btn.style.pointerEvents = 'none';
+    setTimeout(function() {
+      btn.textContent = '🚪 Sign Out';
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+    }, 1500);
+  });
+
+  // Animate progress bars on load (wait for CSS animations to settle)
+  document.addEventListener('DOMContentLoaded', function() {
+    // Stagger the XP bar fill animation
+    var xpFill = document.querySelector('.xp-bar-fill');
+    if (xpFill) {
+      var xpWidth = xpFill.style.width;
+      xpFill.style.width = '0%';
+      setTimeout(function() { xpFill.style.width = xpWidth; }, 600);
+    }
+
+    // Stagger phase bar fills
+    var phaseBars = document.querySelectorAll('.phase-bar-fill');
+    phaseBars.forEach(function(bar, i) {
+      var barWidth = bar.style.width;
+      bar.style.width = '0%';
+      setTimeout(function() { bar.style.width = barWidth; }, 900 + (i * 150));
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Lebanese Arabic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+  :root {
+    --deep: #0d0905;
+    --dark: #1C1208;
+    --dark-mid: #241c10;
+    --dark-card: #1e1710;
+    --dark-card-hover: #272012;
+    --dark-border: rgba(201,151,58,0.1);
+    --dark-border-strong: rgba(201,151,58,0.18);
+    --gold: #C9973A;
+    --gold-bright: #E8A849;
+    --gold-dim: rgba(201,151,58,0.6);
+    --gold-pale: #f0d69b;
+    --cream: #FAF6EE;
+    --cream-dim: #c4b89e;
+    --muted: #8a7d6a;
+    --green: #4ade80;
+    --green-dim: #2D6A4F;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --blue: #60a5fa;
+    --p1: #c0392b; --p2: #2980b9; --p3: #8e44ad;
+    --p4: #27ae60; --p5: #d35400; --p6: #16a085;
+    --sidebar-w: 240px;
+    --sidebar-collapsed: 64px;
+    --topbar-h: 0px;
+  }
+
+  /* ─── LIGHT MODE ─── */
+  .light {
+    --deep: #FAF6EE;
+    --dark: #f5efe5;
+    --dark-mid: #ebe3d5;
+    --dark-card: #ffffff;
+    --dark-card-hover: #faf8f4;
+    --dark-border: rgba(201,151,58,0.12);
+    --dark-border-strong: rgba(201,151,58,0.22);
+    --cream: #1C1208;
+    --cream-dim: #5C4F3D;
+    --muted: #8a7d6a;
+  }
+
+  html { height: 100%; }
+
+  body {
+    min-height: 100vh;
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    color: var(--cream);
+    background: var(--deep);
+    display: flex;
+    overflow-x: hidden;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--dark);
+    border-right: 1px solid var(--dark-border);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .sidebar__brand {
+    padding: 20px 18px 16px;
+    border-bottom: 1px solid var(--dark-border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .sidebar__logo {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 12px rgba(201,151,58,0.25);
+  }
+  .sidebar__logo svg { width: 20px; height: 20px; }
+
+  .sidebar__brand-text {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .sidebar__brand-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+  .sidebar__brand-sub {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 0.7rem;
+    color: var(--gold-dim);
+    direction: rtl;
+  }
+
+  .sidebar__nav {
+    flex: 1;
+    padding: 12px 10px;
+    overflow-y: auto;
+  }
+
+  .sidebar__section-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding: 16px 8px 6px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .sidebar__link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: var(--cream-dim);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .sidebar__link:hover {
+    background: rgba(201,151,58,0.08);
+    color: var(--cream);
+  }
+  .sidebar__link--active {
+    background: rgba(201,151,58,0.12);
+    color: var(--gold);
+  }
+  .sidebar__link svg {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+  .sidebar__link--active svg { opacity: 1; color: var(--gold); }
+
+  .sidebar__link .phase-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-left: 2px;
+    margin-right: 3px;
+  }
+
+  .sidebar__footer {
+    padding: 12px 10px;
+    border-top: 1px solid var(--dark-border);
+    flex-shrink: 0;
+  }
+
+  .sidebar__user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .sidebar__avatar {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--p1), var(--gold));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .sidebar__user-info {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .sidebar__user-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--cream);
+  }
+  .sidebar__user-email {
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  /* ─── MAIN CONTENT ─── */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-height: 100vh;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 28px 80px;
+  }
+
+  /* ─── WELCOME HERO ─── */
+  .hero {
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero__greeting {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .hero__title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.75rem;
+    color: var(--cream);
+    letter-spacing: -0.01em;
+  }
+  .hero__title span {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-weight: 600;
+    color: var(--gold);
+    margin-left: 8px;
+    font-size: 1.3rem;
+  }
+  .hero__subtitle {
+    font-size: 0.9rem;
+    color: var(--cream-dim);
+    margin-top: 6px;
+  }
+
+  /* ─── STATS ROW ─── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.08s both;
+  }
+
+  .stat-card {
+    background: var(--dark-card);
+    border: 1px solid var(--dark-border);
+    border-radius: 16px;
+    padding: 18px 16px;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card:hover {
+    background: var(--dark-card-hover);
+    border-color: var(--dark-border-strong);
+    transform: translateY(-2px);
+  }
+
+  /* Subtle gradient accent at top of stat cards */
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 16px 16px 0 0;
+  }
+  .stat-card--streak::before { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+  .stat-card--xp::before { background: linear-gradient(90deg, var(--gold), var(--gold-bright)); }
+  .stat-card--cards::before { background: linear-gradient(90deg, var(--blue), var(--p3)); }
+  .stat-card--goal::before { background: linear-gradient(90deg, var(--green), var(--green-dim)); }
+
+  .stat-card__icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .stat-card--streak .stat-card__icon { background: rgba(245,158,11,0.12); color: var(--orange); }
+  .stat-card--xp .stat-card__icon { background: rgba(201,151,58,0.12); color: var(--gold); }
+  .stat-card--cards .stat-card__icon { background: rgba(96,165,250,0.12); color: var(--blue); }
+  .stat-card--goal .stat-card__icon { background: rgba(74,222,128,0.12); color: var(--green); }
+
+  .stat-card__icon svg { width: 16px; height: 16px; }
+
+  .stat-card__value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .stat-card__label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* ─── CTA BUTTONS ROW ─── */
+  .cta-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.14s both;
+  }
+
+  .cta-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    border: 1px solid var(--dark-border);
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .cta-btn--review {
+    background: linear-gradient(135deg, rgba(201,151,58,0.12), rgba(232,168,73,0.06));
+    border-color: rgba(201,151,58,0.2);
+  }
+  .cta-btn--review:hover {
+    background: linear-gradient(135deg, rgba(201,151,58,0.18), rgba(232,168,73,0.1));
+    border-color: rgba(201,151,58,0.3);
+  }
+
+  .cta-btn--explore {
+    background: linear-gradient(135deg, rgba(96,165,250,0.08), rgba(142,68,173,0.06));
+    border-color: rgba(96,165,250,0.15);
+  }
+  .cta-btn--explore:hover {
+    background: linear-gradient(135deg, rgba(96,165,250,0.14), rgba(142,68,173,0.1));
+    border-color: rgba(96,165,250,0.25);
+  }
+
+  .cta-btn__icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .cta-btn--review .cta-btn__icon {
+    background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+    box-shadow: 0 3px 12px rgba(201,151,58,0.3);
+  }
+  .cta-btn--explore .cta-btn__icon {
+    background: linear-gradient(135deg, var(--blue), var(--p3));
+    box-shadow: 0 3px 12px rgba(96,165,250,0.25);
+  }
+  .cta-btn__icon svg { width: 20px; height: 20px; color: #fff; }
+
+  .cta-btn__text { overflow: hidden; }
+  .cta-btn__title {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--cream);
+    margin-bottom: 2px;
+  }
+  .cta-btn__desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .section-header__title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--cream);
+  }
+  .section-header__link {
+    font-size: 0.8rem;
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+  .section-header__link:hover { color: var(--gold-bright); }
+
+  /* ─── PHASE CARDS ─── */
+  .phase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+  }
+
+  .phase-card {
+    background: var(--dark-card);
+    border: 1px solid var(--dark-border);
+    border-radius: 16px;
+    padding: 20px 18px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+  }
+  .phase-card:hover {
+    background: var(--dark-card-hover);
+    border-color: var(--dark-border-strong);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .phase-card__accent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .phase-card__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .phase-card__title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--cream);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .phase-card__arabic {
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 0.78rem;
+    color: var(--gold-dim);
+    direction: rtl;
+    margin-bottom: 14px;
+  }
+
+  /* Progress bar */
+  .phase-card__progress {
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .phase-card__progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.8s cubic-bezier(0.16,1,0.3,1);
+  }
+  .phase-card__progress-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  /* ─── ACTIVITY HEATMAP ─── */
+  .heatmap-section {
+    animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.26s both;
+  }
+
+  .heatmap-card {
+    background: var(--dark-card);
+    border: 1px solid var(--dark-border);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .heatmap-grid {
+    display: flex;
+    gap: 3px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .heatmap-week {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+  .heatmap-day {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    background: rgba(201,151,58,0.06);
+    transition: transform 0.15s;
+  }
+  .heatmap-day:hover { transform: scale(1.4); }
+  .heatmap-day--1 { background: rgba(201,151,58,0.2); }
+  .heatmap-day--2 { background: rgba(201,151,58,0.4); }
+  .heatmap-day--3 { background: rgba(201,151,58,0.65); }
+  .heatmap-day--4 { background: var(--gold); }
+
+  .heatmap-legend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 10px;
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+  .heatmap-legend__swatch {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+  }
+
+  /* ─── MOBILE BOTTOM NAV ─── */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 64px;
+    background: var(--dark);
+    border-top: 1px solid var(--dark-border);
+    z-index: 200;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 8px;
+  }
+  .mobile-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.62rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    transition: color 0.15s;
+  }
+  .mobile-nav__item--active { color: var(--gold); }
+  .mobile-nav__item svg { width: 20px; height: 20px; }
+
+  /* ─── MOBILE TOPBAR (replaces sidebar on mobile) ─── */
+  .mobile-topbar {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 56px;
+    background: var(--dark);
+    border-bottom: 1px solid var(--dark-border);
+    z-index: 200;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+  }
+  .mobile-topbar__logo {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .mobile-topbar__logo svg { width: 17px; height: 17px; }
+  .mobile-topbar__title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--cream);
+    flex: 1;
+  }
+  .mobile-topbar__actions {
+    display: flex;
+    gap: 8px;
+  }
+  .mobile-topbar__btn {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(201,151,58,0.08);
+    border: 1px solid var(--dark-border);
+    color: var(--cream-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .mobile-topbar__btn:hover { background: rgba(201,151,58,0.15); }
+  .mobile-topbar__btn svg { width: 16px; height: 16px; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .phase-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); }
+    .main { margin-left: 0; }
+    .mobile-topbar { display: flex; }
+    .mobile-nav { display: flex; }
+    .content { padding: 72px 16px 100px; }
+    .cta-row { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .phase-grid { grid-template-columns: 1fr; }
+    .hero__title { font-size: 1.4rem; }
+  }
+
+  /* ─── LIGHT MODE OVERRIDES ─── */
+  .light .stat-card {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04), 0 0 0 1px rgba(201,151,58,0.06);
+  }
+  .light .stat-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06), 0 0 0 1px rgba(201,151,58,0.1);
+  }
+  .light .phase-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+  .light .heatmap-day { background: rgba(201,151,58,0.08); }
+  .light .sidebar__avatar { color: #fff; }
+  .light .phase-card__number { color: #fff; }
+  .light .phase-card__progress { background: rgba(0,0,0,0.06); }
+  .light .cta-btn__icon svg { color: #fff; }
+
+  /* ─── THEME TOGGLE ─── */
+  .theme-toggle {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(201,151,58,0.08);
+    border: 1px solid var(--dark-border);
+    color: var(--gold);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover {
+    background: rgba(201,151,58,0.15);
+    transform: scale(1.05);
+  }
+  .theme-toggle svg { width: 16px; height: 16px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── SIDEBAR ─── -->
+<aside class="sidebar">
+  <div class="sidebar__brand">
+    <div class="sidebar__logo">
+      <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle"
+              font-family="'Noto Naskh Arabic',serif" font-weight="700" font-size="26" fill="#0d0905">ع</text>
+      </svg>
+    </div>
+    <div class="sidebar__brand-text">
+      <div class="sidebar__brand-name">Lebanese Arabic</div>
+      <div class="sidebar__brand-sub">من البداية للطلاقة</div>
+    </div>
+  </div>
+
+  <nav class="sidebar__nav">
+    <div class="sidebar__section-label">Main</div>
+
+    <a href="#" class="sidebar__link sidebar__link--active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Dashboard
+    </a>
+    <a href="#" class="sidebar__link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+      Review
+    </a>
+    <a href="#" class="sidebar__link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Leaderboard
+    </a>
+    <a href="#" class="sidebar__link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Roots
+    </a>
+
+    <div class="sidebar__section-label">Phases</div>
+
+    <a href="#" class="sidebar__link">
+      <span class="phase-dot" style="background:var(--p1)"></span>
+      Reactivation
+    </a>
+    <a href="#" class="sidebar__link">
+      <span class="phase-dot" style="background:var(--p2)"></span>
+      Speaking in Phrases
+    </a>
+    <a href="#" class="sidebar__link">
+      <span class="phase-dot" style="background:var(--p3)"></span>
+      Structured Conversation
+    </a>
+    <a href="#" class="sidebar__link">
+      <span class="phase-dot" style="background:var(--p4)"></span>
+      Expanding Vocabulary
+    </a>
+    <a href="#" class="sidebar__link">
+      <span class="phase-dot" style="background:var(--p5)"></span>
+      Fluency Push
+    </a>
+    <a href="#" class="sidebar__link">
+      <span class="phase-dot" style="background:var(--p6)"></span>
+      Maintenance
+    </a>
+  </nav>
+
+  <div class="sidebar__footer">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 10px 8px;">
+      <span style="font-size:0.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Theme</span>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+        </svg>
+      </button>
+    </div>
+    <div class="sidebar__user">
+      <div class="sidebar__avatar">E</div>
+      <div class="sidebar__user-info">
+        <div class="sidebar__user-name">Elias</div>
+        <div class="sidebar__user-email">elias@example.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ─── MOBILE TOP BAR ─── -->
+<div class="mobile-topbar">
+  <div class="mobile-topbar__logo">
+    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle"
+            font-family="'Noto Naskh Arabic',serif" font-weight="700" font-size="26" fill="#0d0905">ع</text>
+    </svg>
+  </div>
+  <div class="mobile-topbar__title">Lebanese Arabic</div>
+  <div class="mobile-topbar__actions">
+    <button class="mobile-topbar__btn" id="mobileThemeToggle" aria-label="Toggle theme">
+      <svg id="mobileSunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg id="mobileMoonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ─── MAIN CONTENT ─── -->
+<div class="main">
+  <div class="content">
+
+    <!-- Welcome Hero -->
+    <div class="hero">
+      <p class="hero__greeting">Good evening</p>
+      <h1 class="hero__title">Welcome back, Elias <span>أهلا وسهلا</span></h1>
+      <p class="hero__subtitle">You've studied 3 days in a row. Keep the momentum going!</p>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card stat-card--streak">
+        <div class="stat-card__icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 23c-3.6 0-8-2.4-8-7.3C4 11.5 8 7 10 4.5c.3-.4 1-.4 1.3 0 .7.9 1.6 2 2.2 3.2.2.3.6.3.8 0C15 6 16 4.5 16.5 3.5c.3-.5 1-.5 1.2 0C19.5 7 20 10.5 20 13c0 5.5-4.4 10-8 10z"/></svg>
+        </div>
+        <div class="stat-card__value">12</div>
+        <div class="stat-card__label">Day Streak</div>
+      </div>
+
+      <div class="stat-card stat-card--xp">
+        <div class="stat-card__icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="stat-card__value">2,450</div>
+        <div class="stat-card__label">Total XP</div>
+      </div>
+
+      <div class="stat-card stat-card--cards">
+        <div class="stat-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M16 2v20"/><path d="M2 12h14"/></svg>
+        </div>
+        <div class="stat-card__value">8</div>
+        <div class="stat-card__label">Cards Due</div>
+      </div>
+
+      <div class="stat-card stat-card--goal">
+        <div class="stat-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="stat-card__value">45<span style="font-size:0.8rem;font-weight:500;color:var(--muted)">/60m</span></div>
+        <div class="stat-card__label">Daily Goal</div>
+      </div>
+    </div>
+
+    <!-- CTA Row -->
+    <div class="cta-row">
+      <a href="#" class="cta-btn cta-btn--review">
+        <div class="cta-btn__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        </div>
+        <div class="cta-btn__text">
+          <div class="cta-btn__title">Start Review Session</div>
+          <div class="cta-btn__desc">8 cards are waiting for you</div>
+        </div>
+      </a>
+      <a href="#" class="cta-btn cta-btn--explore">
+        <div class="cta-btn__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        </div>
+        <div class="cta-btn__text">
+          <div class="cta-btn__title">Explore Lessons</div>
+          <div class="cta-btn__desc">Continue your Arabic journey</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Phases Section -->
+    <div class="section-header">
+      <h2 class="section-header__title">Your Phases</h2>
+      <a href="#" class="section-header__link">View all</a>
+    </div>
+
+    <div class="phase-grid">
+      <a href="#" class="phase-card">
+        <div class="phase-card__accent" style="background:var(--p1)"></div>
+        <div class="phase-card__number" style="background:var(--p1)">1</div>
+        <div class="phase-card__title">Reactivation</div>
+        <div class="phase-card__arabic">إعادة التفعيل</div>
+        <div class="phase-card__progress"><div class="phase-card__progress-fill" style="width:75%;background:var(--p1)"></div></div>
+        <div class="phase-card__progress-label">75% complete</div>
+      </a>
+
+      <a href="#" class="phase-card">
+        <div class="phase-card__accent" style="background:var(--p2)"></div>
+        <div class="phase-card__number" style="background:var(--p2)">2</div>
+        <div class="phase-card__title">Speaking in Phrases</div>
+        <div class="phase-card__arabic">التحدث بعبارات</div>
+        <div class="phase-card__progress"><div class="phase-card__progress-fill" style="width:40%;background:var(--p2)"></div></div>
+        <div class="phase-card__progress-label">40% complete</div>
+      </a>
+
+      <a href="#" class="phase-card">
+        <div class="phase-card__accent" style="background:var(--p3)"></div>
+        <div class="phase-card__number" style="background:var(--p3)">3</div>
+        <div class="phase-card__title">Structured Conversation</div>
+        <div class="phase-card__arabic">محادثة منظمة</div>
+        <div class="phase-card__progress"><div class="phase-card__progress-fill" style="width:10%;background:var(--p3)"></div></div>
+        <div class="phase-card__progress-label">10% complete</div>
+      </a>
+
+      <a href="#" class="phase-card">
+        <div class="phase-card__accent" style="background:var(--p4)"></div>
+        <div class="phase-card__number" style="background:var(--p4)">4</div>
+        <div class="phase-card__title">Expanding Vocabulary</div>
+        <div class="phase-card__arabic">توسيع المفردات</div>
+        <div class="phase-card__progress"><div class="phase-card__progress-fill" style="width:0%;background:var(--p4)"></div></div>
+        <div class="phase-card__progress-label">Not started</div>
+      </a>
+
+      <a href="#" class="phase-card">
+        <div class="phase-card__accent" style="background:var(--p5)"></div>
+        <div class="phase-card__number" style="background:var(--p5)">5</div>
+        <div class="phase-card__title">Fluency Push</div>
+        <div class="phase-card__arabic">دفع الطلاقة</div>
+        <div class="phase-card__progress"><div class="phase-card__progress-fill" style="width:0%;background:var(--p5)"></div></div>
+        <div class="phase-card__progress-label">Not started</div>
+      </a>
+
+      <a href="#" class="phase-card">
+        <div class="phase-card__accent" style="background:var(--p6)"></div>
+        <div class="phase-card__number" style="background:var(--p6)">6</div>
+        <div class="phase-card__title">Maintenance</div>
+        <div class="phase-card__arabic">صيانة</div>
+        <div class="phase-card__progress"><div class="phase-card__progress-fill" style="width:0%;background:var(--p6)"></div></div>
+        <div class="phase-card__progress-label">Not started</div>
+      </a>
+    </div>
+
+    <!-- Heatmap Section -->
+    <div class="heatmap-section">
+      <div class="section-header">
+        <h2 class="section-header__title">Study Activity</h2>
+        <span class="section-header__link" style="cursor:default;color:var(--muted)">42 active days this year</span>
+      </div>
+
+      <div class="heatmap-card">
+        <div class="heatmap-grid" id="heatmapGrid"></div>
+        <div class="heatmap-legend">
+          <span>Less</span>
+          <div class="heatmap-legend__swatch" style="background:rgba(201,151,58,0.06)"></div>
+          <div class="heatmap-legend__swatch" style="background:rgba(201,151,58,0.2)"></div>
+          <div class="heatmap-legend__swatch" style="background:rgba(201,151,58,0.4)"></div>
+          <div class="heatmap-legend__swatch" style="background:rgba(201,151,58,0.65)"></div>
+          <div class="heatmap-legend__swatch" style="background:var(--gold)"></div>
+          <span>More</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── MOBILE BOTTOM NAV ─── -->
+<nav class="mobile-nav">
+  <a href="#" class="mobile-nav__item mobile-nav__item--active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </a>
+  <a href="#" class="mobile-nav__item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    Phases
+  </a>
+  <a href="#" class="mobile-nav__item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></svg>
+    Review
+  </a>
+  <a href="#" class="mobile-nav__item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg>
+    Roots
+  </a>
+</nav>
+
+<script>
+  // Theme toggle
+  (function() {
+    var sunIcon = document.getElementById('sunIcon');
+    var moonIcon = document.getElementById('moonIcon');
+    var mobileSunIcon = document.getElementById('mobileSunIcon');
+    var mobileMoonIcon = document.getElementById('mobileMoonIcon');
+
+    function syncIcons(isLight) {
+      sunIcon.style.display = isLight ? 'none' : '';
+      moonIcon.style.display = isLight ? '' : 'none';
+      mobileSunIcon.style.display = isLight ? 'none' : '';
+      mobileMoonIcon.style.display = isLight ? '' : 'none';
+    }
+
+    var saved = localStorage.getItem('mockup-theme');
+    if (saved === 'light') {
+      document.documentElement.classList.add('light');
+      syncIcons(true);
+    }
+
+    function toggle() {
+      var isLight = document.documentElement.classList.toggle('light');
+      syncIcons(isLight);
+      localStorage.setItem('mockup-theme', isLight ? 'light' : 'dark');
+    }
+
+    document.getElementById('themeToggle').addEventListener('click', toggle);
+    document.getElementById('mobileThemeToggle').addEventListener('click', toggle);
+  })();
+
+  // Generate heatmap grid (demo data)
+  (function() {
+    var grid = document.getElementById('heatmapGrid');
+    // 52 weeks x 7 days
+    for (var w = 0; w < 52; w++) {
+      var week = document.createElement('div');
+      week.className = 'heatmap-week';
+      for (var d = 0; d < 7; d++) {
+        var day = document.createElement('div');
+        day.className = 'heatmap-day';
+        // Random intensity for demo — more active in recent weeks
+        var recent = w > 38;
+        var rand = Math.random();
+        if (recent && rand > 0.3) {
+          day.classList.add('heatmap-day--' + (Math.ceil(rand * 4)));
+        } else if (rand > 0.75) {
+          day.classList.add('heatmap-day--' + (Math.ceil((rand - 0.75) * 8)));
+        }
+        week.appendChild(day);
+      }
+      grid.appendChild(week);
+    }
+  })();
+</script>
+
+</body>
+</html>

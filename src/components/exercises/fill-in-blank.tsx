@@ -88,16 +88,16 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
   if (finished) {
     const pct = Math.round((score / questions.length) * 100);
     return (
-      <div className="bg-[var(--card-bg)] rounded-lg p-8 text-center border border-[var(--sand)] shadow-sm">
-        <h3 className="font-[var(--font-playfair)] text-2xl font-bold text-[var(--phase-color)] mb-2">
+      <div className="bg-[var(--bg-card)] rounded-2xl p-8 text-center border border-[var(--border)] shadow-lg">
+        <h3 className="text-2xl font-bold text-[var(--brand)] mb-2">
           Exercise Complete!
         </h3>
-        <p className="text-4xl font-bold text-[var(--dark)] mb-1">
+        <p className="text-4xl font-bold text-[var(--text)] mb-1">
           {score}/{questions.length}
         </p>
-        <p className="text-[var(--muted)] mb-4">{pct}% correct</p>
+        <p className="text-[var(--text-secondary)] mb-4">{pct}% correct</p>
         {wrongIds.length > 0 && (
-          <p className="text-xs text-[var(--muted)] mb-3">
+          <p className="text-xs text-[var(--text-secondary)] mb-3">
             {wrongIds.length} item{wrongIds.length !== 1 ? "s" : ""} added to your weak areas for extra practice
           </p>
         )}
@@ -112,7 +112,7 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
             setWrongIds([]);
             setCorrectIds([]);
           }}
-          className="bg-[var(--phase-color)] text-white px-6 py-2 rounded-lg text-sm font-semibold hover:opacity-80"
+          className="bg-[var(--brand)] text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:-translate-y-0.5 hover:shadow-lg transition-all"
         >
           Try Again
         </button>
@@ -123,26 +123,34 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
   const parts = question.sentence.split("___");
 
   return (
-    <div className="bg-[var(--card-bg)] rounded-lg p-6 border border-[var(--sand)] shadow-sm">
+    <div className="bg-[var(--bg-card)] rounded-2xl p-6 border border-[var(--border)] shadow-lg">
       <div className="flex justify-between items-center mb-4">
-        <span className="text-xs font-semibold text-[var(--muted)] uppercase tracking-wide">
+        <span className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide">
           Fill in the blank {currentIndex + 1}/{questions.length}
         </span>
-        <span className="text-xs text-[var(--muted)]">
+        <span className="text-xs text-[var(--text-secondary)]">
           Score: {score}/{currentIndex}
         </span>
       </div>
 
-      <div className="text-lg text-[var(--dark)] mb-4 leading-relaxed">
+      {/* Progress bar */}
+      <div className="w-full h-1.5 bg-[var(--bg-surface)] rounded-full mb-4 overflow-hidden">
+        <div
+          className="h-full bg-[var(--brand)] rounded-full transition-all duration-500"
+          style={{ width: `${((currentIndex) / questions.length) * 100}%` }}
+        />
+      </div>
+
+      <div className="text-lg text-[var(--text)] mb-4 leading-relaxed">
         {parts.map((part, i) => (
           <span key={i}>
             {part}
             {i < parts.length - 1 && (
-              <span className="inline-block mx-1 border-b-2 border-[var(--phase-color)] min-w-[80px] text-center">
+              <span className="inline-block mx-1 border-b-2 border-[var(--brand)] min-w-[80px] text-center">
                 {showResult ? (
                   <span
                     className={
-                      isCorrect ? "text-green-700 font-bold" : "text-red-700"
+                      isCorrect ? "text-[var(--success)] font-bold" : "text-[var(--danger)] animate-[shake_0.5s_ease-in-out]"
                     }
                   >
                     {isCorrect ? answer : question.answer}
@@ -154,7 +162,7 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && !showResult && checkAnswer()}
-                    className="border-none outline-none bg-transparent text-center w-full text-[var(--phase-color)] font-semibold"
+                    className="border-none outline-none bg-transparent text-center w-full text-[var(--brand)] font-semibold"
                     placeholder="..."
                     autoFocus
                     dir="auto"
@@ -167,7 +175,7 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
       </div>
 
       {question.hint && !showResult && (
-        <p className="text-xs text-[var(--green)] italic mb-3">
+        <p className="text-xs text-[var(--info)] italic mb-3">
           Hint: {question.hint}
         </p>
       )}
@@ -177,7 +185,7 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
           <button
             onClick={checkAnswer}
             disabled={!answer.trim()}
-            className="bg-[var(--phase-color)] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:opacity-80 disabled:opacity-40 transition-opacity"
+            className="bg-[var(--brand)] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-40 transition-all"
           >
             Check
           </button>
@@ -185,10 +193,10 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
           <div className="space-y-2 flex-1">
             <div
               className={cn(
-                "rounded-lg px-4 py-3 text-sm font-semibold",
+                "rounded-xl px-4 py-3 text-sm font-semibold",
                 isCorrect
-                  ? "bg-green-50 text-green-700 border border-green-200"
-                  : "bg-red-50 text-red-700 border border-red-200"
+                  ? "bg-[var(--success-dim)] text-[var(--success)] border border-[var(--success)]"
+                  : "bg-red-500/10 text-[var(--danger)] border border-[var(--danger)]"
               )}
             >
               <div className="flex items-center gap-2">
@@ -208,7 +216,7 @@ export function FillInBlank({ questions, onComplete }: FillInBlankProps) {
             <div className="flex justify-end">
               <button
                 onClick={handleNext}
-                className="bg-[var(--phase-color)] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:opacity-80"
+                className="bg-[var(--brand)] text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:-translate-y-0.5 hover:shadow-lg transition-all"
               >
                 {currentIndex < questions.length - 1 ? "Next" : "See Results"}
               </button>
